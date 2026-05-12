@@ -37,7 +37,19 @@
 
 /* ---------- <= 768px (Large Mobile) ---------- */
 @media (max-width: 768px) {
-  .nav-links { display: none; }
+  /* ----- Category Tabs Mobile ----- */
+  .category-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .cat-tab {
+    padding: 8px 16px;
+    font-size: var(--text-sm);
+  }
   .menu-toggle { display: flex; }
 
   /* ===== FIX: Show cart icon but hide oversized buttons on mobile ===== */
