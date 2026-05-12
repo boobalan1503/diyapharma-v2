@@ -57,8 +57,8 @@
   transition: all var(--transition-fast);
 }
 .search-bar input:focus {
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px rgba(13,140,77,0.12);
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px rgba(3,3,88,0.12);
   outline: none;
 }
 .search-icon {
@@ -117,9 +117,9 @@
   min-width: 140px;
 }
 .filter-select:focus {
-  border-color: var(--primary-500);
+  border-color: var(--primary-400);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13,140,77,0.1);
+  box-shadow: 0 0 0 3px rgba(3,3,88,0.10);
 }
 .products-count {
   font-size: var(--text-sm);
