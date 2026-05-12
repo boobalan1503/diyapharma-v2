@@ -130,7 +130,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 100px;
   animation: pulse 3s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -374,12 +373,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 26px;
+  color: var(--primary-700);
   transition: all var(--transition-base);
 }
 .why-card:hover .why-icon {
-  background: var(--primary-600);
-  color: var(--white);
+  background: var(--primary-700);
+  color: var(--accent-400);
   transform: scale(1.1);
 }
 .why-card h4 {
@@ -459,6 +459,10 @@
 .trust-icon {
   font-size: 36px;
   margin-bottom: var(--space-3);
+  color: var(--accent-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .trust-label {
   font-family: var(--font-heading);
