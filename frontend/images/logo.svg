@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+  <!-- Left D mark: outer navy square-D -->
+  <rect x="8" y="10" width="8" height="80" fill="#030358" rx="2"/>
+  <rect x="8" y="10" width="50" height="8" fill="#030358" rx="2"/>
+  <rect x="8" y="82" width="50" height="8" fill="#030358" rx="2"/>
+
+  <!-- Left D mark: inner gold arc-D -->
+  <path d="M26 18 Q78 18 78 50 Q78 82 26 82 L26 70 Q60 70 60 50 Q60 30 26 30 Z" fill="#f8a217"/>
+
+  <!-- Plus / cross inside -->
+  <rect x="17" y="43" width="20" height="14" fill="#030358" rx="2"/>
+  <rect x="21" y="36" width="12" height="28" fill="#030358" rx="2"/>
+  <rect x="21" y="36" width="12" height="28" fill="#f8a217" rx="2" opacity="0.9"/>
+  <rect x="17" y="43" width="20" height="14" fill="#f8a217" rx="2" opacity="0.9"/>
+
+  <!-- Right text: DIYA -->
+  <text x="96" y="48" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="30" fill="#030358" letter-spacing="1">DIYA</text>
+  <!-- Right text: PHARMA on gold bar -->
+  <rect x="96" y="54" width="210" height="34" fill="#f8a217" rx="3"/>
+  <text x="100" y="78" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25" fill="#030358" letter-spacing="3">PHARMA</text>
+
+  <!-- Pill icon replacing last letter A in MEDICAL concept -->
+  <ellipse cx="294" cy="35" rx="14" ry="7" fill="none" stroke="#f8a217" stroke-width="2.5" transform="rotate(-35 294 35)"/>
+  <line x1="287" y1="40" x2="301" y2="30" stroke="#f8a217" stroke-width="2.5"/>
+
+  <!-- Tagline -->
+  <text x="96" y="96" font-family="Arial, sans-serif" font-size="10" fill="#030358" letter-spacing="2" font-style="italic">Empowering Health, Every Day</text>
+</svg>

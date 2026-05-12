@@ -1,152 +1,346 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Catalogue | 1500+ Medicines | Diya Pharma</title>
-  <meta name="description" content="Browse 1500+ pharmaceutical products across 11 divisions. Filter by category, form, therapeutic use, and price.">
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/products.css?v=7">
-  <link rel="stylesheet" href="css/responsive.css?v=7">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>💊</text></svg>">
+  <title>Products | Diya Pharma — Tablets, Surgicals & Diapers</title>
+  <meta name="description" content="Browse Diya Pharma products: Tablets, Surgical items, and Adult Diapers. Quality pharmaceutical products at competitive pricing.">
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/products.css?v=8">
+  <link rel="stylesheet" href="css/responsive.css?v=8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+  <style>
+    /* ===== 3-Tab Category System ===== */
+    .category-tabs-bar {
+      background: #fff;
+      border-bottom: 2px solid var(--neutral-100);
+      padding: var(--space-4) 0;
+      position: sticky;
+      top: var(--header-height);
+      z-index: 50;
+    }
+    .category-tabs {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .cat-tab {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 32px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid var(--neutral-200);
+      color: var(--neutral-600);
+      background: var(--white);
+      transition: all var(--transition-base);
+    }
+    .cat-tab i { font-size: 18px; }
+    .cat-tab:hover {
+      border-color: var(--primary-700);
+      color: var(--primary-700);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(3,3,88,0.12);
+    }
+    .cat-tab.active {
+      background: linear-gradient(135deg, #030358, #04047a);
+      color: #fff;
+      border-color: #030358;
+      box-shadow: 0 6px 20px rgba(3,3,88,0.30);
+      transform: translateY(-2px);
+    }
+    .cat-tab.active i { color: #f8a217; }
+    .cat-tab-count {
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .cat-tab:not(.active) .cat-tab-count {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+    /* Diapers CTA card */
+    .diaper-redirect-card {
+      background: linear-gradient(135deg, #010120, #030358);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-10);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      gap: var(--space-8);
+      box-shadow: 0 8px 32px rgba(3,3,88,0.25);
+    }
+    .diaper-redirect-card h3 { color: #fff; margin-bottom: 8px; font-size: var(--text-2xl); }
+    .diaper-redirect-card p { color: rgba(255,255,255,0.8); font-size: var(--text-base); }
+    .diaper-redirect-img {
+      font-size: 80px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .diaper-grid-preview {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+      margin-top: var(--space-8);
+    }
+    @media (max-width:768px) {
+      .cat-tab { padding: 10px 18px; font-size: 11px; gap: 6px; }
+      .cat-tab i { font-size: 14px; }
+      .diaper-redirect-card { flex-direction: column; text-align: center; padding: var(--space-6); }
+      .diaper-grid-preview { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width:480px) {
+      .category-tabs { gap: var(--space-2); }
+      .cat-tab { padding: 8px 12px; }
+      .diaper-grid-preview { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
+
 <header class="header"><div class="container">
-  <a href="index.html" class="logo"><div class="logo-icon">D</div><span>Diya Pharma</span></a>
-  <nav class="nav-links"><a href="index.html">Home</a><a href="products.html" class="active">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="nav-cart">🛒<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a><a href="#" class="btn btn-sm btn-primary">Get Quote</a></div>
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Diya Pharma"></a>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Products</a>
+    <a href="diapers.html">Diapers</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a>
+    <a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a>
+    <a href="index.html#partnerForm" class="btn btn-sm btn-primary">Get Quote</a>
+  </div>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
-<nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html" class="active">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="login.html">Account</a><a href="cart.html">Cart</a></nav>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="products.html" class="active">Products</a>
+  <a href="diapers.html">Diapers</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="login.html">Account</a>
+  <a href="cart.html">Cart</a>
+</nav>
 
 <main>
+<!-- Hero Banner -->
 <section class="products-hero">
   <div class="container">
-    <div class="breadcrumb" style="color:rgba(255,255,255,.6)"><a href="index.html" style="color:rgba(255,255,255,.8)">Home</a><span>/</span><span style="color:#fff">Products</span></div>
-    <h1 style="font-size:var(--text-3xl);color:#fff">Product Catalogue</h1>
+    <div class="breadcrumb" style="color:rgba(255,255,255,.6)">
+      <a href="index.html" style="color:rgba(255,255,255,.8)">Home</a>
+      <span>/</span>
+      <span style="color:#fff" id="breadcrumbCat">Products</span>
+    </div>
+    <h1 style="font-size:var(--text-3xl);color:#fff" id="pageTitle">Product Catalogue</h1>
+    <p style="color:rgba(255,255,255,0.8);margin-top:8px" id="pageSubtitle">Quality formulations across all therapeutic divisions</p>
   </div>
 </section>
 
-<!-- Division Tabs -->
-<section style="background:var(--white);border-bottom:1px solid var(--neutral-100);padding:var(--space-4) 0">
+<!-- ===== 3 CATEGORY TABS ===== -->
+<section class="category-tabs-bar">
   <div class="container">
-    <div class="divisions-scroll" id="divTabs" style="margin:0;padding:4px 0"></div>
+    <div class="category-tabs">
+      <button class="cat-tab active" id="tabTablets" onclick="switchCategory('tablets')">
+        <i class="fa-solid fa-pills"></i>
+        Tablets &amp; Medicines
+        <span class="cat-tab-count" id="countTablets">52</span>
+      </button>
+      <button class="cat-tab" id="tabSurgicals" onclick="switchCategory('surgicals')">
+        <i class="fa-solid fa-syringe"></i>
+        Surgicals
+        <span class="cat-tab-count" id="countSurgicals">0</span>
+      </button>
+      <button class="cat-tab" id="tabDiapers" onclick="switchCategory('diapers')">
+        <i class="fa-solid fa-baby"></i>
+        Diapers
+        <span class="cat-tab-count" id="countDiapers">–</span>
+      </button>
+    </div>
   </div>
 </section>
 
-<section class="container" style="padding:var(--space-6) var(--space-6) var(--space-16)">
-  <!-- Search Bar -->
-  <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search by product name or composition...">
-  </div>
-
-  <!-- Toolbar: Filters + Sort -->
-  <div class="products-toolbar">
-    <div class="toolbar-left">
-      <div class="filter-dropdowns">
-        <select class="filter-select" id="filterDivisionSelect">
-          <option value="">All Divisions</option>
-        </select>
-        <select class="filter-select" id="filterFormSelect">
-          <option value="">All Forms</option>
-        </select>
-        <select class="filter-select" id="filterTherapeuticSelect">
-          <option value="">All Therapeutic</option>
-        </select>
-      </div>
-      <button class="btn btn-sm btn-secondary" id="clearFilters">✕ Clear</button>
-      <span class="products-count">Showing <strong id="resultCount">0</strong> products</span>
+<!-- ===== TABLETS / MEDICINES PANEL ===== -->
+<div id="panelTablets">
+  <section class="container" style="padding:var(--space-5) var(--space-6) 0">
+    <!-- Search -->
+    <div class="search-bar">
+      <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <input type="text" id="searchInput" placeholder="Search by product name or composition...">
     </div>
-    <div class="toolbar-right">
-      <div class="wholesale-toggle">
-        <span>Wholesale</span>
-        <div class="toggle-switch" id="wholesaleToggle"></div>
+    <!-- Toolbar -->
+    <div class="products-toolbar">
+      <div class="toolbar-left">
+        <div class="filter-dropdowns">
+          <select class="filter-select" id="filterFormSelect">
+            <option value="">All Forms</option>
+          </select>
+          <select class="filter-select" id="filterTherapeuticSelect">
+            <option value="">All Therapeutic</option>
+          </select>
+        </div>
+        <button class="btn btn-sm btn-secondary" id="clearFilters"><i class="fa-solid fa-xmark"></i> Clear</button>
+        <span class="products-count">Showing <strong id="resultCount">0</strong> products</span>
       </div>
-      <div class="products-sort">
-        <label>Sort:</label>
-        <select class="sort-select" id="sortSelect">
-          <option value="name-asc">A → Z</option>
-          <option value="name-desc">Z → A</option>
-          <option value="price-asc">Price: Low → High</option>
-          <option value="price-desc">Price: High → Low</option>
-          <option value="newest">Newest First</option>
-        </select>
+      <div class="toolbar-right">
+        <div class="wholesale-toggle">
+          <span>Wholesale</span>
+          <div class="toggle-switch" id="wholesaleToggle"></div>
+        </div>
+        <div class="products-sort">
+          <label>Sort:</label>
+          <select class="sort-select" id="sortSelect">
+            <option value="name-asc">A → Z</option>
+            <option value="name-desc">Z → A</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="newest">Newest First</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="productGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+</div>
 
-  <!-- Product Grid - Full Width -->
-  <div class="product-grid" id="productGrid"></div>
-  <div class="pagination" id="pagination"></div>
-</section>
+<!-- ===== SURGICALS PANEL ===== -->
+<div id="panelSurgicals" style="display:none">
+  <section class="container" style="padding:var(--space-10) var(--space-6) var(--space-16)">
+    <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200)">
+      <i class="fa-solid fa-syringe" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+      <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">Surgical Products</h3>
+      <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Our surgical catalogue is being updated. Contact us directly for surgical product availability, pricing, and bulk orders.</p>
+      <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for Surgicals</a>
+    </div>
+  </section>
+</div>
+
+<!-- ===== DIAPERS PANEL ===== -->
+<div id="panelDiapers" style="display:none">
+  <section class="container" style="padding:var(--space-10) var(--space-6) var(--space-16)">
+    <div class="diaper-redirect-card">
+      <div>
+        <h3>Adult Diaper Collection</h3>
+        <p>Premium quality adult diapers from top brands — available in multiple sizes. View the full catalogue with detailed size options and pricing.</p>
+        <div style="display:flex;gap:var(--space-3);margin-top:var(--space-6);flex-wrap:wrap">
+          <a href="diapers.html" class="btn btn-accent btn-lg"><i class="fa-solid fa-arrow-right"></i> Browse Full Catalogue</a>
+          <a href="contact.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.3)"><i class="fa-solid fa-phone"></i> Bulk Enquiry</a>
+        </div>
+      </div>
+      <div class="diaper-redirect-img">🩲</div>
+    </div>
+
+    <!-- Preview diaper cards loaded from API -->
+    <div style="margin-top:var(--space-8)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-5)">
+        <h3 style="color:var(--primary-700)">Featured Diapers</h3>
+        <a href="diapers.html" class="btn btn-secondary btn-sm">View All <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="diaper-grid-preview" id="diaperPreviewGrid">
+        <div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block"></i>
+          Loading diapers...
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
+<footer class="footer"><div class="container"><div class="footer-grid">
+  <div class="footer-brand">
+    <a href="index.html" class="logo" style="margin-bottom:var(--space-3)"><img src="images/logo.svg" alt="Diya Pharma" style="filter:brightness(0) invert(1);height:44px"></a>
+    <p>Your trusted pharmaceutical partner delivering quality healthcare solutions.</p>
+  </div>
+  <div class="footer-links"><h4>Quick Links</h4><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+  <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Reviews</a></div>
+  <div class="footer-contact footer-contact-col"><h4>Contact</h4><p><i class="fa-solid fa-phone"></i> +91 82200 96233</p><p><i class="fa-solid fa-envelope"></i> groupseverest@gmail.com</p><p><i class="fa-solid fa-clock"></i> Mon-Sat: 9AM to 6PM</p></div>
+</div><div class="footer-bottom"><span>© 2024 Diya Pharma. All rights reserved.</span><span>Empowering Health, Every Day</span></div></div></footer>
 </main>
 
-<footer class="footer"><div class="container"><div class="footer-grid">
-  <div class="footer-brand"><a href="index.html" class="logo" style="color:#fff"><div class="logo-icon">D</div><span>Diya Pharma</span></a><p>Your trusted pharmaceutical partner.</p></div>
-  <div class="footer-links"><h4>Quick Links</h4><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-  <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Reviews</a></div>
-  <div class="footer-contact"><h4>Contact</h4><p>📞 +91 98889 88858</p><p>✉️ info@diyapharma.com</p></div>
-</div><div class="footer-bottom"><span>© 2024 Diya Pharma. All rights reserved.</span></div></div></footer>
-
-<script src="js/products.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
-<script src="js/ui.js?v=7"></script>
+<script src="js/config.js?v=8"></script>
+<script src="js/api.js?v=8"></script>
+<script src="js/products.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
+<script src="js/ui.js?v=8"></script>
 <script>
+/* ============================================================
+   Diya Pharma — Products Page with 3-Tab Category System
+   Tabs: Tablets/Medicines | Surgicals | Diapers
+   ============================================================ */
+
 const PER_PAGE = 16;
 let currentPage = 1;
 let showWholesale = false;
 let activeFilters = {};
+let currentCategory = 'tablets';
 
-function getURLParams() {
-  const p = new URLSearchParams(window.location.search);
-  if (p.get('division')) activeFilters.division = p.get('division');
-  if (p.get('form')) activeFilters.form = p.get('form');
+/* ---- Category switcher ---- */
+function switchCategory(cat) {
+  currentCategory = cat;
+  // Update tab UI
+  ['tablets','surgicals','diapers'].forEach(c => {
+    document.getElementById('tabTablets'.replace('tablets', c === 'tablets' ? 'Tablets' : c === 'surgicals' ? 'Surgicals' : 'Diapers')).classList.remove('active');
+    document.getElementById('panel' + (c === 'tablets' ? 'Tablets' : c === 'surgicals' ? 'Surgicals' : 'Diapers')).style.display = 'none';
+  });
+  document.getElementById('tab' + (cat === 'tablets' ? 'Tablets' : cat === 'surgicals' ? 'Surgicals' : 'Diapers')).classList.add('active');
+  document.getElementById('panel' + (cat === 'tablets' ? 'Tablets' : cat === 'surgicals' ? 'Surgicals' : 'Diapers')).style.display = 'block';
+
+  // Update breadcrumb + title
+  const titles = { tablets: 'Tablets & Medicines', surgicals: 'Surgical Products', diapers: 'Adult Diapers' };
+  const subtitles = {
+    tablets: 'Quality formulations across all therapeutic divisions',
+    surgicals: 'Surgical and medical supplies',
+    diapers: 'Premium adult diaper collection'
+  };
+  document.getElementById('breadcrumbCat').textContent = titles[cat];
+  document.getElementById('pageTitle').textContent = titles[cat];
+  document.getElementById('pageSubtitle').textContent = subtitles[cat];
+
+  // Load diapers preview on first visit
+  if (cat === 'diapers') loadDiaperPreview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ---- Products (Tablets/Medicines) ---- */
 function populateDropdowns() {
-  // Division dropdown
-  const divSelect = document.getElementById('filterDivisionSelect');
-  Divisions.forEach(d => {
-    const opt = document.createElement('option');
-    opt.value = d; opt.textContent = d;
-    if (activeFilters.division === d) opt.selected = true;
-    divSelect.appendChild(opt);
-  });
-  divSelect.addEventListener('change', () => { 
-    activeFilters.division = divSelect.value || undefined; 
-    if (!divSelect.value) delete activeFilters.division;
-    // Sync division tabs
-    document.querySelectorAll('#divTabs .division-chip').forEach(c => c.classList.remove('active'));
-    const matchTab = [...document.querySelectorAll('#divTabs .division-chip')].find(c => c.textContent === (divSelect.value || 'All'));
-    if (matchTab) matchTab.classList.add('active');
-    currentPage = 1; renderProducts(); 
-  });
-
-  // Form dropdown
   const formSelect = document.getElementById('filterFormSelect');
   Forms.forEach(f => {
     const opt = document.createElement('option');
     opt.value = f; opt.textContent = f;
     formSelect.appendChild(opt);
   });
-  formSelect.addEventListener('change', () => { 
+  formSelect.addEventListener('change', () => {
     activeFilters.form = formSelect.value || undefined;
     if (!formSelect.value) delete activeFilters.form;
-    currentPage = 1; renderProducts(); 
+    currentPage = 1; renderProducts();
   });
 
-  // Therapeutic dropdown
   const therSelect = document.getElementById('filterTherapeuticSelect');
   Therapeutics.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t; opt.textContent = t;
     therSelect.appendChild(opt);
   });
-  therSelect.addEventListener('change', () => { 
+  therSelect.addEventListener('change', () => {
     activeFilters.therapeutic = therSelect.value || undefined;
     if (!therSelect.value) delete activeFilters.therapeutic;
-    currentPage = 1; renderProducts(); 
+    currentPage = 1; renderProducts();
   });
 }
 
@@ -169,7 +363,7 @@ function renderProducts() {
 function renderPagination(totalPages) {
   const c = document.getElementById('pagination');
   if (totalPages <= 1) { c.innerHTML = ''; return; }
-  let html = `<button class="page-btn ${currentPage===1?'disabled':''}" onclick="goPage(${currentPage-1})">❮</button>`;
+  let html = `<button class="page-btn ${currentPage===1?'disabled':''}" onclick="goPage(${currentPage-1})">&#10094;</button>`;
   for (let i = 1; i <= totalPages; i++) {
     if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 2) {
       html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
@@ -177,73 +371,101 @@ function renderPagination(totalPages) {
       html += `<span style="padding:0 8px;color:var(--neutral-400)">…</span>`;
     }
   }
-  html += `<button class="page-btn ${currentPage===totalPages?'disabled':''}" onclick="goPage(${currentPage+1})">❯</button>`;
+  html += `<button class="page-btn ${currentPage===totalPages?'disabled':''}" onclick="goPage(${currentPage+1})">&#10095;</button>`;
   c.innerHTML = html;
 }
+
 function goPage(p) { currentPage = p; renderProducts(); window.scrollTo({top:200,behavior:'smooth'}); }
 
+/* ---- Diaper preview (loads from API) ---- */
+let diaperPreviewLoaded = false;
+async function loadDiaperPreview() {
+  if (diaperPreviewLoaded) return;
+  diaperPreviewLoaded = true;
+  const grid = document.getElementById('diaperPreviewGrid');
+  try {
+    const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
+    const diapers = await res.json();
+    const featured = diapers.slice(0, 4);
+    if (!featured.length) throw new Error('empty');
+    grid.innerHTML = featured.map(d => {
+      const sizes = (typeof d.sizes === 'string' ? JSON.parse(d.sizes) : d.sizes) || [];
+      const first = sizes[0] || {};
+      const mrp = first.mrp || 0;
+      const sale = first.sale_price || 0;
+      const discount = mrp > 0 ? Math.round(((mrp - sale) / mrp) * 100) : 0;
+      const sizeChips = sizes.slice(0, 3).map(s => `<span style="padding:2px 8px;border-radius:4px;background:#eeeefc;font-size:10px;font-weight:600;color:#030358;border:1px solid #d8d8f5">${s.size}</span>`).join('');
+      return `
+        <div class="card product-card" onclick="window.location='diaper-detail.html?id=${d.id}'" style="cursor:pointer">
+          <div class="card-img-wrap" style="background:var(--neutral-50);padding:20px;display:flex;align-items:center;justify-content:center;height:180px">
+            ${d.image_main ? `<img src="${d.image_main}" alt="${d.name}" style="max-height:100%;object-fit:contain">` : '<span style="font-size:60px">🩲</span>'}
+          </div>
+          <div class="card-body">
+            <div class="card-form">${d.brand || 'Adult Diaper'}</div>
+            <h4 class="card-title">${d.name}</h4>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">${sizeChips}</div>
+            <div class="card-pricing">
+              <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">₹${mrp}</span></div>
+              ${discount > 0 ? `<div class="price-item"><span style="background:#f8a217;color:#030358;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700">${discount}% OFF</span></div>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    document.getElementById('countDiapers').textContent = diapers.length;
+  } catch(e) {
+    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1"><p>Preview unavailable. <a href="diapers.html" style="color:var(--primary-700)">Browse full catalogue →</a></p></div>';
+  }
+}
+
+/* ---- Init ---- */
 document.addEventListener('DOMContentLoaded', () => {
-  getURLParams();
   populateDropdowns();
 
-  // Division tabs
-  const tabs = document.getElementById('divTabs');
-  const allChip = document.createElement('button');
-  allChip.className = 'division-chip' + (!activeFilters.division ? ' active' : '');
-  allChip.textContent = 'All';
-  allChip.onclick = () => { 
-    delete activeFilters.division; 
-    document.querySelectorAll('#divTabs .division-chip').forEach(c => c.classList.remove('active')); 
-    allChip.classList.add('active'); 
-    document.getElementById('filterDivisionSelect').value = '';
-    currentPage = 1; renderProducts(); 
-  };
-  tabs.appendChild(allChip);
-  Divisions.forEach(d => {
-    const chip = document.createElement('button');
-    chip.className = 'division-chip' + (activeFilters.division === d ? ' active' : '');
-    chip.textContent = d;
-    chip.onclick = () => { 
-      activeFilters.division = d; 
-      document.querySelectorAll('#divTabs .division-chip').forEach(c => c.classList.remove('active')); 
-      chip.classList.add('active'); 
-      document.getElementById('filterDivisionSelect').value = d;
-      currentPage = 1; renderProducts(); 
-    };
-    tabs.appendChild(chip);
-  });
-
-  // Set division dropdown from URL
-  if (activeFilters.division) {
-    document.getElementById('filterDivisionSelect').value = activeFilters.division;
-  }
+  // Update tablets count
+  document.getElementById('countTablets').textContent = ProductData.length;
 
   // Search
   const search = document.getElementById('searchInput');
   let searchTimer;
-  search.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { activeFilters.search = search.value; currentPage = 1; renderProducts(); }, 300); });
-
-  // Sort
-  document.getElementById('sortSelect').addEventListener('change', e => { activeFilters.sort = e.target.value; renderProducts(); });
-
-  // Wholesale toggle
-  document.getElementById('wholesaleToggle').addEventListener('click', function() { this.classList.toggle('active'); showWholesale = this.classList.contains('active'); renderProducts(); });
-
-  // Clear all filters
-  document.getElementById('clearFilters').addEventListener('click', () => { 
-    activeFilters = {}; 
-    search.value = '';
-    document.getElementById('filterDivisionSelect').value = '';
-    document.getElementById('filterFormSelect').value = '';
-    document.getElementById('filterTherapeuticSelect').value = '';
-    document.querySelectorAll('#divTabs .division-chip').forEach(c => c.classList.remove('active')); 
-    tabs.firstChild.classList.add('active'); 
-    currentPage = 1; 
-    renderProducts(); 
+  search.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      activeFilters.search = search.value;
+      currentPage = 1; renderProducts();
+    }, 300);
   });
 
+  // Sort
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    activeFilters.sort = e.target.value; renderProducts();
+  });
+
+  // Wholesale
+  document.getElementById('wholesaleToggle').addEventListener('click', function() {
+    this.classList.toggle('active'); showWholesale = this.classList.contains('active'); renderProducts();
+  });
+
+  // Clear
+  document.getElementById('clearFilters').addEventListener('click', () => {
+    activeFilters = {};
+    search.value = '';
+    document.getElementById('filterFormSelect').value = '';
+    document.getElementById('filterTherapeuticSelect').value = '';
+    currentPage = 1; renderProducts();
+  });
+
+  // Check URL param for category
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  if (cat === 'diapers') switchCategory('diapers');
+  else if (cat === 'surgicals') switchCategory('surgicals');
+
   renderProducts();
-  if (DiyaPharma.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
+
+  if (DiyaPharma && DiyaPharma.user) {
+    const b = document.getElementById('navAuth');
+    if (b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; }
+  }
 });
 </script>
 </body>
