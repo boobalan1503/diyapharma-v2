@@ -484,12 +484,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       // Fallback: show static diaper products matching real catalog
       const staticDiapers = [
-        { id:1, name:'Friends Easy Adult Diaper Pants', brand:'FRIENDS', img:'https://m.media-amazon.com/images/I/71Kl9dIpJnL._SL1500_.jpg', sizes:['M','L','XL','XXL'], mrp:399, sale:340 },
-        { id:2, name:'Friends Classic Adult Tape Diaper', brand:'FRIENDS', img:'https://m.media-amazon.com/images/I/61VbqgwrHNL._SL1500_.jpg', sizes:['M','L','XL'], mrp:499, sale:420 },
-        { id:3, name:'KareIn Adult Diaper Pants', brand:'KAREIN', img:'https://m.media-amazon.com/images/I/61Rf8BRjuFL._SL1500_.jpg', sizes:['M','L','XL','XXL'], mrp:399, sale:330 },
-        { id:4, name:'KareIn Premium Underpads', brand:'KAREIN', img:'https://m.media-amazon.com/images/I/61Xfq0hQKPL._SL1500_.jpg', sizes:['60x90cm'], mrp:349, sale:290 },
-        { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', img:'https://m.media-amazon.com/images/I/71Kl9dIpJnL._SL1500_.jpg', sizes:['L','XL','XXL'], mrp:549, sale:459 },
-        { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', img:'https://m.media-amazon.com/images/I/61Rf8BRjuFL._SL1500_.jpg', sizes:['M','L','XL'], mrp:649, sale:529 },
+        { id:1, name:'Friends Easy Adult Diaper Pants', brand:'FRIENDS', img:'images/diapers/friends%20easy%20adult%20diaper.jpeg', sizes:['M','L','XL','XXL'], mrp:399, sale:340 },
+        { id:2, name:'Friends Classic Adult Tape Diaper', brand:'FRIENDS', img:'images/diapers/friends%20classic%20tape.jpeg', sizes:['M','L','XL'], mrp:499, sale:420 },
+        { id:3, name:'KareIn Adult Diaper Pants', brand:'KAREIN', img:'images/diapers/karein_diaper-removebg-preview.png', sizes:['M','L','XL','XXL'], mrp:399, sale:330 },
+        { id:4, name:'KareIn Premium Underpads', brand:'KAREIN', img:'images/diapers/kareln%20underpads.jpeg', sizes:['60x90cm'], mrp:349, sale:290 },
+        { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', img:'images/diapers/friends_premium-removebg-preview.png', sizes:['L','XL','XXL'], mrp:549, sale:459 },
+        { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', img:'images/diapers/diginity%20premium%20diape%20pant%20type.jpg', sizes:['M','L','XL'], mrp:649, sale:529 },
       ];
       staticDiapers.forEach(d => {
         const discount = Math.round(((d.mrp - d.sale) / d.mrp) * 100);
