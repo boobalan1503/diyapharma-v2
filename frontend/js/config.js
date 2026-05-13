@@ -1,5 +1,4 @@
 const CONFIG = {
-  // Replace this with your actual Vercel deployment URL
-  // e.g., 'https://diya-pharma-backend.vercel.app/api'
-  API_BASE_URL: 'https://DhiyaMedical-v2-mu.vercel.app/api'
+  // Backend API hosted on Vercel
+  API_BASE_URL: 'https://diya-pharma-v2-mu.vercel.app/api'
 };
