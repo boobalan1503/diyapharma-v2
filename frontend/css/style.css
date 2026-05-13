@@ -1,5 +1,5 @@
 /* ============================================
-   DIYA PHARMA — Global Design System
+   DHIYA MEDICAL AGENCY — Global Design System
    Inspired by vibcare.co.in
    ============================================ */
 
@@ -7,7 +7,7 @@
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
-  /* Primary Palette — Diya Pharma Navy Blue */
+  /* Primary Palette — Dhiya Medical Agency Navy Blue */
   --primary-900: #010120;
   --primary-800: #020240;
   --primary-700: #030358;
@@ -19,7 +19,7 @@
   --primary-100: #d8d8f5;
   --primary-50:  #eeeefc;
 
-  /* Accent — Diya Pharma Gold */
+  /* Accent — Dhiya Medical Agency Gold */
   --accent-500: #e09410;
   --accent-400: #f8a217;
   --accent-300: #fbb84a;
@@ -283,6 +283,7 @@ h5 { font-size: var(--text-lg); }
 .logo img {
   height: 52px;
   width: auto;
+  max-width: 240px;
   display: block;
 }
 .logo-icon {

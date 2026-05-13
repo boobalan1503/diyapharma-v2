@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="420" height="100">
   <!-- Left D mark: outer navy square-D -->
   <rect x="8" y="10" width="8" height="80" fill="#030358" rx="2"/>
   <rect x="8" y="10" width="50" height="8" fill="#030358" rx="2"/>
@@ -13,15 +13,16 @@
   <rect x="21" y="36" width="12" height="28" fill="#f8a217" rx="2" opacity="0.9"/>
   <rect x="17" y="43" width="20" height="14" fill="#f8a217" rx="2" opacity="0.9"/>
 
-  <!-- Right text: DIYA -->
-  <text x="96" y="48" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="30" fill="#030358" letter-spacing="1">DIYA</text>
-  <!-- Right text: PHARMA on gold bar -->
-  <rect x="96" y="54" width="210" height="34" fill="#f8a217" rx="3"/>
-  <text x="100" y="78" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25" fill="#030358" letter-spacing="3">PHARMA</text>
+  <!-- Right text: DHIYA MEDICAL -->
+  <text x="96" y="44" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="26" fill="#030358" letter-spacing="1">DHIYA MEDICAL</text>
 
-  <!-- Pill icon replacing last letter A in MEDICAL concept -->
-  <ellipse cx="294" cy="35" rx="14" ry="7" fill="none" stroke="#f8a217" stroke-width="2.5" transform="rotate(-35 294 35)"/>
-  <line x1="287" y1="40" x2="301" y2="30" stroke="#f8a217" stroke-width="2.5"/>
+  <!-- Right text: AGENCY on gold bar -->
+  <rect x="96" y="50" width="310" height="34" fill="#f8a217" rx="3"/>
+  <text x="100" y="74" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25" fill="#030358" letter-spacing="5">A G E N C Y</text>
+
+  <!-- Pill/capsule icon -->
+  <ellipse cx="394" cy="32" rx="14" ry="7" fill="none" stroke="#030358" stroke-width="2.5" transform="rotate(-35 394 32)"/>
+  <line x1="387" y1="37" x2="401" y2="27" stroke="#030358" stroke-width="2.5"/>
 
   <!-- Tagline -->
   <text x="96" y="96" font-family="Arial, sans-serif" font-size="10" fill="#030358" letter-spacing="2" font-style="italic">Empowering Health, Every Day</text>

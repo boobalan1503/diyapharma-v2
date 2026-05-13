@@ -34,7 +34,7 @@ async function fetchDiapersForQuote() {
 }
 
 async function openQuoteModal() {
-    if (!DiyaPharma.user) {
+    if (!DhiyaMedical.user) {
         alert('Please login first to generate a quotation.');
         window.location.href = 'login.html';
         return;
@@ -190,7 +190,7 @@ function generateQuotation() {
 
 function proceedToInvoice(mode) {
     invoiceMode = mode;
-    const user = DiyaPharma.user;
+    const user = DhiyaMedical.user;
 
     // Populate User Details
     const userDetails = document.getElementById('invoiceUserDetails');
@@ -296,7 +296,7 @@ function viewAndDownloadPDF() {
 function generateSinglePDF(items, type, filenamePrefix) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const user = DiyaPharma.user;
+    const user = DhiyaMedical.user;
 
     // Header
     doc.setFontSize(22);

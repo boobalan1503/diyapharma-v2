@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Detail | Diya Pharma</title>
+  <title>Product Detail | Dhiya Medical Agency</title>
   <link rel="stylesheet" href="css/style.css?v=7">
   <link rel="stylesheet" href="css/diapers.css?v=7">
   <link rel="stylesheet" href="css/responsive.css?v=7">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>💊</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
   <style>
     .detail-section { padding: var(--space-10) 0 var(--space-20); }
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10); align-items: start; }
@@ -109,9 +109,9 @@
 </head>
 <body>
 <header class="header"><div class="container">
-  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Diya Pharma"></a>
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
   <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="nav-cart">🛒<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart">??<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
 <nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
@@ -121,7 +121,7 @@
   <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="diapers.html">Diapers</a><span>/</span><span id="breadcrumbName">Loading...</span></div>
   <div class="detail-grid">
     <div class="gallery">
-      <div class="gallery-main" id="mainImage"><div class="placeholder">🩲</div></div>
+      <div class="gallery-main" id="mainImage"><div class="placeholder">??</div></div>
       <div class="gallery-thumbs" id="thumbs"></div>
     </div>
     <div class="detail-info" id="productInfo">
@@ -137,7 +137,7 @@
 </section>
 </main>
 
-<footer class="footer"><div class="container"><div class="footer-bottom"><span>© 2024 Diya Pharma. All rights reserved.</span></div></div></footer>
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2024 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
 
 <script src="js/config.js?v=7"></script>
 <script src="js/products.js?v=7"></script>
@@ -157,7 +157,7 @@ async function loadProduct() {
     const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products/${id}`);
     product = await res.json();
     if (!product || product.error) throw new Error('Not found');
-    document.title = product.name + ' | Diya Pharma';
+    document.title = product.name + ' | Dhiya Medical Agency';
     document.getElementById('breadcrumbName').textContent = product.name;
     renderProduct();
     loadRecommendations(product.id);
@@ -178,7 +178,7 @@ async function loadRecommendations(currentId) {
       recGrid.innerHTML = shuffled.map(p => `
         <a href="diaper-detail.html?id=${p.id}" class="rec-card">
           <div class="rec-img-wrap">
-            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3">🩲</span>`}
+            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3">??</span>`}
           </div>
           <div class="rec-name">${p.name}</div>
         </a>
@@ -228,7 +228,7 @@ function renderProduct() {
   const mrp = sel.mrp || 0;
   const salePrice = sel.sale_price || 0;
   const discount = mrp > 0 ? Math.round(((mrp - salePrice) / mrp) * 100) : 0;
-  const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '½' : '');
+  const stars = '?'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '�' : '');
   const features = product.features || [];
 
   document.getElementById('productInfo').innerHTML = `
@@ -251,25 +251,25 @@ function renderProduct() {
     </div>
 
     <div class="detail-pricing">
-      <span class="detail-sale-price">₹${salePrice}</span>
-      ${mrp > salePrice ? `<span class="detail-mrp">₹${mrp}</span>` : ''}
+      <span class="detail-sale-price">?${salePrice}</span>
+      ${mrp > salePrice ? `<span class="detail-mrp">?${mrp}</span>` : ''}
       ${discount > 0 ? `<span class="detail-discount">${discount}% OFF</span>` : ''}
     </div>
-    <div class="detail-pack-info">Pack of ${sel.pack_qty || 10} pcs | Free delivery on orders above ₹999</div>
+    <div class="detail-pack-info">Pack of ${sel.pack_qty || 10} pcs | Free delivery on orders above ?999</div>
 
     <div class="detail-qty">
       <div class="qty-control">
-        <button onclick="changeQty(-1)">−</button>
+        <button onclick="changeQty(-1)">-</button>
         <input type="number" id="qtyInput" value="${qty}" min="1" onchange="qty=Math.max(1,parseInt(this.value)||1)">
         <button onclick="changeQty(1)">+</button>
       </div>
-      <button class="add-cart-btn" onclick="addDiaperToCart()">🛒 Add to Cart</button>
+      <button class="add-cart-btn" onclick="addDiaperToCart()">?? Add to Cart</button>
     </div>
 
     ${features.length > 0 ? `
       <div class="detail-label" style="margin-top:var(--space-4)">Key Features:</div>
       <div class="features-grid">
-        ${features.map(f => `<div class="feature-item"><span class="feature-check">✓</span>${f}</div>`).join('')}
+        ${features.map(f => `<div class="feature-item"><span class="feature-check">?</span>${f}</div>`).join('')}
       </div>
     ` : ''}
   `;
@@ -323,19 +323,19 @@ function addDiaperToCart() {
   const cartItem = {
     id: product.id + 10000, // offset to avoid collision with medicine IDs
     name: product.name + ' (' + sel.size + ')',
-    composition: product.brand + ' — ' + (sel.waist || sel.size),
+    composition: product.brand + ' � ' + (sel.waist || sel.size),
     mrp: sel.sale_price || sel.mrp || 0,
     qty: qty,
     type: 'diaper',
     img: product.image_main
   };
-  DiyaPharma.addToCart(cartItem);
+  DhiyaMedical.addToCart(cartItem);
   showToast(`${product.name} (${sel.size}) added to cart!`, 'success');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   loadProduct();
-  if (DiyaPharma.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
+  if (DhiyaMedical.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
 });
 </script>
 </body>

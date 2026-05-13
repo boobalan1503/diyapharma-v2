@@ -10,8 +10,8 @@ let selectedImageFile = null;
 
 function adminLogout() {
   sessionStorage.removeItem('diya_admin_auth');
-  if (typeof DiyaPharma !== 'undefined') {
-    DiyaPharma.logout();
+  if (typeof DhiyaMedical !== 'undefined') {
+    DhiyaMedical.logout();
   }
   window.location.href = 'login.html';
 }

@@ -1,8 +1,8 @@
 /* ============================================
-   DIYA PHARMA — Core Application Logic
+   DHIYA MEDICAL AGENCY — Core Application Logic
    ============================================ */
 
-const DiyaPharma = {
+const DhiyaMedical = {
   cart: JSON.parse(localStorage.getItem('dp_cart') || '[]'),
   user: JSON.parse(localStorage.getItem('dp_user') || 'null'),
   orders: JSON.parse(localStorage.getItem('dp_orders') || '[]'),
@@ -146,7 +146,7 @@ function initHeader() {
 
 function updateNavState() {
   try {
-    const user = DiyaPharma.user;
+    const user = DhiyaMedical.user;
     if (!user) return; // Not logged in, leave defaults (Login button)
 
     // 1. Update main nav links (Desktop & Mobile) to include Dashboard
@@ -233,5 +233,5 @@ document.addEventListener('DOMContentLoaded', () => {
   updateNavState();
   initScrollAnimations();
   animateCounters();
-  DiyaPharma.updateCartBadge();
+  DhiyaMedical.updateCartBadge();
 });
