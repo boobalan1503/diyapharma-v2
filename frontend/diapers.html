@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adult Diapers Collection | Dhiya Medical Agency</title>
-  <meta name="description" content="Shop premium adult diapers from top brands — Dignity, Friends, Lifree, KareIn, Seni. Pant style, tape style, and underpads.">
+  <meta name="description" content="Shop premium adult diapers from top brands ï¿½ Dignity, Friends, Lifree, KareIn, Seni. Pant style, tape style, and underpads.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css?v=7">
   <link rel="stylesheet" href="css/diapers.css?v=7">
   <link rel="stylesheet" href="css/responsive.css?v=7">
@@ -26,7 +27,7 @@
     <div class="diaper-hero-content">
       <div class="section-label" style="color:rgba(255,255,255,0.8)">Adult Care Collection</div>
       <h1>Premium Adult Diapers</h1>
-      <p>Top-quality diapers from India's most trusted brands. Comfort, absorbency, and dignity — all in one.</p>
+      <p>Top-quality diapers from India's most trusted brands. Comfort, absorbency, and dignity ï¿½ all in one.</p>
       <div class="diaper-brands-strip">
         <span class="bubble-tag" style="animation-delay: 0s">Dignity</span>
         <span class="bubble-tag" style="animation-delay: 0.2s">Friends</span>
@@ -63,7 +64,7 @@
   <div class="footer-links"><h4>Quick Links</h4><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
   <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
   <div class="footer-contact"><h4>Contact</h4><p>?? +91 98889 88858</p><p>?? groupseverest@gmail.com</p></div>
-</div><div class="footer-bottom"><span>© 2024 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+</div><div class="footer-bottom"><span>ï¿½ 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
 
 <script src="js/config.js?v=7"></script>
 <script src="js/products.js?v=7"></script>
@@ -123,7 +124,7 @@ async function loadDiaperData() {
 
     renderDiapers();
   } catch (error) {
-    // API failed — use static fallback data
+    // API failed ï¿½ use static fallback data
     categories = [{id:1, name:'Adult Diapers'}, {id:2, name:'Baby Diapers'}, {id:3, name:'Pull-ups'}];
     allDiapers = [
       {id:1,name:'Friends Premium Adult Diaper',brand:'Friends',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:999,sale_price:799,pack_qty:10},{size:'L',mrp:1099,sale_price:899,pack_qty:10}],rating:4.8,is_new:true,image_main:''},
@@ -215,13 +216,13 @@ function renderDiaperCard(product) {
   const salePrice = firstSize.sale_price || 0;
   const discount = mrp > 0 ? Math.round(((mrp - salePrice) / mrp) * 100) : 0;
   const rating = product.rating || 4.5;
-  const stars = '?'.repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? '½' : '');
+  const stars = Array(Math.floor(rating)).fill('<i class="fa-solid fa-star" style="color:#f8a217"></i>').join('') + (rating % 1 >= 0.5 ? '<i class="fa-solid fa-star-half-stroke" style="color:#f8a217"></i>' : '');
   const img = product.image_main || '';
 
   return `
     <a href="diaper-detail.html?id=${product.id}" class="diaper-card">
       <div class="diaper-card-img">
-        ${img ? `<img src="${img}" alt="${product.name}" loading="lazy">` : `<div class="diaper-placeholder">??</div>`}
+        ${img ? `<img src="${img}" alt="${product.name}" loading="lazy">` : `<div class="diaper-placeholder"><i class="fa-solid fa-box-open" style="font-size:3rem;color:#ccc"></i></div>`}
         ${product.is_new ? '<span class="diaper-badge-new">NEW</span>' : ''}
         ${discount > 0 ? `<span class="diaper-badge-discount">-${discount}%</span>` : ''}
       </div>
@@ -236,11 +237,11 @@ function renderDiaperCard(product) {
           ${sizes.map(s => `<span class="size-dot">${s.size}</span>`).join('')}
         </div>
         <div class="diaper-pricing">
-          ${mrp > salePrice ? `<span class="diaper-mrp">?${mrp}</span>` : ''}
+          ${mrp > salePrice ? `<span class="diaper-mrp">&#8377;${mrp}</span>` : ''}
           <span class="diaper-sale">?${salePrice}</span>
           <span class="diaper-pack">/ ${firstSize.pack_qty || 10}pcs</span>
         </div>
-        <button class="diaper-shop-btn">View Details ?</button>
+        <button class="diaper-shop-btn">View Details <i class="fa-solid fa-arrow-right"></i></button>
       </div>
     </a>
   `;

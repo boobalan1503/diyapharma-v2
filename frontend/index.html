@@ -271,7 +271,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2024 Dhiya Medical Agency. All rights reserved.</span>
+      <span>© 2026 Dhiya Medical Agency. All rights reserved.</span>
       <span>Designed with ❤️ for healthcare</span>
     </div>
   </div>
@@ -399,6 +399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `<i class="fa-solid fa-pills" style="font-size:26px;color:var(--primary-600)"></i>`;
   }
 
+  const divGrid = document.getElementById('divisionGrid');
   if (divGrid) {
     try {
       const response = await fetch(`${CONFIG.API_BASE_URL}/divisions`);
