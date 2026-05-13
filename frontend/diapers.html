@@ -123,7 +123,24 @@ async function loadDiaperData() {
 
     renderDiapers();
   } catch (error) {
-    document.getElementById('diaperContent').innerHTML = '<div class="diaper-loading"><p>Failed to load products. Please try again.</p></div>';
+    // API failed — use static fallback data
+    categories = [{id:1, name:'Adult Diapers'}, {id:2, name:'Baby Diapers'}, {id:3, name:'Pull-ups'}];
+    allDiapers = [
+      {id:1,name:'Friends Premium Adult Diaper',brand:'Friends',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:999,sale_price:799,pack_qty:10},{size:'L',mrp:1099,sale_price:899,pack_qty:10}],rating:4.8,is_new:true,image_main:''},
+      {id:2,name:'Friends Easy Adult Diaper',brand:'Friends',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'L',mrp:849,sale_price:699,pack_qty:10},{size:'XL',mrp:949,sale_price:799,pack_qty:10}],rating:4.5,is_new:false,image_main:''},
+      {id:3,name:'Dignity Premium Adult Diaper',brand:'Dignity',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:1099,sale_price:899,pack_qty:10},{size:'L',mrp:1199,sale_price:999,pack_qty:10}],rating:4.7,is_new:false,image_main:''},
+      {id:4,name:'Dignity Plus Pull-Up Pant',brand:'Dignity',category_id:3,diaper_categories:{name:'Pull-ups',slug:'pullups'},sizes:[{size:'M',mrp:899,sale_price:749,pack_qty:10},{size:'L',mrp:999,sale_price:849,pack_qty:10}],rating:4.6,is_new:true,image_main:''},
+      {id:5,name:'Snuggy Baby Diaper Small',brand:'Snuggy',category_id:2,diaper_categories:{name:'Baby Diapers',slug:'baby'},sizes:[{size:'S',mrp:399,sale_price:329,pack_qty:20},{size:'M',mrp:449,sale_price:369,pack_qty:20}],rating:4.5,is_new:false,image_main:''},
+      {id:6,name:'Snuggy Baby Diaper Medium',brand:'Snuggy',category_id:2,diaper_categories:{name:'Baby Diapers',slug:'baby'},sizes:[{size:'M',mrp:479,sale_price:399,pack_qty:20},{size:'L',mrp:529,sale_price:439,pack_qty:20}],rating:4.4,is_new:false,image_main:''},
+    ];
+    const tabsEl = document.getElementById('categoryTabs');
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'diaper-tab'; btn.dataset.category = cat.id; btn.textContent = cat.name;
+      btn.onclick = () => { activeCategory = cat.id; document.querySelectorAll('.diaper-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); collapseHero(); renderDiapers(); };
+      tabsEl.appendChild(btn);
+    });
+    renderDiapers();
   }
 }
 

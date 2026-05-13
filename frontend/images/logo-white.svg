@@ -1,27 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="420" height="100">
-  <!-- Left D mark: outer white square-D -->
+  <!-- Left D mark: vertical bar -->
   <rect x="8" y="10" width="8" height="80" fill="#ffffff" rx="2"/>
+  <!-- Top horizontal bar -->
   <rect x="8" y="10" width="50" height="8" fill="#ffffff" rx="2"/>
+  <!-- Bottom horizontal bar -->
   <rect x="8" y="82" width="50" height="8" fill="#ffffff" rx="2"/>
+  <!-- Inner D arc fill (lighter white) -->
+  <path d="M26 18 Q78 18 78 50 Q78 82 26 82 L26 70 Q60 70 60 50 Q60 30 26 30 Z" fill="rgba(255,255,255,0.25)"/>
 
-  <!-- Left D mark: inner white arc-D (outline style) -->
-  <path d="M26 18 Q78 18 78 50 Q78 82 26 82 L26 70 Q60 70 60 50 Q60 30 26 30 Z" fill="rgba(255,255,255,0.35)"/>
+  <!-- Plus cross inside -->
+  <rect x="17" y="44" width="20" height="12" fill="#ffffff" rx="2"/>
+  <rect x="22" y="37" width="10" height="26" fill="#ffffff" rx="2"/>
 
-  <!-- Plus / cross inside -->
-  <rect x="17" y="43" width="20" height="14" fill="#ffffff" rx="2" opacity="0.9"/>
-  <rect x="21" y="36" width="12" height="28" fill="#ffffff" rx="2" opacity="0.9"/>
+  <!-- DHIYA MEDICAL text -->
+  <text x="96" y="42" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="24" fill="#ffffff" letter-spacing="1">DHIYA MEDICAL</text>
 
-  <!-- Right text: DHIYA MEDICAL -->
-  <text x="96" y="44" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="26" fill="#ffffff" letter-spacing="1">DHIYA MEDICAL</text>
+  <!-- Thin gold accent line under DHIYA MEDICAL -->
+  <rect x="96" y="47" width="308" height="2" fill="#f8a217" rx="1"/>
 
-  <!-- Right text: AGENCY on white-outlined bar -->
-  <rect x="96" y="50" width="310" height="34" fill="rgba(255,255,255,0.2)" rx="3" stroke="#ffffff" stroke-width="1.5"/>
-  <text x="100" y="74" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25" fill="#ffffff" letter-spacing="5">A G E N C Y</text>
+  <!-- AGENCY text -->
+  <text x="100" y="74" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="24" fill="#f8a217" letter-spacing="8">AGENCY</text>
 
   <!-- Pill/capsule icon -->
-  <ellipse cx="394" cy="32" rx="14" ry="7" fill="none" stroke="#ffffff" stroke-width="2.5" transform="rotate(-35 394 32)"/>
-  <line x1="387" y1="37" x2="401" y2="27" stroke="#ffffff" stroke-width="2.5"/>
+  <ellipse cx="398" cy="27" rx="13" ry="6" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" transform="rotate(-35 398 27)"/>
+  <line x1="392" y1="32" x2="404" y2="22" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
 
   <!-- Tagline -->
-  <text x="96" y="96" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.7)" letter-spacing="2" font-style="italic">Empowering Health, Every Day</text>
+  <text x="96" y="94" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.55)" letter-spacing="2" font-style="italic">Empowering Health, Every Day</text>
 </svg>

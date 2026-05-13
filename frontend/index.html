@@ -378,11 +378,31 @@
 <script src="js/quote.js?v=7"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-  // Populate divisions grid from database with logos
-  const divGrid = document.getElementById('divisionGrid');
+  // Division name → Font Awesome icon mapping
+  const divisionIcons = {
+    'AUSPIN':  'fa-solid fa-flask',
+    'CURE':    'fa-solid fa-kit-medical',
+    'GRACE':   'fa-solid fa-heart-pulse',
+    'MIND':    'fa-solid fa-brain',
+    'PRIMA':   'fa-solid fa-shield-halved',
+    'OPTHO':   'fa-solid fa-eye',
+    'NURALZ':  'fa-solid fa-bolt',
+    'EVERMED': 'fa-solid fa-leaf',
+    'GENVIMAX':'fa-solid fa-dna',
+    'MEDANOR': 'fa-solid fa-syringe',
+    'VENTILA': 'fa-solid fa-lungs',
+  };
+  function getDivisionIcon(name) {
+    const key = (name || '').toUpperCase().trim();
+    const fa = divisionIcons[key];
+    if (fa) return `<i class="${fa}" style="font-size:26px;color:var(--primary-600)"></i>`;
+    return `<i class="fa-solid fa-pills" style="font-size:26px;color:var(--primary-600)"></i>`;
+  }
+
   if (divGrid) {
     try {
       const response = await fetch(`${CONFIG.API_BASE_URL}/divisions`);
+      if (!response.ok) throw new Error('API error');
       const divisions = await response.json();
       divisions.forEach(d => {
         const card = document.createElement('a');
@@ -390,7 +410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.className = 'division-card';
         const iconContent = d.logo_url
           ? `<img src="${d.logo_url}" alt="${d.name}" class="division-logo-img">`
-          : `<span class="division-icon">💊</span>`;
+          : getDivisionIcon(d.name);
         card.innerHTML = `
           <div class="division-icon-circle">
             ${iconContent}
@@ -401,14 +421,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         divGrid.appendChild(card);
       });
     } catch (error) {
-      // Fallback to local data if API fails
+      // Fallback to local data with unique icons
       Divisions.forEach(d => {
         const card = document.createElement('a');
         card.href = `products.html?division=${d}`;
         card.className = 'division-card';
         card.innerHTML = `
           <div class="division-icon-circle">
-            <span class="division-icon">💊</span>
+            ${getDivisionIcon(d)}
             <div class="division-glow"></div>
           </div>
           <span class="division-name">${d}</span>
