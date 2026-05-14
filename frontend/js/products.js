@@ -69,7 +69,7 @@ function filterProducts(filters = {}) {
   let results = [...mergedData];
   if (filters.search) {
     const q = filters.search.toLowerCase();
-    results = results.filter(p => p.name.toLowerCase().includes(q) || p.composition.toLowerCase().includes(q));
+    results = results.filter(p => p.name.toLowerCase().includes(q) || (p.composition||'').toLowerCase().includes(q));
   }
   if (filters.division) results = results.filter(p => p.division === filters.division);
   if (filters.form) results = results.filter(p => p.form === filters.form);
@@ -102,12 +102,12 @@ function generateProductCard(product, showWholesale = false) {
       <div class="card-body">
         <div class="card-form">${product.form}</div>
         <h4 class="card-title">${product.name}</h4>
-        <p class="card-composition">${product.composition}</p>
+        <p class="card-composition">${product.composition||''}</p>
         <p class="card-packing">${product.packing ? product.packing + ' | ' : ''}${product.packType}</p>
         <div class="card-pricing">
-          <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">&#8377;${product.mrp.toFixed(2)}</span></div>
-          ${showWholesale ? `<div class="price-item"><span class="price-label">PTR: </span><span class="price-value">&#8377;${product.ptr.toFixed(2)}</span></div>
-          <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">&#8377;${product.pts.toFixed(2)}</span></div>` : ''}
+          <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">&#8377;${parseFloat(product.mrp||0).toFixed(2)}</span></div>
+          ${showWholesale ? `<div class="price-item"><span class="price-label">PTR: </span><span class="price-value">&#8377;${parseFloat(product.ptr||0).toFixed(2)}</span></div>
+          <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">&#8377;${parseFloat(product.pts||0).toFixed(2)}</span></div>` : ''}
         </div>
       </div>
     </div>`;

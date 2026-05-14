@@ -14,7 +14,7 @@
 <header class="header"><div class="container">
   <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
   <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="nav-cart">??<span class="cart-badge cart-count" style="display:none">0</span></a><span class="btn btn-sm btn-primary" id="logoutBtn" onclick="DhiyaMedical.logout();window.location.href='login.html'">Logout</span></div>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a><span class="btn btn-sm btn-primary" id="logoutBtn" onclick="DhiyaMedical.logout();window.location.href='login.html'">Logout</span></div>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
 <nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="#" onclick="DhiyaMedical.logout();window.location.href='login.html'">Logout</a></nav>
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const orders = DhiyaMedical.orders;
   document.getElementById('dashStats').innerHTML = `
     <div class="dash-stat"><div class="dash-stat-number">${orders.length}</div><div class="dash-stat-label">Total Orders</div></div>
-    <div class="dash-stat"><div class="dash-stat-number">?${orders.reduce((s,o)=>s+o.total,0).toFixed(0)}</div><div class="dash-stat-label">Total Spent</div></div>
+    <div class="dash-stat"><div class="dash-stat-number">&#8377;${orders.reduce((s,o)=>s+o.total,0).toFixed(0)}</div><div class="dash-stat-label">Total Spent</div></div>
     <div class="dash-stat"><div class="dash-stat-number">${orders.filter(o=>o.status==='Processing').length}</div><div class="dash-stat-label">Pending</div></div>`;
   // Orders
   if (orders.length === 0) {

@@ -112,7 +112,7 @@
 <header class="header"><div class="container">
   <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
   <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="nav-cart">??<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
 <nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
@@ -252,8 +252,8 @@ function renderProduct() {
     </div>
 
     <div class="detail-pricing">
-      <span class="detail-sale-price">?${salePrice}</span>
-      ${mrp > salePrice ? `<span class="detail-mrp">?${mrp}</span>` : ''}
+      <span class="detail-sale-price">&#8377;${salePrice}</span>
+      ${mrp > salePrice ? `<span class="detail-mrp">&#8377;${mrp}</span>` : ''}
       ${discount > 0 ? `<span class="detail-discount">${discount}% OFF</span>` : ''}
     </div>
     <div class="detail-pack-info">Pack of ${sel.pack_qty || 10} pcs | Free delivery on orders above &#8377;999</div>
