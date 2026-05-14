@@ -101,27 +101,71 @@
 
       <!-- Panel: Products & Media -->
       <div id="panel-products" style="display:none;">
-        <div class="admin-metrics" style="grid-template-columns: 1fr 1fr">
-          <div class="metric-card" style="background:var(--primary-50); border-color:var(--primary-200)">
-            <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-            <div class="metric-info">
-              <h4>Social Media Uploader</h4>
-              <p style="font-size:13px; color:var(--neutral-600)">Click any product below to drag-and-drop a new image. It syncs instantly to your live site.</p>
+
+        <!-- Add New Product Card -->
+        <div class="admin-card" style="margin-bottom:24px;">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="fa-solid fa-plus" style="color:var(--primary-600);margin-right:8px"></i>Add New Product</div>
+            <button class="btn btn-primary" style="font-size:13px;padding:8px 16px" onclick="toggleAddProductForm()"><i class="fa-solid fa-chevron-down" id="addFormChevron"></i> New Product</button>
+          </div>
+          <div id="addProductForm" style="display:none; padding:24px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+              <div>
+                <label class="form-label">Product Name *</label>
+                <input type="text" class="form-input" id="ap_name" placeholder="e.g. Amoxicillin 500mg" style="margin-bottom:16px">
+                <label class="form-label">Division / Category *</label>
+                <select class="form-input" id="ap_division" style="margin-bottom:16px">
+                  <option value="">Select Division</option>
+                  <option>TABLETS</option><option>SURGICALS</option><option>DIAPERS</option>
+                  <option>AUSPIN</option><option>CURE</option><option>GRACE</option>
+                  <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
+                  <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
+                  <option>MEDANOR</option><option>VENTILA</option>
+                </select>
+                <label class="form-label">MRP (₹) *</label>
+                <input type="number" class="form-input" id="ap_mrp" placeholder="e.g. 250" style="margin-bottom:16px">
+                <label class="form-label">Stock Available</label>
+                <input type="checkbox" id="ap_stock" checked style="margin-bottom:16px;width:18px;height:18px;cursor:pointer"> &nbsp;<label for="ap_stock" style="font-size:14px">In Stock</label>
+                <br><br>
+                <label class="form-label">Description</label>
+                <textarea class="form-input" id="ap_desc" rows="3" placeholder="Short product description..." style="resize:vertical"></textarea>
+              </div>
+              <div>
+                <label class="form-label">Product Image</label>
+                <div class="upload-zone" id="apImageZone" style="margin-bottom:16px;min-height:160px;" onclick="document.getElementById('ap_image').click()">
+                  <input type="file" id="ap_image" accept="image/*" style="display:none" onchange="previewAdminProductImage(this)">
+                  <div id="apImgPreviewWrap" style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                    <i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i>
+                    <span style="font-size:13px;color:var(--neutral-400)">Click to upload image</span>
+                  </div>
+                </div>
+                <div style="background:var(--neutral-50);border:1px dashed var(--neutral-300);border-radius:8px;padding:12px;font-size:12px;color:var(--neutral-500)">
+                  <i class="fa-solid fa-circle-info" style="color:var(--primary-400)"></i>
+                  &nbsp;Products added here will appear on the <strong>Products page</strong> immediately for all visitors.
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:20px;justify-content:flex-end">
+              <button class="btn btn-secondary" onclick="toggleAddProductForm()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveAdminProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
             </div>
           </div>
         </div>
 
+        <!-- Product List -->
         <div class="admin-card">
           <div class="admin-card-header">
-            <div class="admin-card-title">Product Image Manager</div>
+            <div class="admin-card-title">All Products</div>
             <input type="text" id="productSearch" placeholder="Search products..." class="form-input" style="width:250px" oninput="filterAdminProducts(this.value)">
           </div>
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Image</th>
-                <th>Name / Category</th>
-                <th>Current Status</th>
+                <th>Name / Division</th>
+                <th>MRP</th>
+                <th>Stock</th>
+                <th>Source</th>
                 <th>Action</th>
               </tr>
             </thead>

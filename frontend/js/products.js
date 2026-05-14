@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    DIYA PHARMA — Product Data & Filtering
    ============================================ */
 
@@ -63,7 +63,10 @@ const Therapeutics = ["NSAID'S","ANTIBIOTICS","ANTIALLERGIC","ANTIFUNGAL","ANTI-
 
 /* ---------- Filter Engine ---------- */
 function filterProducts(filters = {}) {
-  let results = [...ProductData];
+  // Merge admin-added products with built-in catalog
+  const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+  const mergedData = [...ProductData, ...adminProds.map(p => ({...p, stock: p.inStock !== false, isNew: false, composition: p.desc || '', therapeutic: p.division, packing:'', packType:'', ptr:p.mrp*0.76, pts:p.mrp*0.68}))];
+  let results = [...mergedData];
   if (filters.search) {
     const q = filters.search.toLowerCase();
     results = results.filter(p => p.name.toLowerCase().includes(q) || p.composition.toLowerCase().includes(q));
@@ -102,9 +105,9 @@ function generateProductCard(product, showWholesale = false) {
         <p class="card-composition">${product.composition}</p>
         <p class="card-packing">${product.packing ? product.packing + ' | ' : ''}${product.packType}</p>
         <div class="card-pricing">
-          <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">₹${product.mrp.toFixed(2)}</span></div>
-          ${showWholesale ? `<div class="price-item"><span class="price-label">PTR: </span><span class="price-value">₹${product.ptr.toFixed(2)}</span></div>
-          <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">₹${product.pts.toFixed(2)}</span></div>` : ''}
+          <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">&#8377;${product.mrp.toFixed(2)}</span></div>
+          ${showWholesale ? `<div class="price-item"><span class="price-label">PTR: </span><span class="price-value">&#8377;${product.ptr.toFixed(2)}</span></div>
+          <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">&#8377;${product.pts.toFixed(2)}</span></div>` : ''}
         </div>
       </div>
     </div>`;

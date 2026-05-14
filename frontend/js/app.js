@@ -3,12 +3,12 @@
    ============================================ */
 
 const DhiyaMedical = {
-  cart: JSON.parse(localStorage.getItem('dp_cart') || '[]'),
+  cart: JSON.parse(sessionStorage.getItem('dp_cart') || '[]'),
   user: JSON.parse(localStorage.getItem('dp_user') || 'null'),
   orders: JSON.parse(localStorage.getItem('dp_orders') || '[]'),
 
   saveCart() {
-    localStorage.setItem('dp_cart', JSON.stringify(this.cart));
+    sessionStorage.setItem('dp_cart', JSON.stringify(this.cart));
     this.updateCartBadge();
   },
   saveUser() { localStorage.setItem('dp_user', JSON.stringify(this.user)); },

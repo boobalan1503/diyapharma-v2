@@ -54,7 +54,7 @@ let currentReplyingMessage = null;
 function initAdmin() {
   updateDashboardMetrics();
   renderOrdersTables();
-  renderProductsTable(ProductData);
+  renderProductsTable();
   renderMessagesTable();
 }
 
@@ -80,35 +80,35 @@ function updateDashboardMetrics() {
   
   document.getElementById('adminMetrics').innerHTML = `
     <div class="metric-card">
-      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)">📦</div>
+      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)"><i class="fa-solid fa-box"></i></div>
       <div class="metric-info">
         <h4>Total Orders</h4>
         <div class="metric-value">${mockOrders.length}</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="metric-icon" style="background:var(--accent-100); color:var(--accent-500)">💰</div>
+      <div class="metric-icon" style="background:var(--accent-100); color:var(--accent-500)"><i class="fa-solid fa-indian-rupee-sign"></i></div>
       <div class="metric-info">
         <h4>Total Revenue</h4>
-        <div class="metric-value">₹${totalRev.toLocaleString()}</div>
+        <div class="metric-value">&#8377;${totalRev.toLocaleString()}</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="metric-icon" style="background:#FFF3CD; color:#856404">⏳</div>
+      <div class="metric-icon" style="background:#FFF3CD; color:#856404"><i class="fa-solid fa-clock"></i></div>
       <div class="metric-info">
-        <h4>Pending Actions</h4>
+        <h4>Pending Orders</h4>
         <div class="metric-value">${pending}</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="metric-icon" style="background:#FFF3CD; color:#856404">⏳</div>
+      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)"><i class="fa-solid fa-pills"></i></div>
       <div class="metric-info">
-        <h4>Pending Actions</h4>
-        <div class="metric-value">${pending}</div>
+        <h4>Total Products</h4>
+        <div class="metric-value">${(typeof ProductData !== 'undefined' ? ProductData.length : 0) + getAdminProducts().length}</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)">💬</div>
+      <div class="metric-icon" style="background:#FFEBEB; color:var(--danger)"><i class="fa-solid fa-envelope"></i></div>
       <div class="metric-info">
         <h4>Unread Messages</h4>
         <div class="metric-value">${mockMessages.filter(m => m.status === 'Unread').length}</div>
@@ -176,14 +176,14 @@ function renderMessagesTable() {
   // Update Message Metrics panel
   document.getElementById('messageMetrics').innerHTML = `
     <div class="metric-card">
-      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)">📬</div>
+      <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)"><i class="fa-solid fa-envelopes-bulk"></i></div>
       <div class="metric-info">
         <h4>Total Queries</h4>
         <div class="metric-value">${mockMessages.length}</div>
       </div>
     </div>
     <div class="metric-card" style="${unreadCount > 0 ? 'border-color:var(--danger)' : ''}">
-      <div class="metric-icon" style="background:#FFEBEB; color:var(--danger)">🔴</div>
+      <div class="metric-icon" style="background:#FFEBEB; color:var(--danger)"><i class="fa-solid fa-circle-exclamation"></i></div>
       <div class="metric-info">
         <h4>Unread</h4>
         <div class="metric-value" style="${unreadCount > 0 ? 'color:var(--danger)' : ''}">${unreadCount}</div>
@@ -266,34 +266,109 @@ function sendMessageReply() {
   }, 1000);
 }
 
-// ---- CMS Image Upload Logic ----
+// ---- Admin Product Management ----
 
-function renderProductsTable(products) {
+function getAdminProducts() {
+  return JSON.parse(localStorage.getItem('admin_products') || '[]');
+}
+function saveAdminProducts(arr) {
+  localStorage.setItem('admin_products', JSON.stringify(arr));
+}
+
+function toggleAddProductForm() {
+  const form = document.getElementById('addProductForm');
+  const icon = document.getElementById('addFormChevron');
+  const visible = form.style.display !== 'none';
+  form.style.display = visible ? 'none' : 'block';
+  icon.className = visible ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-up';
+}
+
+let adminProductImageDataUrl = '';
+function previewAdminProductImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    adminProductImageDataUrl = e.target.result;
+    document.getElementById('apImgPreviewWrap').innerHTML = `<img src="${e.target.result}" style="max-height:140px;max-width:100%;border-radius:8px;object-fit:contain">`;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function saveAdminProduct() {
+  const name = document.getElementById('ap_name').value.trim();
+  const division = document.getElementById('ap_division').value;
+  const mrp = parseFloat(document.getElementById('ap_mrp').value);
+  const inStock = document.getElementById('ap_stock').checked;
+  const desc = document.getElementById('ap_desc').value.trim();
+  if (!name || !division || !mrp) {
+    showToast('Please fill Name, Division and MRP fields.', 'warning'); return;
+  }
+  const products = getAdminProducts();
+  const newProduct = {
+    id: 'adm_' + Date.now(),
+    name, division, mrp, inStock, desc,
+    img: adminProductImageDataUrl,
+    form: 'Custom', addedAt: new Date().toISOString()
+  };
+  products.push(newProduct);
+  saveAdminProducts(products);
+  showToast(`"${name}" added to Products tab!`, 'success');
+  // Reset form
+  document.getElementById('ap_name').value = '';
+  document.getElementById('ap_division').value = '';
+  document.getElementById('ap_mrp').value = '';
+  document.getElementById('ap_desc').value = '';
+  document.getElementById('ap_stock').checked = true;
+  document.getElementById('apImgPreviewWrap').innerHTML = '<i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i><span style="font-size:13px;color:var(--neutral-400)">Click to upload image</span>';
+  adminProductImageDataUrl = '';
+  toggleAddProductForm();
+  renderProductsTable();
+}
+
+function deleteAdminProduct(id) {
+  if (!confirm('Delete this product?')) return;
+  const products = getAdminProducts().filter(p => p.id !== id);
+  saveAdminProducts(products);
+  showToast('Product deleted.', 'success');
+  renderProductsTable();
+}
+
+function renderProductsTable(searchQuery = '') {
+  const q = searchQuery.toLowerCase();
+  const adminProds = getAdminProducts();
+  const builtIn = (typeof ProductData !== 'undefined' ? ProductData : []);
+  const allProducts = [
+    ...adminProds.map(p => ({ ...p, _source: 'admin' })),
+    ...builtIn.map(p => ({ ...p, _source: 'catalog' }))
+  ].filter(p => !q || p.name.toLowerCase().includes(q) || (p.division||'').toLowerCase().includes(q));
+
   const tbody = document.getElementById('adminProductsTable');
-  tbody.innerHTML = products.map(p => {
-    const hasImage = p.img && p.img.length > 0;
-    const imgHtml = hasImage ? `<img src="${p.img}">` : `<span>💊</span>`;
-    
-    return `
-      <tr>
-        <td><div class="prod-img-preview">${imgHtml}</div></td>
-        <td>
-          <div style="font-weight:600">${p.name}</div>
-          <div style="font-size:12px; color:var(--neutral-500)">${p.division || 'Medicine'} • ${p.form || 'Unknown'}</div>
-        </td>
-        <td>
-          ${hasImage ? '<span class="status-badge status-delivered">Image Uploaded</span>' : '<span class="status-badge status-pending">Needs Image</span>'}
-        </td>
-        <td><button class="btn btn-sm btn-primary" onclick="openProductModal(${p.id})">Upload Image</button></td>
-      </tr>
-    `;
+  if (!tbody) return;
+  if (allProducts.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--neutral-400)">No products found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allProducts.map(p => {
+    const hasImg = p.img && p.img.length > 0;
+    const imgHtml = hasImg ? `<img src="${p.img}" style="width:40px;height:40px;object-fit:contain;border-radius:6px">` : `<i class="fa-solid fa-pills" style="font-size:22px;color:var(--primary-300)"></i>`;
+    const stockBadge = p.inStock !== false ? '<span class="status-badge status-delivered">In Stock</span>' : '<span class="status-badge status-pending">Out of Stock</span>';
+    const sourceBadge = p._source === 'admin' ? '<span class="status-badge status-processing">Admin Added</span>' : '<span class="status-badge" style="background:#f3f4f6;color:#555">Catalog</span>';
+    const actions = p._source === 'admin'
+      ? `<button class="btn btn-sm btn-primary" onclick="openProductModal('${p.id}')">Edit Image</button> <button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c" onclick="deleteAdminProduct('${p.id}')">Delete</button>`
+      : `<button class="btn btn-sm btn-primary" onclick="openProductModal(${p.id})">Edit Image</button>`;
+    return `<tr>
+      <td><div class="prod-img-preview">${imgHtml}</div></td>
+      <td><div style="font-weight:600">${p.name}</div><div style="font-size:12px;color:var(--neutral-500)">${p.division || 'Medicine'}</div></td>
+      <td style="font-weight:700">&#8377;${p.mrp || '-'}</td>
+      <td>${stockBadge}</td>
+      <td>${sourceBadge}</td>
+      <td>${actions}</td>
+    </tr>`;
   }).join('');
 }
 
 function filterAdminProducts(query) {
-  const q = query.toLowerCase();
-  const filtered = ProductData.filter(p => p.name.toLowerCase().includes(q) || p.division.toLowerCase().includes(q));
-  renderProductsTable(filtered);
+  renderProductsTable(query);
 }
 
 function openProductModal(id) {

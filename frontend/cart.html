@@ -80,7 +80,7 @@ function renderCart() {
         <div class="summary-row"><span>Subtotal</span><span>?${subtotal.toFixed(2)}</span></div>
         <div class="summary-row"><span>GST (12%)</span><span>?${gst.toFixed(2)}</span></div>
         <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? '<span style="color:var(--success)">FREE</span>' : '?'+shipping.toFixed(2)}</span></div>
-        ${shipping > 0 ? '<div style="font-size:12px;color:var(--neutral-400);margin-bottom:8px">Free shipping on orders above ?5,000</div>' : ''}
+        ${shipping > 0 ? '<div style="font-size:12px;color:var(--neutral-400);margin-bottom:8px">Free shipping on orders above &#8377;5,000</div>' : ''}
         <div class="summary-row total"><span>Total</span><span>?${total.toFixed(2)}</span></div>
         <a href="checkout.html" class="btn btn-primary btn-lg w-full" style="margin-top:var(--space-5)">Proceed to Checkout</a>
         <a href="products.html" class="btn btn-secondary w-full" style="margin-top:var(--space-3)">Continue Shopping</a>
