@@ -232,30 +232,11 @@
 
 <!-- ===== DIAPERS PANEL ===== -->
 <div id="panelDiapers" style="display:none">
-  <section class="container" style="padding:var(--space-10) var(--space-6) var(--space-16)">
-    <div class="diaper-redirect-card">
-      <div>
-        <h3>Adult Diaper Collection</h3>
-        <p>Premium quality adult diapers from top brands — available in multiple sizes. View the full catalogue with detailed size options and pricing.</p>
-        <div style="display:flex;gap:var(--space-3);margin-top:var(--space-6);flex-wrap:wrap">
-          <a href="diapers.html" class="btn btn-accent btn-lg"><i class="fa-solid fa-arrow-right"></i> Browse Full Catalogue</a>
-          <a href="contact.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.3)"><i class="fa-solid fa-phone"></i> Bulk Enquiry</a>
-        </div>
-      </div>
-      <div class="diaper-redirect-img">🩲</div>
-    </div>
-
-    <!-- Preview diaper cards loaded from API -->
-    <div style="margin-top:var(--space-8)">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-5)">
-        <h3 style="color:var(--primary-700)">Featured Diapers</h3>
-        <a href="diapers.html" class="btn btn-secondary btn-sm">View All <i class="fa-solid fa-arrow-right"></i></a>
-      </div>
-      <div class="diaper-grid-preview" id="diaperPreviewGrid">
-        <div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1">
-          <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block"></i>
-          Loading diapers...
-        </div>
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="diaperGrid">
+      <div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block"></i>
+        Loading diapers...
       </div>
     </div>
   </section>
@@ -294,12 +275,14 @@ let currentCategory = 'tablets';
 function switchCategory(cat) {
   currentCategory = cat;
   // Update tab UI
-  ['tablets','surgicals','diapers'].forEach(c => {
-    document.getElementById('tabTablets'.replace('tablets', c === 'tablets' ? 'Tablets' : c === 'surgicals' ? 'Surgicals' : 'Diapers')).classList.remove('active');
-    document.getElementById('panel' + (c === 'tablets' ? 'Tablets' : c === 'surgicals' ? 'Surgicals' : 'Diapers')).style.display = 'none';
+  ['Tablets','Surgicals','Diapers'].forEach(c => {
+    document.getElementById('tab' + c).classList.remove('active');
+    document.getElementById('panel' + c).style.display = 'none';
   });
-  document.getElementById('tab' + (cat === 'tablets' ? 'Tablets' : cat === 'surgicals' ? 'Surgicals' : 'Diapers')).classList.add('active');
-  document.getElementById('panel' + (cat === 'tablets' ? 'Tablets' : cat === 'surgicals' ? 'Surgicals' : 'Diapers')).style.display = 'block';
+  
+  const capCat = cat.charAt(0).toUpperCase() + cat.slice(1);
+  document.getElementById('tab' + capCat).classList.add('active');
+  document.getElementById('panel' + capCat).style.display = 'block';
 
   // Update breadcrumb + title
   const titles = { tablets: 'Tablets & Medicines', surgicals: 'Surgical Products', diapers: 'Adult Diapers' };
@@ -382,13 +365,12 @@ let diaperPreviewLoaded = false;
 async function loadDiaperPreview() {
   if (diaperPreviewLoaded) return;
   diaperPreviewLoaded = true;
-  const grid = document.getElementById('diaperPreviewGrid');
+  const grid = document.getElementById('diaperGrid');
   try {
     const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
     const diapers = await res.json();
-    const featured = diapers.slice(0, 4);
-    if (!featured.length) throw new Error('empty');
-    grid.innerHTML = featured.map(d => {
+    if (!diapers || diapers.length === 0) throw new Error('empty');
+    grid.innerHTML = diapers.map(d => {
       const sizes = (typeof d.sizes === 'string' ? JSON.parse(d.sizes) : d.sizes) || [];
       const first = sizes[0] || {};
       const mrp = first.mrp || 0;
@@ -413,7 +395,35 @@ async function loadDiaperPreview() {
     }).join('');
     document.getElementById('countDiapers').textContent = diapers.length;
   } catch(e) {
-    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1"><p>Preview unavailable. <a href="diapers.html" style="color:var(--primary-700)">Browse full catalogue →</a></p></div>';
+    // Fallback static diapers
+    const staticDiapers = [
+      { id:1, name:'Friends Easy Adult Diaper Pants', brand:'FRIENDS', img:'images/diapers/friends%20easy%20adult%20diaper.jpeg', sizes:['M','L','XL','XXL'], mrp:399, sale:340 },
+      { id:2, name:'Friends Classic Adult Tape Diaper', brand:'FRIENDS', img:'images/diapers/friends%20classic%20tape.jpeg', sizes:['M','L','XL'], mrp:499, sale:420 },
+      { id:3, name:'KareIn Adult Diaper Pants', brand:'KAREIN', img:'images/diapers/karein_diaper-removebg-preview.png', sizes:['M','L','XL','XXL'], mrp:399, sale:330 },
+      { id:4, name:'KareIn Premium Underpads', brand:'KAREIN', img:'images/diapers/kareln%20underpads.jpeg', sizes:['60x90cm'], mrp:349, sale:290 },
+      { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', img:'images/diapers/friends_premium-removebg-preview.png', sizes:['L','XL','XXL'], mrp:549, sale:459 },
+      { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', img:'images/diapers/diginity%20premium%20diape%20pant%20type.jpg', sizes:['M','L','XL'], mrp:649, sale:529 },
+    ];
+    grid.innerHTML = staticDiapers.map(d => {
+        const discount = Math.round(((d.mrp - d.sale) / d.mrp) * 100);
+        const sizeChips = d.sizes.map(s => `<span style="padding:2px 8px;border-radius:4px;background:#eeeefc;font-size:10px;font-weight:600;color:#030358;border:1px solid #d8d8f5">${s}</span>`).join('');
+        return `
+        <div class="card product-card" onclick="window.location='diaper-detail.html?id=${d.id}'" style="cursor:pointer">
+          <div class="card-img-wrap" style="background:var(--neutral-50);padding:20px;display:flex;align-items:center;justify-content:center;height:180px">
+            <img src="${d.img}" alt="${d.name}" onerror="this.style.display='none'" style="max-height:100%;object-fit:contain">
+          </div>
+          <div class="card-body">
+            <div class="card-form">${d.brand}</div>
+            <h4 class="card-title">${d.name}</h4>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">${sizeChips}</div>
+            <div class="card-pricing">
+              <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">₹${d.mrp}</span></div>
+              ${discount > 0 ? `<div class="price-item"><span style="background:#f8a217;color:#030358;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700">${discount}% OFF</span></div>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    document.getElementById('countDiapers').textContent = staticDiapers.length;
   }
 }
 

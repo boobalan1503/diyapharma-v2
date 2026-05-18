@@ -15,21 +15,40 @@ async function fetchDiapersForQuote() {
     try {
         const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
         if (res.ok) {
-            quoteDataCache.diapers = await res.json();
-            // Assign mrp based on first size if available
-            quoteDataCache.diapers.forEach(d => {
-                let sizes = d.sizes || [];
-                if (typeof sizes === 'string') {
-                    try { sizes = JSON.parse(sizes); } catch(e) { sizes = []; }
+            const data = await res.json();
+            if (data && data.length > 0) {
+                quoteDataCache.diapers = data;
+                // Assign mrp based on first size if available
+                quoteDataCache.diapers.forEach(d => {
+                    let sizes = d.sizes || [];
+                    if (typeof sizes === 'string') {
+                        try { sizes = JSON.parse(sizes); } catch(e) { sizes = []; }
+                    }
+                    const first = sizes[0] || {};
+                    d.mrp = first.mrp || 0;
+                    d.composition = d.brand || 'Diaper';
+                    d.packType = first.size || 'Standard';
+                });
+                if (currentQuoteCategory === 'diapers') {
+                    renderQuoteProductList(quoteDataCache.diapers);
                 }
-                const first = sizes[0] || {};
-                d.mrp = first.mrp || 0;
-                d.composition = d.brand || 'Diaper';
-                d.packType = first.size || 'Standard';
-            });
+                return;
+            }
         }
+        throw new Error('API returned empty or failed');
     } catch (e) {
-        console.error("Failed to fetch diapers", e);
+        console.error("Failed to fetch diapers, using fallback", e);
+        quoteDataCache.diapers = [
+            { id:1, name:'Friends Easy Adult Diaper Pants', brand:'FRIENDS', mrp:399, composition:'FRIENDS', packType:'M' },
+            { id:2, name:'Friends Classic Adult Tape Diaper', brand:'FRIENDS', mrp:499, composition:'FRIENDS', packType:'M' },
+            { id:3, name:'KareIn Adult Diaper Pants', brand:'KAREIN', mrp:399, composition:'KAREIN', packType:'M' },
+            { id:4, name:'KareIn Premium Underpads', brand:'KAREIN', mrp:349, composition:'KAREIN', packType:'60x90cm' },
+            { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', mrp:549, composition:'FRIENDS', packType:'L' },
+            { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', mrp:649, composition:'DIGNITY', packType:'M' }
+        ];
+        if (currentQuoteCategory === 'diapers') {
+            renderQuoteProductList(quoteDataCache.diapers);
+        }
     }
 }
 
