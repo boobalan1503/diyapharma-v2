@@ -1,0 +1,319 @@
+/* ============================================
+   DIYA PHARMA — Admin CMS Dashboard
+   Premium UI with Glassmorphism & Soft Shadows
+   ============================================ */
+
+/* Layout */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--neutral-50);
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 260px;
+  background: var(--primary-900);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+  z-index: 100;
+  overflow-y: auto;
+}
+.admin-sidebar-header {
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.admin-sidebar-header .logo-icon {
+  width: 32px; height: 32px;
+  background: var(--accent-500);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 18px; color: var(--primary-900);
+}
+.admin-sidebar-header span {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+}
+.admin-nav {
+  padding: var(--space-6) 0;
+  flex: 1;
+}
+.admin-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+.admin-nav a:hover, .admin-nav a.active {
+  color: var(--white);
+  background: rgba(255,255,255,0.05);
+  border-left-color: var(--accent-500);
+}
+.admin-nav-icon { font-size: 18px; }
+
+/* Main Content */
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.admin-header {
+  height: 70px;
+  background: var(--white);
+  border-bottom: 1px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+.admin-header-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.admin-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--primary-100);
+  color: var(--primary-700);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600;
+}
+
+/* Content Area */
+.admin-content {
+  padding: var(--space-8);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Dashboard Metrics */
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+.metric-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: var(--space-6);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s ease;
+}
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+.metric-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+.metric-info h4 {
+  font-size: var(--text-sm);
+  color: var(--neutral-500);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.metric-info .metric-value {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--neutral-900);
+  font-family: var(--font-heading);
+}
+
+/* Data Tables */
+.admin-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid var(--neutral-200);
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+}
+.admin-card-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--neutral-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-card-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  font-family: var(--font-heading);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-table th {
+  background: var(--neutral-50);
+  padding: 12px var(--space-6);
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--neutral-500);
+  font-weight: 600;
+}
+.admin-table td {
+  padding: 16px var(--space-6);
+  border-bottom: 1px solid var(--neutral-100);
+  font-size: 14px;
+  color: var(--neutral-800);
+  vertical-align: middle;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover { background: var(--neutral-50); }
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.status-pending { background: #FFF3CD; color: #856404; }
+.status-processing { background: #CCE5FF; color: #004085; }
+.status-shipped { background: #D4EDDA; color: #155724; }
+.status-delivered { background: #D1E7DD; color: #0F5132; }
+
+/* Image Upload Zone (Social Media Style) */
+.upload-zone {
+  border: 2px dashed var(--neutral-300);
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  background: var(--neutral-50);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+}
+.upload-icon {
+  font-size: 40px;
+  color: var(--primary-500);
+  margin-bottom: 12px;
+}
+.upload-text {
+  font-weight: 600;
+  color: var(--neutral-800);
+  margin-bottom: 4px;
+}
+.upload-hint {
+  font-size: 12px;
+  color: var(--neutral-500);
+}
+.upload-input {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Modal */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.admin-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.admin-modal {
+  background: var(--white);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.admin-modal-overlay.active .admin-modal {
+  transform: translateY(0);
+}
+.admin-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--neutral-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+.admin-modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--neutral-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.close-modal {
+  background: none; border: none; font-size: 24px; cursor: pointer; color: var(--neutral-500);
+}
+
+/* Product Image Preview in Table */
+.prod-img-preview {
+  width: 48px; height: 48px;
+  border-radius: 8px;
+  background: var(--neutral-100);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--neutral-200);
+}
+.prod-img-preview img {
+  width: 80%; height: 80%; object-fit: contain;
+}

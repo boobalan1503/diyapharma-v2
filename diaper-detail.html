@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail | Dhiya Medical Agency</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="stylesheet" href="css/diapers.css?v=7">
+  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+  <style>
+    .detail-section { padding: var(--space-10) 0 var(--space-20); }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10); align-items: start; }
+
+    /* Image Gallery */
+    .gallery { position: sticky; top: calc(var(--header-height) + 24px); }
+    .gallery-main { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #f0f4f8, #e8edf2); border-radius: 24px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: var(--space-4); }
+    .gallery-main img { width: 100%; height: 100%; object-fit: contain; padding: var(--space-6); transition: opacity 0.3s ease; }
+    .gallery-main .placeholder { font-size: 120px; opacity: 0.2; }
+    .gallery-thumbs { display: flex; gap: var(--space-3); }
+    .gallery-thumb { width: 80px; height: 80px; border-radius: 12px; background: var(--neutral-50); border: 2px solid var(--neutral-200); overflow: hidden; cursor: pointer; transition: all var(--transition-fast); display: flex; align-items: center; justify-content: center; }
+    .gallery-thumb:hover, .gallery-thumb.active { border-color: #2d6a9f; box-shadow: 0 0 0 2px rgba(45,106,159,0.2); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .gallery-thumb .thumb-label { font-size: 9px; color: var(--neutral-400); text-align: center; }
+
+    /* Shake Animation */
+    @keyframes slightShake {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(2deg) scale(1.02); }
+      50% { transform: rotate(0deg) scale(1); }
+      75% { transform: rotate(-2deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .shake-anim { animation: slightShake 0.4s ease-in-out infinite; }
+
+    /* Product Info */
+    .detail-brand { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #2d6a9f; margin-bottom: var(--space-2); }
+    .detail-title { font-size: var(--text-3xl); margin-bottom: var(--space-3); color: var(--neutral-900); }
+    .detail-rating { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); }
+    .detail-rating .diaper-stars { font-size: 18px; }
+    .detail-desc { font-size: var(--text-sm); color: var(--neutral-600); line-height: 1.8; margin-bottom: var(--space-6); }
+
+    /* Size Selection */
+    .detail-label { font-family: var(--font-heading); font-size: var(--text-sm); font-weight: 600; color: var(--neutral-800); margin-bottom: var(--space-3); }
+    .size-chips { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-6); }
+    .size-chip { padding: 10px 20px; border: 2px solid var(--neutral-200); border-radius: var(--radius-md); font-family: var(--font-heading); font-size: var(--text-sm); font-weight: 600; color: var(--neutral-600); background: var(--white); cursor: pointer; transition: all var(--transition-fast); text-align: center; min-width: 70px; }
+    .size-chip:hover { border-color: #2d6a9f; color: #2d6a9f; }
+    .size-chip.active { background: #2d6a9f; color: var(--white); border-color: #2d6a9f; }
+    .size-chip .waist-info { display: block; font-size: 10px; font-weight: 400; color: inherit; opacity: 0.7; margin-top: 2px; }
+
+    /* Pricing */
+    .detail-pricing { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-2); }
+    .detail-sale-price { font-size: var(--text-4xl); font-weight: 800; color: var(--neutral-900); }
+    .detail-mrp { font-size: var(--text-xl); color: var(--neutral-400); text-decoration: line-through; }
+    .detail-discount { font-size: var(--text-sm); font-weight: 700; color: #e53e3e; background: #fee; padding: 4px 12px; border-radius: var(--radius-full); }
+    .detail-pack-info { font-size: var(--text-sm); color: var(--neutral-500); margin-bottom: var(--space-6); }
+
+    /* Add to Cart */
+    .detail-qty { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-5); }
+    .qty-control { display: flex; align-items: center; border: 2px solid var(--neutral-200); border-radius: var(--radius-md); overflow: hidden; }
+    .qty-control button { width: 40px; height: 40px; font-size: 18px; font-weight: 700; background: var(--neutral-50); color: var(--neutral-700); display: flex; align-items: center; justify-content: center; }
+    .qty-control button:hover { background: var(--neutral-100); }
+    .qty-control input { width: 50px; height: 40px; text-align: center; border: none; border-left: 2px solid var(--neutral-200); border-right: 2px solid var(--neutral-200); font-size: var(--text-base); font-weight: 600; }
+    .add-cart-btn { flex: 1; padding: 14px 32px; background: linear-gradient(135deg, #2d6a9f, #4a90c4); color: var(--white); border: none; border-radius: var(--radius-md); font-family: var(--font-heading); font-size: var(--text-base); font-weight: 700; cursor: pointer; transition: all var(--transition-base); text-transform: uppercase; letter-spacing: 1px; }
+    .add-cart-btn:hover { background: linear-gradient(135deg, #1a5080, #2d6a9f); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45,106,159,0.3); }
+
+    /* Features */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); margin-top: var(--space-6); }
+    .feature-item { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--neutral-700); padding: 8px 12px; background: var(--neutral-50); border-radius: var(--radius-md); }
+    .feature-check { color: #2d6a9f; font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .detail-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+      .gallery { position: static; }
+      .gallery-main { aspect-ratio: 1; }
+      .gallery-thumb { width: 60px; height: 60px; }
+      .detail-title { font-size: var(--text-2xl); }
+      .detail-sale-price { font-size: var(--text-3xl); }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+    /* Shake animation for main image */
+    @keyframes shakeImage {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px) rotate(-1deg); }
+      50% { transform: translateX(3px) rotate(1deg); }
+      75% { transform: translateX(-3px) rotate(-1deg); }
+      100% { transform: translateX(0); }
+    }
+    .shake-anim {
+      animation: shakeImage 0.3s ease-in-out;
+    }
+
+    /* Recommended Section */
+    .rec-section { margin-top: var(--space-12); padding-top: var(--space-8); border-top: 1px solid var(--neutral-200); }
+    .rec-title { text-align: center; margin-bottom: var(--space-6); color: #001F5B; font-size: var(--text-2xl); }
+    .rec-grid { display: flex; gap: var(--space-6); justify-content: flex-start; overflow-x: auto; padding-bottom: 16px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+    .rec-grid::-webkit-scrollbar { display: none; }
+    .rec-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; width: 130px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .rec-card:hover { transform: translateY(-5px); }
+    .rec-img-wrap {
+      width: 110px; height: 110px; border-radius: 50%; background: #f8f9fc;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      margin-bottom: var(--space-3); border: 2px solid var(--neutral-200);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .rec-img-wrap img { width: 75%; height: 75%; object-fit: contain; }
+    .rec-name { font-size: 11px; text-align: center; color: var(--neutral-800); font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  </style>
+</head>
+<body>
+<header class="header"><div class="container">
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
+  <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></header>
+<nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+
+<main>
+<section class="container detail-section">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="diapers.html">Diapers</a><span>/</span><span id="breadcrumbName">Loading...</span></div>
+  <div class="detail-grid">
+    <div class="gallery">
+      <div class="gallery-main" id="mainImage"><div class="placeholder">??</div></div>
+      <div class="gallery-thumbs" id="thumbs"></div>
+    </div>
+    <div class="detail-info" id="productInfo">
+      <div class="diaper-loading"><div class="spinner"></div><p>Loading product...</p></div>
+    </div>
+  </div>
+
+  <!-- Recommended Products -->
+  <div class="rec-section" id="recommendedSection" style="display:none;">
+    <h3 class="rec-title">Recommended for You</h3>
+    <div class="rec-grid" id="recGrid"></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+
+<script src="js/config.js?v=7"></script>
+<script src="js/products.js?v=7"></script>
+<script src="js/app.js?v=7"></script>
+<script src="js/ui.js?v=7"></script>
+<script>
+let product = null;
+let selectedSize = 0;
+let qty = 1;
+let currentSelectedImage = '';
+
+async function loadProduct() {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) { window.location.href = 'diapers.html'; return; }
+
+  try {
+    const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products/${id}`);
+    product = await res.json();
+    if (!product || product.error) throw new Error('Not found');
+    document.title = product.name + ' | Dhiya Medical Agency';
+    document.getElementById('breadcrumbName').textContent = product.name;
+    renderProduct();
+    loadRecommendations(product.id);
+  } catch (e) {
+    document.getElementById('productInfo').innerHTML = '<h3>Product not found</h3><a href="diapers.html" class="btn btn-primary">Back to Diapers</a>';
+  }
+}
+
+async function loadRecommendations(currentId) {
+  try {
+    const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
+    const allProds = await res.json();
+    if (allProds && allProds.length > 0) {
+      // Filter out current product and shuffle
+      const others = allProds.filter(p => p.id !== currentId);
+      const shuffled = others.sort(() => 0.5 - Math.random()).slice(0, 5);
+      const recGrid = document.getElementById('recGrid');
+      recGrid.innerHTML = shuffled.map(p => `
+        <a href="diaper-detail.html?id=${p.id}" class="rec-card">
+          <div class="rec-img-wrap">
+            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3">??</span>`}
+          </div>
+          <div class="rec-name">${p.name}</div>
+        </a>
+      `).join('');
+      document.getElementById('recommendedSection').style.display = 'block';
+    }
+  } catch(e) {}
+}
+
+function renderProduct() {
+  let sizes = product.sizes || [];
+  if (typeof sizes === 'string') sizes = JSON.parse(sizes);
+  const sel = sizes[selectedSize] || {};
+
+  // Main image
+  const mainEl = document.getElementById('mainImage');
+  if (product.image_main) {
+    currentSelectedImage = currentSelectedImage || product.image_main;
+    mainEl.innerHTML = `<img src="${currentSelectedImage}" alt="${product.name}" id="mainImg">`;
+  }
+
+  // Thumbnails
+  const thumbsEl = document.getElementById('thumbs');
+  const images = [
+    { url: product.image_main, label: 'Front' },
+    { url: product.image_side, label: 'Side' },
+    { url: product.image_back, label: 'Back' },
+    { url: product.image_top, label: 'Top' },
+    { url: product.image_pack, label: 'Pack' }
+  ].filter(i => i.url);
+  thumbsEl.innerHTML = images.map((img, i) => {
+    const isActive = (img.url === currentSelectedImage) ? 'active' : '';
+    return `
+      <div class="gallery-thumb ${isActive}" 
+           onclick="switchImage('${img.url}', this)"
+           onmouseover="previewImage('${img.url}')"
+           onmouseout="restoreImage()">
+        <img src="${img.url}" alt="${img.label}">
+      </div>
+    `;
+  }).join('');
+  if (images.length === 0) {
+    thumbsEl.innerHTML = '<div class="gallery-thumb active"><span class="thumb-label">No images</span></div>';
+  }
+
+  // Product info
+  const mrp = sel.mrp || 0;
+  const salePrice = sel.sale_price || 0;
+  const discount = mrp > 0 ? Math.round(((mrp - salePrice) / mrp) * 100) : 0;
+  const stars = '?'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '�' : '');
+  const features = product.features || [];
+
+  document.getElementById('productInfo').innerHTML = `
+    <div class="detail-brand">${product.brand}</div>
+    <h1 class="detail-title">${product.name}</h1>
+    <div class="detail-rating">
+      <span class="diaper-stars">${stars}</span>
+      <span style="font-size:14px;color:var(--neutral-500)">${product.rating} / 5</span>
+    </div>
+    <p class="detail-desc">${product.description}</p>
+
+    <div class="detail-label">Select Size:</div>
+    <div class="size-chips">
+      ${sizes.map((s, i) => `
+        <div class="size-chip ${i === selectedSize ? 'active' : ''}" onclick="selectSize(${i})">
+          ${s.size}
+          ${s.waist ? `<span class="waist-info">${s.waist}</span>` : ''}
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="detail-pricing">
+      <span class="detail-sale-price">&#8377;${salePrice}</span>
+      ${mrp > salePrice ? `<span class="detail-mrp">&#8377;${mrp}</span>` : ''}
+      ${discount > 0 ? `<span class="detail-discount">${discount}% OFF</span>` : ''}
+    </div>
+    <div class="detail-pack-info">Pack of ${sel.pack_qty || 10} pcs | Free delivery on orders above &#8377;999</div>
+
+    <div class="detail-qty">
+      <div class="qty-control">
+        <button onclick="changeQty(-1)">-</button>
+        <input type="number" id="qtyInput" value="${qty}" min="1" onchange="qty=Math.max(1,parseInt(this.value)||1)">
+        <button onclick="changeQty(1)">+</button>
+      </div>
+      <button class="add-cart-btn" onclick="addDiaperToCart()">?? Add to Cart</button>
+    </div>
+
+    ${features.length > 0 ? `
+      <div class="detail-label" style="margin-top:var(--space-4)">Key Features:</div>
+      <div class="features-grid">
+        ${features.map(f => `<div class="feature-item"><span class="feature-check">?</span>${f}</div>`).join('')}
+      </div>
+    ` : ''}
+  `;
+}
+
+function selectSize(index) {
+  selectedSize = index;
+  renderProduct();
+}
+
+function switchImage(url, el) {
+  currentSelectedImage = url;
+  const mainImg = document.getElementById('mainImg');
+  if (mainImg) {
+    mainImg.src = url;
+    mainImg.classList.remove('shake-anim');
+  }
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function previewImage(url) {
+  const mainImg = document.getElementById('mainImg');
+  if (mainImg) {
+    mainImg.src = url;
+    mainImg.classList.remove('shake-anim');
+    void mainImg.offsetWidth; // Trigger reflow to restart animation
+    mainImg.classList.add('shake-anim');
+  }
+}
+
+function restoreImage() {
+  const mainImg = document.getElementById('mainImg');
+  if (mainImg && currentSelectedImage) {
+    mainImg.src = currentSelectedImage;
+    mainImg.classList.remove('shake-anim');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadProduct);
+
+function changeQty(delta) {
+  qty = Math.max(1, qty + delta);
+  document.getElementById('qtyInput').value = qty;
+}
+
+function addDiaperToCart() {
+  let sizes = product.sizes || [];
+  if (typeof sizes === 'string') sizes = JSON.parse(sizes);
+  const sel = sizes[selectedSize] || {};
+  const cartItem = {
+    id: product.id + 10000, // offset to avoid collision with medicine IDs
+    name: product.name + ' (' + sel.size + ')',
+    composition: product.brand + ' � ' + (sel.waist || sel.size),
+    mrp: sel.sale_price || sel.mrp || 0,
+    qty: qty,
+    type: 'diaper',
+    img: product.image_main
+  };
+  DhiyaMedical.addToCart(cartItem);
+  showToast(`${product.name} (${sel.size}) added to cart!`, 'success');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadProduct();
+  if (DhiyaMedical.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhiya Medical Agency | Trusted Pharmaceutical Distributor — Retail & Wholesale</title>
+  <meta name="description" content="Dhiya Medical Agency offers 1500+ quality pharmaceutical products across 11 therapeutic divisions. Retail and wholesale ordering with competitive pricing.">
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/homepage.css?v=8">
+  <link rel="stylesheet" href="css/quote.css?v=8">
+  <link rel="stylesheet" href="css/responsive.css?v=8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Dhiya Medical Agency">
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="products.html">Products</a>
+      <a href="diapers.html">Diapers</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-cart" id="navCart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a>
+      <a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a>
+      <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-sm btn-primary">Get Quote</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="active">Home</a>
+  <a href="products.html">Products</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="login.html">My Account</a>
+  <a href="cart.html">Cart <span class="cart-count" style="display:none">(0)</span></a>
+  <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-primary" style="margin-top:16px">Get Quote</a>
+</nav>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text fade-in">
+        <div class="hero-badge">✦ WHO-GMP Certified Quality</div>
+        <h1>Your Trusted<br><span>Pharmaceutical</span><br>Partner</h1>
+        <p>Delivering 1,500+ quality-assured formulations across 11 therapeutic divisions. Competitive pricing for retail pharmacies and wholesale distributors nationwide.</p>
+        <div class="hero-buttons">
+          <a href="products.html" class="btn btn-lg btn-accent">Browse Products</a>
+          <a href="contact.html" class="btn btn-lg btn-secondary" style="border-color:rgba(255,255,255,.4);color:#fff">Wholesale Inquiry</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><div class="stat-number"><span data-count="1500">0</span><span>+</span></div><div class="stat-label">Products</div></div>
+          <div class="stat-item"><div class="stat-number"><span data-count="5000">0</span><span>+</span></div><div class="stat-label">Customers</div></div>
+          <div class="stat-item"><div class="stat-number"><span data-count="11">0</span><span>+</span></div><div class="stat-label">Divisions</div></div>
+        </div>
+      </div>
+      <div class="hero-visual fade-in-right">
+        <div class="hero-image-container">
+          <div class="hero-float-card" style="top:40px;left:-50px"><i class="fa-solid fa-hospital" style="color:#f8a217"></i> Trusted by 5000+ Partners</div>
+          <div class="hero-float-card" style="top:60px;right:-40px"><i class="fa-solid fa-circle-check" style="color:#f8a217"></i> GMP Certified</div>
+          <div class="hero-glow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="120" height="120">
+              <circle cx="50" cy="50" r="48" fill="rgba(248,162,23,0.15)" stroke="rgba(248,162,23,0.3)" stroke-width="2"/>
+              <path d="M20 65 L20 45 L50 25 L80 45 L80 65 Z" fill="none" stroke="#f8a217" stroke-width="3" stroke-linejoin="round"/>
+              <rect x="35" y="47" width="30" height="18" fill="rgba(248,162,23,0.2)" stroke="#f8a217" stroke-width="2" rx="2"/>
+              <rect x="44" y="38" width="12" height="9" fill="rgba(248,162,23,0.2)" stroke="#f8a217" stroke-width="2" rx="1"/>
+              <line x1="14" y1="65" x2="86" y2="65" stroke="#f8a217" stroke-width="3" stroke-linecap="round"/>
+              <line x1="26" y1="65" x2="26" y2="72" stroke="#f8a217" stroke-width="2"/>
+              <line x1="74" y1="65" x2="74" y2="72" stroke="#f8a217" stroke-width="2"/>
+              <line x1="22" y1="72" x2="78" y2="72" stroke="#f8a217" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M44 47 L50 30 L56 47" fill="none" stroke="#f8a217" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hero-float-card" style="bottom:60px;left:-30px"><i class="fa-solid fa-box" style="color:#f8a217"></i> Same-Day Dispatch</div>
+          <div class="hero-float-card" style="bottom:30px;right:-20px"><i class="fa-solid fa-tag" style="color:#f8a217"></i> Best Prices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DIVISIONS ===== -->
+<section class="divisions-section" id="divisions">
+  <div class="container">
+    <div class="divisions-header fade-in">
+      <div>
+        <div class="section-label">Our Divisions</div>
+        <h2 class="section-title">11+ Divisions with 1500+ Products</h2>
+      </div>
+      <a href="products.html" class="btn btn-secondary">View All Products</a>
+    </div>
+    <div class="divisions-grid" id="divisionGrid"></div>
+  </div>
+</section>
+
+<!-- ===== NOW IN STOCK ===== -->
+<section class="carousel-section section-alt" id="nowInStock">
+  <div class="container">
+    <div class="carousel-header fade-in">
+      <div>
+        <div class="section-label">Now in Stock</div>
+        <h2 class="section-title">Popular Products</h2>
+      </div>
+      <a href="products.html" class="btn btn-secondary">View All</a>
+    </div>
+    <div class="carousel-wrapper" id="stockCarousel">
+      <div class="carousel-viewport"><div class="carousel-track" id="stockTrack"></div></div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous">❮</button>
+      <button class="carousel-btn carousel-next" aria-label="Next">❯</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT SNIPPET ===== -->
+<section class="about-snippet">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image fade-in-left" style="overflow:hidden;position:relative;">
+        <video autoplay muted loop playsinline preload="auto" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius-lg);">
+          <source src="https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4" type="video/mp4">
+          <source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="about-text fade-in-right">
+        <div class="section-label">About Dhiya Medical Agency</div>
+        <h2>Affordable, Quality-Driven Pharmaceutical Solutions</h2>
+        <p>Dhiya Medical Agency delivers affordable, quality-driven formulations backed by years of manufacturing experience and a customer-centric supply chain. Our commitment to innovation, quality, and customer satisfaction has positioned us as a trusted name in pharmaceutical distribution.</p>
+        <p>We serve hospitals, clinics, retail pharmacies, and wholesale distributors nationwide with WHO-GMP compliant products across 11 therapeutic divisions.</p>
+        <a href="about.html" class="btn btn-primary">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEW LAUNCHES — DIAPERS ===== -->
+<section class="carousel-section" id="newLaunches">
+  <div class="container">
+    <div class="carousel-header fade-in">
+      <div>
+        <div class="section-label">New Launches</div>
+        <h2 class="section-title">Adult Diaper Collection</h2>
+      </div>
+      <a href="diapers.html" class="btn btn-secondary">View All Diapers</a>
+    </div>
+    <div class="carousel-wrapper" id="diaperCarousel">
+      <div class="carousel-viewport"><div class="carousel-track" id="diaperTrack"></div></div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous">❮</button>
+      <button class="carousel-btn carousel-next" aria-label="Next">❯</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="why-section" id="whyChoose">
+  <div class="container text-center">
+    <div class="section-label fade-in">Why Choose Us</div>
+    <h2 class="section-title fade-in">Why Choose Dhiya Medical Agency</h2>
+    <div class="why-grid">
+      <div class="why-card fade-in">
+        <div class="why-icon"><i class="fa-solid fa-trophy"></i></div>
+        <h4>Unmatched Quality</h4>
+        <p>WHO-GMP compliant manufacturing ensuring the highest quality products meeting rigorous industry standards.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon"><i class="fa-solid fa-pills"></i></div>
+        <h4>1500+ Products</h4>
+        <p>Comprehensive portfolio spanning 11 therapeutic divisions equipping hospitals, clinics, and distributors.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon"><i class="fa-solid fa-tags"></i></div>
+        <h4>Competitive Pricing</h4>
+        <p>In-house manufacturing allows us to offer the best pricing, keeping our partners ahead of the competition.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon"><i class="fa-solid fa-rocket"></i></div>
+        <h4>Fast Dispatch</h4>
+        <p>Same-day order dispatch with instant updates via email, SMS, and WhatsApp for a seamless experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ===== TRUST BADGES ===== -->
+<section class="trust-section">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-item fade-in"><div class="trust-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="trust-label">100% Genuine</div><div class="trust-sub">Products</div></div>
+      <div class="trust-item fade-in"><div class="trust-icon"><i class="fa-solid fa-lock"></i></div><div class="trust-label">Secure</div><div class="trust-sub">Payments</div></div>
+      <div class="trust-item fade-in"><div class="trust-icon"><i class="fa-solid fa-phone"></i></div><div class="trust-label">24 x 7</div><div class="trust-sub">Customer Support</div></div>
+      <div class="trust-item fade-in"><div class="trust-icon"><i class="fa-solid fa-truck-fast"></i></div><div class="trust-label">Fast</div><div class="trust-sub">Delivery</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA / PARTNER FORM ===== -->
+<section class="cta-section" id="partnerForm">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-text fade-in-left">
+        <div class="section-label" style="color:var(--primary-300)">Partner With Us</div>
+        <h2>Ready to Grow Your Pharma Business?</h2>
+        <p>Join our network of 5000+ satisfied partners. Get access to competitive pricing, reliable supply, and dedicated support.</p>
+      </div>
+      <form class="cta-form fade-in-right" id="enquiryForm" onsubmit="event.preventDefault(); showToast('Enquiry submitted successfully! We will contact you soon.','success'); this.reset();">
+        <h3 style="color:#fff;margin-bottom:var(--space-6)">Send Enquiry</h3>
+        <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" placeholder="Your full name" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" required></div>
+        <div class="form-group"><label class="form-label">Do you have a drug license?</label>
+          <select class="form-input form-select"><option>Yes</option><option>No</option><option>Applied For</option></select>
+        </div>
+        <button type="submit" class="btn btn-accent btn-lg w-full">Send Enquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:var(--space-3)">
+          <img src="images/logo-white.svg" alt="Dhiya Medical Agency" style="height:48px">
+        </a>
+        <p>Your trusted pharmaceutical partner delivering quality healthcare solutions. Looking into the future of healthcare.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="YouTube">▶</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="products.html">Products</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="login.html">My Account</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Customer Reviews</a>
+      </div>
+      <div class="footer-contact footer-contact-col">
+        <h4>Contact</h4>
+        <p>📍 143 fire service</p>
+        <p>📞 +91 82200 96233</p>
+        <p>✉️ groupseverest@gmail.com</p>
+        <p>🕐 Mon-Sat: 9AM to 6PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dhiya Medical Agency. All rights reserved.</span>
+      <span>Designed with ❤️ for healthcare</span>
+    </div>
+  </div>
+</footer>
+</main>
+
+<!-- ===== QUOTATION MODAL ===== -->
+<div class="quote-modal-overlay" id="quoteModal">
+  <div class="quote-modal">
+    <div class="quote-modal-header">
+      <h3>Request a Quotation</h3>
+      <button class="quote-close" onclick="closeQuoteModal()">&times;</button>
+    </div>
+    <div class="quote-body" id="quoteSelectionView">
+      <div class="quote-selection-header" style="flex-direction:column; align-items:stretch; gap:16px;">
+        <div style="display:flex; border-bottom:1px solid var(--neutral-200); padding-bottom:8px; gap:16px;" id="quoteCategoryTabs">
+          <button class="btn btn-sm btn-primary" id="tabMedicines" onclick="switchQuoteCategory('medicines')" style="flex:1">💊 Medicines</button>
+          <button class="btn btn-sm btn-secondary" id="tabDiapers" onclick="switchQuoteCategory('diapers')" style="flex:1">🩲 Diapers</button>
+        </div>
+        <div style="display:flex; gap:8px; width:100%; flex-wrap:wrap; align-items:center;">
+          <input type="text" class="quote-search" id="quoteSearch" placeholder="Search products..." oninput="filterQuoteProducts(this.value)" style="flex:1; min-width:200px;">
+          <div style="display:flex; gap:8px; width:100%;">
+            <button class="btn btn-sm btn-primary" onclick="selectAllProducts()" style="flex:1;">Select All</button>
+            <button class="btn btn-sm btn-secondary" onclick="clearAllProducts()" style="flex:1;">Clear All</button>
+          </div>
+        </div>
+      </div>
+      <div class="quote-product-list" id="quoteProductList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+    
+    <div class="quote-body hidden" id="quoteOptionsView" style="text-align:center; padding:var(--space-6) var(--space-4);">
+      <h3 style="margin-bottom:var(--space-4)">How would you like your quotation?</h3>
+      <p style="color:var(--neutral-600); margin-bottom:var(--space-6)">You have selected both Medicines and Diapers. You can generate a combined invoice or separate them.</p>
+      <div style="display:flex; flex-direction:column; gap:var(--space-3); max-width:300px; margin:0 auto;">
+        <button class="btn btn-primary" onclick="proceedToInvoice('combined')">📄 Generate Combined Invoice</button>
+        <button class="btn btn-accent" onclick="proceedToInvoice('separate')">📄📄 Generate Separate Invoices</button>
+      </div>
+    </div>
+    
+    <div class="quote-body hidden" id="quoteInvoiceView">
+      <div class="invoice-view" id="invoiceContent">
+        <div class="invoice-header">
+          <div class="invoice-brand">
+            <div class="invoice-logo">
+              <div class="logo-icon" style="background:var(--primary-900);color:#fff;width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;">D</div>
+              <span>Dhiya Medical Agency</span>
+            </div>
+            <p style="font-size:12px;color:var(--neutral-500);margin-top:5px;">Quality Healthcare Solutions</p>
+          </div>
+          <div class="invoice-user-details" id="invoiceUserDetails">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        
+        <h4>Estimated Quotation</h4>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Composition</th>
+              <th>Packing</th>
+              <th style="text-align:center">Qty</th>
+              <th style="text-align:right">Unit Price</th>
+              <th style="text-align:right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        
+        <div class="invoice-totals">
+          <div class="total-row"><span>Subtotal</span><span id="quoteSubtotal">₹0.00</span></div>
+          <div class="total-row"><span>GST (12%)</span><span id="quoteTax">₹0.00</span></div>
+          <div class="total-row grand-total"><span>Grand Total</span><span id="quoteGrandTotal">₹0.00</span></div>
+        </div>
+        <div style="clear:both"></div>
+      </div>
+    </div>
+
+    <div class="quote-footer">
+      <div id="selectionActions">
+        <span style="font-size:14px;color:var(--neutral-600);margin-right:var(--space-4)" id="selectedCount">0 products selected</span>
+        <button class="btn btn-secondary" onclick="closeQuoteModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnGenerateQuote" disabled onclick="generateQuotation()">Generate Quotation</button>
+      </div>
+      <div id="invoiceActions" class="hidden">
+        <button class="btn btn-secondary" onclick="backToSelection()">← Back to Selection</button>
+        <button class="btn btn-accent" onclick="viewAndDownloadPDF()">📄 View / Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="js/config.js?v=7"></script>
+<script src="js/api.js?v=7"></script>
+<script src="js/products.js?v=7"></script>
+<script src="js/app.js?v=7"></script>
+<script src="js/ui.js?v=7"></script>
+<script src="js/quote.js?v=7"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // Division name → Font Awesome icon mapping
+  const divisionIcons = {
+    'AUSPIN':  'fa-solid fa-flask',
+    'CURE':    'fa-solid fa-kit-medical',
+    'GRACE':   'fa-solid fa-heart-pulse',
+    'MIND':    'fa-solid fa-brain',
+    'PRIMA':   'fa-solid fa-shield-halved',
+    'OPTHO':   'fa-solid fa-eye',
+    'NURALZ':  'fa-solid fa-bolt',
+    'EVERMED': 'fa-solid fa-leaf',
+    'GENVIMAX':'fa-solid fa-dna',
+    'MEDANOR': 'fa-solid fa-syringe',
+    'VENTILA': 'fa-solid fa-lungs',
+  };
+  function getDivisionIcon(name) {
+    const key = (name || '').toUpperCase().trim();
+    const fa = divisionIcons[key];
+    if (fa) return `<i class="${fa}" style="font-size:26px;color:var(--primary-600)"></i>`;
+    return `<i class="fa-solid fa-pills" style="font-size:26px;color:var(--primary-600)"></i>`;
+  }
+
+  const divGrid = document.getElementById('divisionGrid');
+  if (divGrid) {
+    try {
+      const response = await fetch(`${CONFIG.API_BASE_URL}/divisions`);
+      if (!response.ok) throw new Error('API error');
+      const divisions = await response.json();
+      divisions.forEach(d => {
+        const card = document.createElement('a');
+        card.href = `products.html?division=${d.name}`;
+        card.className = 'division-card';
+        const iconContent = d.logo_url
+          ? `<img src="${d.logo_url}" alt="${d.name}" class="division-logo-img">`
+          : getDivisionIcon(d.name);
+        card.innerHTML = `
+          <div class="division-icon-circle">
+            ${iconContent}
+            <div class="division-glow"></div>
+          </div>
+          <span class="division-name">${d.name}</span>
+        `;
+        divGrid.appendChild(card);
+      });
+    } catch (error) {
+      // Fallback to local data with unique icons
+      Divisions.forEach(d => {
+        const card = document.createElement('a');
+        card.href = `products.html?division=${d}`;
+        card.className = 'division-card';
+        card.innerHTML = `
+          <div class="division-icon-circle">
+            ${getDivisionIcon(d)}
+            <div class="division-glow"></div>
+          </div>
+          <span class="division-name">${d}</span>
+        `;
+        divGrid.appendChild(card);
+      });
+    }
+  }
+  // Populate stock carousel
+  const stockTrack = document.getElementById('stockTrack');
+  if (stockTrack) {
+    ProductData.filter(p => p.stock).slice(0, 10).forEach(p => {
+      stockTrack.innerHTML += generateProductCard(p, false);
+    });
+    new Carousel(document.getElementById('stockCarousel'), { perView: 4, autoplay: true });
+  }
+  // Populate diaper carousel from API
+  const diaperTrack = document.getElementById('diaperTrack');
+  if (diaperTrack) {
+    try {
+      const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
+      if (!res.ok) throw new Error('API unavailable');
+      const diapers = await res.json();
+      diapers.slice(0, 10).forEach(d => {
+        let sizes = d.sizes || [];
+        if (typeof sizes === 'string') sizes = JSON.parse(sizes);
+        const first = sizes[0] || {};
+        const mrp = first.mrp || 0;
+        const sale = first.sale_price || 0;
+        const discount = mrp > 0 ? Math.round(((mrp - sale) / mrp) * 100) : 0;
+        const img = d.image_main;
+        const sizeChips = sizes.slice(0, 4).map(s => `<span class="dhc-size">${s.size}</span>`).join('');
+        diaperTrack.innerHTML += `
+          <div class="diaper-home-card" onclick="window.location='diaper-detail.html?id=${d.id}'">
+            <div class="dhc-img">
+              <span class="dhc-brand-badge">${d.brand || ''}</span>
+              ${img ? `<img src="${img}" alt="${d.name}">` : '<span class="dhc-emoji">🩲</span>'}
+            </div>
+            <div class="dhc-body">
+              <div class="dhc-title">${d.name || ''}</div>
+              <div class="dhc-meta"><div class="dhc-sizes">${sizeChips}</div></div>
+              <div class="dhc-pricing">
+                <span class="dhc-sale">₹${sale}</span>
+                ${mrp > sale ? `<span class="dhc-mrp">₹${mrp}</span>` : ''}
+                ${discount > 0 ? `<span class="dhc-off">${discount}% OFF</span>` : ''}
+              </div>
+              <button class="dhc-btn" onclick="window.location.href='diaper-detail.html?id=${d.id}'">View Details →</button>
+            </div>
+          </div>`;
+      });
+      new Carousel(document.getElementById('diaperCarousel'), { perView: 4, autoplay: true, interval: 5000 });
+    } catch (e) {
+      // Fallback: show static diaper products matching real catalog
+      const staticDiapers = [
+        { id:1, name:'Friends Easy Adult Diaper Pants', brand:'FRIENDS', img:'images/diapers/friends%20easy%20adult%20diaper.jpeg', sizes:['M','L','XL','XXL'], mrp:399, sale:340 },
+        { id:2, name:'Friends Classic Adult Tape Diaper', brand:'FRIENDS', img:'images/diapers/friends%20classic%20tape.jpeg', sizes:['M','L','XL'], mrp:499, sale:420 },
+        { id:3, name:'KareIn Adult Diaper Pants', brand:'KAREIN', img:'images/diapers/karein_diaper-removebg-preview.png', sizes:['M','L','XL','XXL'], mrp:399, sale:330 },
+        { id:4, name:'KareIn Premium Underpads', brand:'KAREIN', img:'images/diapers/kareln%20underpads.jpeg', sizes:['60x90cm'], mrp:349, sale:290 },
+        { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', img:'images/diapers/friends_premium-removebg-preview.png', sizes:['L','XL','XXL'], mrp:549, sale:459 },
+        { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', img:'images/diapers/diginity%20premium%20diape%20pant%20type.jpg', sizes:['M','L','XL'], mrp:649, sale:529 },
+      ];
+      staticDiapers.forEach(d => {
+        const discount = Math.round(((d.mrp - d.sale) / d.mrp) * 100);
+        const sizeChips = d.sizes.map(s => `<span class="dhc-size">${s}</span>`).join('');
+        diaperTrack.innerHTML += `
+          <div class="diaper-home-card" onclick="window.location='diapers.html'">
+            <div class="dhc-img">
+              <span class="dhc-brand-badge">${d.brand}</span>
+              <img src="${d.img}" alt="${d.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:contain">
+              <span class="dhc-emoji" style="display:none"><i class="fa-solid fa-box-open" style="font-size:3rem;color:#ccc"></i></span>
+            </div>
+            <div class="dhc-body">
+              <div class="dhc-title">${d.name}</div>
+              <div class="dhc-meta"><div class="dhc-sizes">${sizeChips}</div></div>
+              <div class="dhc-pricing">
+                <span class="dhc-sale">&#8377;${d.sale}</span>
+                <span class="dhc-mrp">&#8377;${d.mrp}</span>
+                <span class="dhc-off">${discount}% OFF</span>
+              </div>
+              <button class="dhc-btn" onclick="window.location.href='diapers.html'">View Details →</button>
+            </div>
+          </div>`;
+      });
+      new Carousel(document.getElementById('diaperCarousel'), { perView: 4, autoplay: true, interval: 5000 });
+    }
+  }
+  // Auth state
+  if (DhiyaMedical.user) {
+    const btn = document.getElementById('navAuth');
+    if (btn) { btn.textContent = 'Dashboard'; btn.href = 'dashboard.html'; }
+  }
+});
+</script>
+</body>
+</html>
