@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -30,10 +30,10 @@
         <div class="badge badge-success" style="margin-top:8px" id="dashType">Retail</div>
       </div>
       <nav class="sidebar-nav">
-        <a href="#" class="active" onclick="showPanel('orders',this)">?? Orders</a>
-        <a href="#" onclick="showPanel('profile',this)">?? Profile</a>
-        <a href="#" onclick="showPanel('addresses',this)">?? Addresses</a>
-        <a href="#" onclick="showPanel('settings',this)">?? Settings</a>
+        <a href="#" class="active" onclick="showPanel('orders',this)"><i class="fa-solid fa-box"></i> Orders</a>
+        <a href="#" onclick="showPanel('profile',this)"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="#" onclick="showPanel('addresses',this)"><i class="fa-solid fa-location-dot"></i> Addresses</a>
+        <a href="#" onclick="showPanel('settings',this)"><i class="fa-solid fa-gear"></i> Settings</a>
       </nav>
     </aside>
     <div class="dash-content">
@@ -79,7 +79,7 @@
   </div>
 </section>
 </main>
-<footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>&copy; 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
 <script src="js/products.js?v=7"></script>
 <script src="js/app.js?v=7"></script>
 <script>
@@ -113,9 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="dash-stat"><div class="dash-stat-number">${orders.filter(o=>o.status==='Processing').length}</div><div class="dash-stat-label">Pending</div></div>`;
   // Orders
   if (orders.length === 0) {
-    document.getElementById('ordersContent').innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--neutral-500)"><div style="font-size:48px;margin-bottom:16px">??</div><h3>No orders yet</h3><p>Start shopping to see your orders here.</p><a href="products.html" class="btn btn-primary" style="margin-top:16px">Browse Products</a></div>';
+    document.getElementById('ordersContent').innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--neutral-500)"><div style="font-size:48px;margin-bottom:16px"><i class="fa-solid fa-box-open"></i></div><h3>No orders yet</h3><p>Start shopping to see your orders here.</p><a href="products.html" class="btn btn-primary" style="margin-top:16px">Browse Products</a></div>';
   } else {
-    document.getElementById('ordersContent').innerHTML = `<table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>${orders.map(o => `<tr><td style="font-weight:600">#${o.id}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.items.length} items</td><td style="font-weight:700">?${(o.total+o.gst+(o.shipping||0)).toFixed(2)}</td><td><span class="status-badge status-processing">${o.status}</span></td></tr>`).join('')}</tbody></table>`;
+    document.getElementById('ordersContent').innerHTML = `<table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>${orders.map(o => `<tr><td style="font-weight:600">#${o.id}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.items.length} items</td><td style="font-weight:700">₹${(o.total+o.gst+(o.shipping||0)).toFixed(2)}</td><td><span class="status-badge status-processing">${o.status}</span></td></tr>`).join('')}</tbody></table>`;
   }
   // Addresses
   const addr = u.addresses || [];

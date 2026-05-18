@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    DIYA PHARMA — Product Data & Filtering
    ============================================ */
 
@@ -63,9 +63,20 @@ const Therapeutics = ["NSAID'S","ANTIBIOTICS","ANTIALLERGIC","ANTIFUNGAL","ANTI-
 
 /* ---------- Filter Engine ---------- */
 function filterProducts(filters = {}) {
-  // Merge admin-added products with built-in catalog
+  // Merge admin-added products with built-in catalog, prepending admin products so they appear first
   const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
-  const mergedData = [...ProductData, ...adminProds.map(p => ({...p, stock: p.inStock !== false, isNew: false, composition: p.desc || '', therapeutic: p.division, packing:'', packType:'', ptr:p.mrp*0.76, pts:p.mrp*0.68}))];
+  const formattedAdminProds = adminProds.map(p => ({
+    ...p, 
+    stock: p.inStock !== false, 
+    isNew: true, 
+    composition: p.desc || '', 
+    therapeutic: p.division, 
+    packing: '', 
+    packType: '', 
+    ptr: p.mrp * 0.76, 
+    pts: p.mrp * 0.68
+  }));
+  const mergedData = [...formattedAdminProds, ...ProductData];
   let results = [...mergedData];
   if (filters.search) {
     const q = filters.search.toLowerCase();
