@@ -246,7 +246,7 @@ function renderProduct() {
   const mrp = sel.mrp || 0;
   const salePrice = sel.sale_price || 0;
   const discount = mrp > 0 ? Math.round(((mrp - salePrice) / mrp) * 100) : 0;
-  const stars = '?'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '�' : '');
+  const stars = Array(Math.floor(product.rating)).fill('<i class="fa-solid fa-star" style="color:#f8a217"></i>').join('') + (product.rating % 1 >= 0.5 ? '<i class="fa-solid fa-star-half-stroke" style="color:#f8a217"></i>' : '');
   const features = product.features || [];
 
   document.getElementById('productInfo').innerHTML = `

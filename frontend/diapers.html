@@ -141,6 +141,19 @@ async function loadDiaperData() {
       btn.onclick = () => { activeCategory = cat.id; document.querySelectorAll('.diaper-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); collapseHero(); renderDiapers(); };
       tabsEl.appendChild(btn);
     });
+    
+    // "All" tab handler for fallback
+    const allTab = tabsEl.querySelector('[data-category="all"]');
+    if (allTab) {
+      allTab.onclick = () => {
+        activeCategory = 'all';
+        activeBrand = 'all';
+        document.querySelectorAll('.diaper-tab').forEach(t => t.classList.remove('active'));
+        allTab.classList.add('active');
+        renderDiapers();
+      };
+    }
+    
     renderDiapers();
   }
 }
