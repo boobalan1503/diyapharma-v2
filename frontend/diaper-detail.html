@@ -341,14 +341,13 @@ function addDiaperToCart() {
   const cartItem = {
     id: product.id + 10000, // offset to avoid collision with medicine IDs
     name: product.name + ' (' + sel.size + ')',
-    composition: product.brand + ' � ' + (sel.waist || sel.size),
+    composition: product.brand + ' - ' + (sel.waist || sel.size),
     mrp: sel.sale_price || sel.mrp || 0,
     qty: qty,
     type: 'diaper',
     img: product.image_main
   };
   DhiyaMedical.addToCart(cartItem);
-  showToast(`${product.name} (${sel.size}) added to cart!`, 'success');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
