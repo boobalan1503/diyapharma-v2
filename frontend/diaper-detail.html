@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -122,7 +122,7 @@
   <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="diapers.html">Diapers</a><span>/</span><span id="breadcrumbName">Loading...</span></div>
   <div class="detail-grid">
     <div class="gallery">
-      <div class="gallery-main" id="mainImage"><div class="placeholder">??</div></div>
+      <div class="gallery-main" id="mainImage"><div class="placeholder"><i class="fa-solid fa-baby"></i></div></div>
       <div class="gallery-thumbs" id="thumbs"></div>
     </div>
     <div class="detail-info" id="productInfo">
@@ -163,7 +163,24 @@ async function loadProduct() {
     renderProduct();
     loadRecommendations(product.id);
   } catch (e) {
-    document.getElementById('productInfo').innerHTML = '<h3>Product not found</h3><a href="diapers.html" class="btn btn-primary">Back to Diapers</a>';
+    const idNum = parseInt(id);
+    const staticDiapers = [
+      {id:1,name:'Friends Premium Adult Diaper',brand:'Friends',sizes:[{size:'M',mrp:999,sale_price:799,pack_qty:10},{size:'L',mrp:1099,sale_price:899,pack_qty:10}],rating:4.8,image_main:'images/diapers/friends_premium-removebg-preview.png',description:'Premium adult diapers with high absorbency.'},
+      {id:2,name:'Friends Easy Adult Diaper',brand:'Friends',sizes:[{size:'L',mrp:849,sale_price:699,pack_qty:10},{size:'XL',mrp:949,sale_price:799,pack_qty:10}],rating:4.5,image_main:'images/diapers/friends easy adult diaper.jpeg',description:'Easy to wear adult diapers for all day comfort.'},
+      {id:3,name:'Dignity Premium Adult Diaper',brand:'Dignity',sizes:[{size:'M',mrp:1099,sale_price:899,pack_qty:10},{size:'L',mrp:1199,sale_price:999,pack_qty:10}],rating:4.7,image_main:'images/diapers/diginity premium diape pant type.jpg',description:'Premium quality adult diapers.'},
+      {id:4,name:'Dignity Plus Pull-Up Pant',brand:'Dignity',sizes:[{size:'M',mrp:899,sale_price:749,pack_qty:10},{size:'L',mrp:999,sale_price:849,pack_qty:10}],rating:4.6,image_main:'images/diapers/diginity front view.png',description:'Pull-up pants style diapers.'},
+      {id:5,name:'KareIn Adult Diaper Pants',brand:'KareIn',sizes:[{size:'M',mrp:399,sale_price:330,pack_qty:10},{size:'L',mrp:449,sale_price:370,pack_qty:10}],rating:4.5,image_main:'images/diapers/karein_diaper-removebg-preview.png',description:'Comfortable adult diaper pants.'},
+      {id:6,name:'KareIn Premium Underpads',brand:'KareIn',sizes:[{size:'60x90cm',mrp:349,sale_price:290,pack_qty:10}],rating:4.4,image_main:'images/diapers/kareln underpads.jpeg',description:'Premium underpads for protection.'},
+    ];
+    product = staticDiapers.find(p => p.id === idNum);
+    if (!product) {
+      document.getElementById('productInfo').innerHTML = '<h3>Product not found</h3><a href="diapers.html" class="btn btn-primary">Back to Diapers</a>';
+      return;
+    }
+    document.title = product.name + ' | Dhiya Medical Agency';
+    document.getElementById('breadcrumbName').textContent = product.name;
+    renderProduct();
+    loadRecommendations(product.id);
   }
 }
 
@@ -179,7 +196,7 @@ async function loadRecommendations(currentId) {
       recGrid.innerHTML = shuffled.map(p => `
         <a href="diaper-detail.html?id=${p.id}" class="rec-card">
           <div class="rec-img-wrap">
-            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3">??</span>`}
+            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3"><i class="fa-solid fa-baby"></i></span>`}
           </div>
           <div class="rec-name">${p.name}</div>
         </a>
@@ -264,7 +281,7 @@ function renderProduct() {
         <input type="number" id="qtyInput" value="${qty}" min="1" onchange="qty=Math.max(1,parseInt(this.value)||1)">
         <button onclick="changeQty(1)">+</button>
       </div>
-      <button class="add-cart-btn" onclick="addDiaperToCart()">?? Add to Cart</button>
+      <button class="add-cart-btn" onclick="addDiaperToCart()"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
     </div>
 
     ${features.length > 0 ? `
