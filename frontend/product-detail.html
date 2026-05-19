@@ -1,20 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail | Dhiya Medical Agency</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/product-detail.css?v=7">
-  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/product-detail.css?v=8">
+  <link rel="stylesheet" href="css/responsive.css?v=8">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <header class="header"><div class="container">
   <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
   <nav class="nav-links"><a href="index.html">Home</a><a href="products.html" class="active">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
-  <div class="nav-actions"><a href="cart.html" class="nav-cart">🛒<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary">Login</a></div>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart">??<span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary">Login</a></div>
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
 <nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
@@ -24,15 +24,15 @@
 </div></section>
 <section class="container">
   <div class="detail-grid">
-    <div class="detail-image"><div class="detail-image-placeholder" id="detailImg">💊</div></div>
+    <div class="detail-image"><div class="detail-image-placeholder" id="detailImg">??</div></div>
     <div class="detail-info">
       <div class="detail-division" id="detailDivision">DIVISION</div>
       <h1 id="detailName">Product Name</h1>
       <p class="detail-composition" id="detailComposition">Composition details</p>
       <div class="detail-meta">
-        <div class="meta-item"><span class="meta-label">Form: </span><span class="meta-value" id="detailForm">—</span></div>
-        <div class="meta-item"><span class="meta-label">Packing: </span><span class="meta-value" id="detailPacking">—</span></div>
-        <div class="meta-item"><span class="meta-label">Therapeutic: </span><span class="meta-value" id="detailTherapeutic">—</span></div>
+        <div class="meta-item"><span class="meta-label">Form: </span><span class="meta-value" id="detailForm">�</span></div>
+        <div class="meta-item"><span class="meta-label">Packing: </span><span class="meta-value" id="detailPacking">�</span></div>
+        <div class="meta-item"><span class="meta-label">Therapeutic: </span><span class="meta-value" id="detailTherapeutic">�</span></div>
       </div>
       <div id="detailStock"></div>
       <table class="pricing-table">
@@ -40,7 +40,7 @@
         <tbody id="pricingBody"></tbody>
       </table>
       <div class="qty-selector">
-        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <button class="qty-btn" onclick="changeQty(-1)">-</button>
         <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="999">
         <button class="qty-btn" onclick="changeQty(1)">+</button>
       </div>
@@ -60,9 +60,9 @@
 </section>
 </main>
 
-<footer class="footer"><div class="container"><div class="footer-bottom"><span>© 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
-<script src="js/products.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+<script src="js/products.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 <script>
 const colorMap = {AUSPIN:'#0EA5E9',CURE:'#8B5CF6',GRACE:'#EC4899',MIND:'#F59E0B',PRIMA:'#0A6E3D',OPTHO:'#06B6D4',NURALZ:'#F97316',EVERMED:'#10B981',GENVIMAX:'#6366F1',MEDANOR:'#EF4444',VENTILA:'#14B8A6'};
 function changeQty(d) { const i=document.getElementById('qtyInput'); i.value=Math.max(1,parseInt(i.value||1)+d); }
@@ -89,11 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.background = `linear-gradient(135deg,${col}22,${col}11)`;
     imgContainer.style.color = col;
   }
-  document.getElementById('detailStock').innerHTML = product.stock ? '<div class="stock-badge stock-in">✓ In Stock</div>' : '<div class="stock-badge stock-out">✕ Out of Stock</div>';
+  document.getElementById('detailStock').innerHTML = product.stock ? '<div class="stock-badge stock-in">? In Stock</div>' : '<div class="stock-badge stock-out">? Out of Stock</div>';
   document.getElementById('pricingBody').innerHTML = `
-    <tr><td>MRP (Retail)</td><td class="price-highlight">₹${product.mrp.toFixed(2)}</td><td>Per unit</td></tr>
-    <tr><td>PTR (Wholesale)</td><td class="price-highlight" style="color:var(--info)">₹${product.ptr.toFixed(2)}</td><td>Trade price</td></tr>
-    <tr><td>PTS (Stockist)</td><td class="price-highlight" style="color:var(--accent-500)">₹${product.pts.toFixed(2)}</td><td>Stockist price</td></tr>`;
+    <tr><td>MRP (Retail)</td><td class="price-highlight">?${product.mrp.toFixed(2)}</td><td>Per unit</td></tr>
+    <tr><td>PTR (Wholesale)</td><td class="price-highlight" style="color:var(--info)">?${product.ptr.toFixed(2)}</td><td>Trade price</td></tr>
+    <tr><td>PTS (Stockist)</td><td class="price-highlight" style="color:var(--accent-500)">?${product.pts.toFixed(2)}</td><td>Stockist price</td></tr>`;
   document.getElementById('addToCartBtn').addEventListener('click', () => {
     const qty = parseInt(document.getElementById('qtyInput').value) || 1;
     DhiyaMedical.addToCart(product.id, qty);
