@@ -3,17 +3,7 @@
    ============================================ */
 
 const DhiyaMedical = {
-  cart: JSON.parse(sessionStorage.getItem('dp_cart') || '[]').map(item => {
-    // Sanitize any corrupted composition strings from previous bug (replacement character \uFFFD)
-    if (item.composition && item.composition.includes('\uFFFD')) {
-      item.composition = item.composition.replace(/\uFFFD/g, '-');
-    }
-    // Also catch literal '' if it got serialized that way
-    if (item.composition && item.composition.includes('')) {
-      item.composition = item.composition.replace(//g, '-');
-    }
-    return item;
-  }),
+  cart: JSON.parse(sessionStorage.getItem('dp_cart') || '[]'),
   user: JSON.parse(localStorage.getItem('dp_user') || 'null'),
   orders: JSON.parse(localStorage.getItem('dp_orders') || '[]'),
 
