@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -63,7 +63,7 @@ function renderCart() {
   const total = subtotal + gst + shipping;
   let rows = DhiyaMedical.cart.map(item => `
     <tr>
-      <td><div class="cart-item-info"><div class="cart-item-img" style="overflow:hidden; display:flex; align-items:center; justify-content:center;">${item.img ? `<img src="${item.img}" style="width:100%; height:100%; object-fit:contain;">` : "<i class=\"fa-solid fa-pills\" style=\"font-size:24px;color:var(--neutral-300)\"></i>"}</div><div><div class="cart-item-name">${item.name}</div><div class="cart-item-comp">${item.composition ? item.composition.substring(0,40) : ''}...</div></div></div></td>
+      <td><div class="cart-item-info"><div class="cart-item-img" style="overflow:hidden; display:flex; align-items:center; justify-content:center;">${item.img ? `<img src="${item.img}" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none"><i class="fa-solid ${item.type === 'diaper' ? 'fa-baby' : 'fa-pills'}" style="font-size:24px;color:var(--neutral-300)"></i></span>` : `<i class="fa-solid ${item.type === 'diaper' ? 'fa-baby' : 'fa-pills'}" style="font-size:24px;color:var(--neutral-300)"></i>`}</div><div><div class="cart-item-name">${item.name}</div><div class="cart-item-comp">${item.composition ? item.composition.substring(0,40) : ''}...</div></div></div></td>
       <td>&#8377;${item.mrp.toFixed(2)}</td>
       <td><div class="cart-qty"><button onclick="updateCartItem(${item.id},-1)">-</button><input type="number" value="${item.qty}" min="1" onchange="setCartItem(${item.id},this.value)"><button onclick="updateCartItem(${item.id},1)">+</button></div></td>
       <td style="font-weight:700">&#8377;${(item.mrp * item.qty).toFixed(2)}</td>
