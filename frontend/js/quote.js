@@ -29,6 +29,11 @@ async function fetchDiapersForQuote() {
                     d.composition = d.brand || 'Diaper';
                     d.packType = first.size || 'Standard';
                 });
+                
+                if (window.adminAddedDiapers && window.adminAddedDiapers.length > 0) {
+                    quoteDataCache.diapers = [...window.adminAddedDiapers, ...quoteDataCache.diapers];
+                }
+                
                 if (currentQuoteCategory === 'diapers') {
                     renderQuoteProductList(quoteDataCache.diapers);
                 }
@@ -46,6 +51,11 @@ async function fetchDiapersForQuote() {
             { id:5, name:'Friends Premium Pull-Up Pants', brand:'FRIENDS', mrp:549, composition:'FRIENDS', packType:'L' },
             { id:6, name:'Dignity Premium Adult Diaper', brand:'DIGNITY', mrp:649, composition:'DIGNITY', packType:'M' }
         ];
+        
+        if (window.adminAddedDiapers && window.adminAddedDiapers.length > 0) {
+            quoteDataCache.diapers = [...window.adminAddedDiapers, ...quoteDataCache.diapers];
+        }
+        
         if (currentQuoteCategory === 'diapers') {
             renderQuoteProductList(quoteDataCache.diapers);
         }
@@ -57,6 +67,31 @@ async function openQuoteModal() {
         alert('Please login first to generate a quotation.');
         window.location.href = 'login.html';
         return;
+    }
+    
+    // Merge admin-added products
+    try {
+        const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+        const formattedAdminProds = adminProds.map(p => ({
+            ...p,
+            stock: p.inStock !== false,
+            isNew: true,
+            composition: p.desc || p.composition || '',
+            therapeutic: p.division || 'GENERAL',
+            packing: p.packing || '',
+            packType: p.packType || '',
+            ptr: p.ptr || (parseFloat(p.mrp) * 0.76),
+            pts: p.pts || (parseFloat(p.mrp) * 0.68),
+            mrp: parseFloat(p.mrp) || 0
+        }));
+
+        const adminMeds = formattedAdminProds.filter(p => (p.division || '').toUpperCase() !== 'DIAPERS');
+        const adminDiapers = formattedAdminProds.filter(p => (p.division || '').toUpperCase() === 'DIAPERS');
+
+        quoteDataCache.medicines = [...adminMeds, ...(typeof ProductData !== 'undefined' ? ProductData : [])];
+        window.adminAddedDiapers = adminDiapers;
+    } catch (e) {
+        console.error("Error merging admin products for quote:", e);
     }
     
     // reset state
@@ -308,11 +343,11 @@ function backToSelection() {
 
 function viewAndDownloadPDF() {
     const keys = Object.keys(selectedProducts);
-    const medKeys = keys.filter(k => k.startsWith('medicines_')).map(k => parseInt(k.replace('medicines_', '')));
-    const diaperKeys = keys.filter(k => k.startsWith('diapers_')).map(k => parseInt(k.replace('diapers_', '')));
+    const medKeys = keys.filter(k => k.startsWith('medicines_')).map(k => k.replace('medicines_', ''));
+    const diaperKeys = keys.filter(k => k.startsWith('diapers_')).map(k => k.replace('diapers_', ''));
     
-    const selectedMeds = quoteDataCache.medicines.filter(p => medKeys.includes(p.id));
-    const selectedDiapers = quoteDataCache.diapers.filter(p => diaperKeys.includes(p.id));
+    const selectedMeds = quoteDataCache.medicines.filter(p => medKeys.includes(String(p.id)));
+    const selectedDiapers = quoteDataCache.diapers.filter(p => diaperKeys.includes(String(p.id)));
 
     if (invoiceMode === 'separate' && selectedMeds.length > 0 && selectedDiapers.length > 0) {
         generateSinglePDF(selectedMeds, 'medicines', 'Medicines_Quotation');
