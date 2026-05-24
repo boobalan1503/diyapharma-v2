@@ -1,4 +1,4 @@
-name: Deploy Diya Pharma to GitHub Pages
+name: Deploy Dhiya Medicals to GitHub Pages
 
 on:
   push:
