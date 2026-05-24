@@ -394,7 +394,7 @@ function generateSinglePDF(items, type, filenamePrefix) {
     doc.setFont(undefined, 'normal');
     doc.setTextColor(150);
     doc.text("This is a computer-generated quotation for estimation purposes only. Prices are subject to change.", 14, doc.internal.pageSize.height - 15);
-    doc.text("Contact: +91 82200 96233 | groupseverest@gmail.com", 14, doc.internal.pageSize.height - 10);
+    doc.text("Contact: 9629622844 / 8428622844 | dhiyamedicalagency@gmail.com | GSTIN: 33CBVPN8913R1ZJ", 14, doc.internal.pageSize.height - 10);
 
     // Open & Download
     var pdfBlob = doc.output('blob');

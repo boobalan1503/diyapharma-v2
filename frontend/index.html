@@ -93,19 +93,124 @@
   </div>
 </section>
 
-<!-- ===== DIVISIONS ===== -->
-<section class="divisions-section" id="divisions">
+<!-- ===== PRODUCT CATEGORIES ===== -->
+<section class="divisions-section" id="categories">
   <div class="container">
     <div class="divisions-header fade-in">
       <div>
-        <div class="section-label">Our Divisions</div>
-        <h2 class="section-title">11+ Divisions with 1500+ Products</h2>
+        <div class="section-label">Our Products</div>
+        <h2 class="section-title">What We Offer</h2>
       </div>
-      <a href="products.html" class="btn btn-secondary">View All Products</a>
     </div>
-    <div class="divisions-grid" id="divisionGrid"></div>
+    <div class="cat-grid" id="categoryGrid">
+
+      <!-- Medicines -->
+      <div class="cat-card fade-in" id="cat-medicines" onclick="toggleCatCompanies('medicines')">
+        <div class="cat-icon-circle">
+          <i class="fa-solid fa-pills" style="font-size:30px;color:var(--primary-600)"></i>
+        </div>
+        <span class="cat-name">Medicines</span>
+        <i class="fa-solid fa-chevron-down cat-chevron" id="chev-medicines"></i>
+        <div class="cat-companies" id="companies-medicines">
+          <ol>
+            <li>Cipla</li><li>Mankind Prime</li><li>Abbott</li><li>Elder</li>
+            <li>Prevago</li><li>Dr Reddy's</li><li>Intas</li><li>Cadila</li>
+            <li>Alkem</li><li>Impha</li><li>Silver Cross</li><li>Universal (USV)</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Surgicals -->
+      <div class="cat-card fade-in" id="cat-surgicals" onclick="toggleCatCompanies('surgicals')">
+        <div class="cat-icon-circle">
+          <i class="fa-solid fa-syringe" style="font-size:30px;color:var(--primary-600)"></i>
+        </div>
+        <span class="cat-name">Surgicals</span>
+        <i class="fa-solid fa-chevron-down cat-chevron" id="chev-surgicals"></i>
+        <div class="cat-companies" id="companies-surgicals">
+          <ol>
+            <li>Romsons</li><li>HMD</li><li>Medigrip</li>
+            <li>Classic</li><li>JMS</li><li>3M</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Diapers -->
+      <div class="cat-card fade-in" id="cat-diapers" onclick="toggleCatCompanies('diapers')">
+        <div class="cat-icon-circle">
+          <i class="fa-solid fa-baby" style="font-size:30px;color:var(--primary-600)"></i>
+        </div>
+        <span class="cat-name">Diapers</span>
+        <i class="fa-solid fa-chevron-down cat-chevron" id="chev-diapers"></i>
+        <div class="cat-companies" id="companies-diapers">
+          <ol>
+            <li>SOAK SHILD (Cipla)</li><li>Friends</li><li>Avm</li><li>Karemed</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- OTC Products -->
+      <div class="cat-card fade-in" id="cat-otc" onclick="toggleCatCompanies('otc')">
+        <div class="cat-icon-circle">
+          <i class="fa-solid fa-box-open" style="font-size:30px;color:var(--primary-600)"></i>
+        </div>
+        <span class="cat-name">OTC Products</span>
+        <i class="fa-solid fa-chevron-down cat-chevron" id="chev-otc"></i>
+        <div class="cat-companies" id="companies-otc">
+          <p style="color:var(--neutral-500);font-size:var(--text-sm);padding:8px 0">Over-the-counter healthcare products available from leading brands.</p>
+        </div>
+      </div>
+
+      <!-- Medicine Covers -->
+      <div class="cat-card fade-in" id="cat-covers" onclick="toggleCatCompanies('covers')">
+        <div class="cat-icon-circle">
+          <i class="fa-solid fa-prescription-bottle-medical" style="font-size:30px;color:var(--primary-600)"></i>
+        </div>
+        <span class="cat-name">Medicine Covers</span>
+        <i class="fa-solid fa-chevron-down cat-chevron" id="chev-covers"></i>
+        <div class="cat-companies" id="companies-covers">
+          <p style="color:var(--neutral-500);font-size:var(--text-sm);padding:8px 0">Packaging and cover solutions for medicines and pharmaceutical products.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
+<style>
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--space-5);margin-top:var(--space-8)}
+@media(max-width:900px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{background:var(--white);border:1px solid var(--neutral-100);border-radius:var(--radius-xl);padding:var(--space-6) var(--space-4);text-align:center;cursor:pointer;transition:all var(--transition-base);position:relative}
+.cat-card:hover{border-color:var(--primary-400);box-shadow:var(--shadow-md);transform:translateY(-4px)}
+.cat-card.active{border-color:var(--primary-500);box-shadow:var(--shadow-lg)}
+.cat-icon-circle{width:72px;height:72px;border-radius:50%;background:var(--primary-50);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3)}
+.cat-name{display:block;font-weight:700;font-size:var(--text-sm);color:var(--primary-900);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.cat-chevron{color:var(--primary-400);font-size:12px;transition:transform .3s ease}
+.cat-card.active .cat-chevron{transform:rotate(180deg);color:var(--primary-600)}
+.cat-companies{max-height:0;overflow:hidden;transition:max-height .4s ease;background:var(--primary-50);border-radius:var(--radius-lg);margin-top:var(--space-3);text-align:left}
+.cat-companies.open{max-height:500px}
+.cat-companies ol{padding:var(--space-4) var(--space-4) var(--space-4) var(--space-8);margin:0}
+.cat-companies ol li{font-size:var(--text-sm);color:var(--primary-800);padding:3px 0;line-height:1.5}
+.cat-companies p{padding:var(--space-3) var(--space-4)}
+</style>
+<script>
+function toggleCatCompanies(key) {
+  const cats = ['medicines','surgicals','diapers','otc','covers'];
+  cats.forEach(k => {
+    const card = document.getElementById('cat-' + k);
+    const box  = document.getElementById('companies-' + k);
+    if (k === key) {
+      const isOpen = box.classList.contains('open');
+      box.classList.toggle('open', !isOpen);
+      card.classList.toggle('active', !isOpen);
+    } else {
+      box.classList.remove('open');
+      card.classList.remove('active');
+    }
+  });
+}
+</script>
+
 
 <!-- ===== NOW IN STOCK ===== -->
 <section class="carousel-section section-alt" id="nowInStock">
@@ -264,9 +369,10 @@
       </div>
       <div class="footer-contact footer-contact-col">
         <h4>Contact</h4>
-        <p>📍 143 fire service</p>
-        <p>📞 +91 82200 96233</p>
-        <p>✉️ groupseverest@gmail.com</p>
+        <p>📍 2/178/4 Sayalkudi Main Road, Kaanavilaku, Thummuchinnampatti, Aruppukottai Tk, Virudhunagar Dt - 626118</p>
+        <p>📞 9629622844 / 8428622844</p>
+        <p>☎️ 04566 284 223</p>
+        <p>✉️ dhiyamedicalagency@gmail.com</p>
         <p>🕐 Mon-Sat: 9AM to 6PM</p>
       </div>
     </div>
