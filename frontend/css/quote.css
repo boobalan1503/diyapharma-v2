@@ -53,6 +53,7 @@
 
 .quote-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: var(--space-6);
 }
@@ -61,11 +62,11 @@
 .quote-selection-header {
     display: flex;
     gap: var(--space-3);
-    margin-bottom: var(--space-4);
     position: sticky;
-    top: 0;
+    top: calc(-1 * var(--space-6));
+    margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-4) calc(-1 * var(--space-6));
+    padding: var(--space-6) var(--space-6) 8px var(--space-6);
     background: #fff;
-    padding: 8px 0;
     z-index: 10;
     align-items: center;
 }
