@@ -169,52 +169,64 @@ function updateOrderStatus(id, newStatus) {
 }
 
 // ---- Messages & Queries Logic ----
+// Merge mock messages with real localStorage submissions
+function getAllMessages() {
+  const real = JSON.parse(localStorage.getItem('diya_messages') || '[]');
+  // Merge, avoiding duplicates by id
+  const allIds = new Set(real.map(m => m.id));
+  const merged = [...real, ...mockMessages.filter(m => !allIds.has(m.id))];
+  return merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function saveMessages(arr) {
+  // Only save real (non-mock) messages back
+  const real = arr.filter(m => String(m.id).startsWith('msg_'));
+  localStorage.setItem('diya_messages', JSON.stringify(real));
+}
 
 function renderMessagesTable() {
-  const unreadCount = mockMessages.filter(m => m.status === 'Unread').length;
+  const messages = getAllMessages();
+  const unreadCount = messages.filter(m => m.status === 'Unread').length;
   
-  // Update Message Metrics panel
   document.getElementById('messageMetrics').innerHTML = `
     <div class="metric-card">
       <div class="metric-icon" style="background:var(--primary-100); color:var(--primary-700)"><i class="fa-solid fa-envelopes-bulk"></i></div>
-      <div class="metric-info">
-        <h4>Total Queries</h4>
-        <div class="metric-value">${mockMessages.length}</div>
-      </div>
+      <div class="metric-info"><h4>Total Queries</h4><div class="metric-value">${messages.length}</div></div>
     </div>
     <div class="metric-card" style="${unreadCount > 0 ? 'border-color:var(--danger)' : ''}">
       <div class="metric-icon" style="background:#FFEBEB; color:var(--danger)"><i class="fa-solid fa-circle-exclamation"></i></div>
-      <div class="metric-info">
-        <h4>Unread</h4>
-        <div class="metric-value" style="${unreadCount > 0 ? 'color:var(--danger)' : ''}">${unreadCount}</div>
-      </div>
+      <div class="metric-info"><h4>Unread</h4><div class="metric-value" style="${unreadCount > 0 ? 'color:var(--danger)' : ''}">${unreadCount}</div></div>
     </div>
   `;
 
   const tbody = document.getElementById('messagesTable');
-  tbody.innerHTML = mockMessages.sort((a,b) => new Date(b.date) - new Date(a.date)).map(m => {
+  tbody.innerHTML = messages.map(m => {
     const isUnread = m.status === 'Unread';
     const statusBadge = isUnread ? 
       `<span class="status-badge status-pending">Unread</span>` : 
       `<span class="status-badge status-delivered">Replied</span>`;
+    const source = m.source ? `<div style="font-size:10px;color:var(--neutral-400);margin-top:2px">${m.source}</div>` : '';
       
     return `
       <tr style="${isUnread ? 'background:rgba(13,140,77,0.03);' : ''}">
-        <td>${new Date(m.date).toLocaleDateString()}</td>
+        <td>${new Date(m.date).toLocaleDateString()}<div style="font-size:11px;color:var(--neutral-400)">${new Date(m.date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div></td>
         <td>
           <div style="font-weight:${isUnread ? '700' : '500'}">${m.sender}</div>
           <div style="font-size:12px; color:var(--neutral-500)">${m.email}</div>
+          ${m.phone ? `<div style="font-size:11px; color:var(--neutral-400)">${m.phone}</div>` : ''}
+          ${source}
         </td>
         <td style="font-weight:${isUnread ? '600' : 'normal'}">${m.subject}</td>
         <td>${statusBadge}</td>
-        <td><button class="btn btn-sm ${isUnread ? 'btn-primary' : ''}" onclick="openMessageModal(${m.id})">View & Reply</button></td>
+        <td><button class="btn btn-sm ${isUnread ? 'btn-primary' : ''}" onclick="openMessageModal('${m.id}')">View &amp; Reply</button></td>
       </tr>
     `;
   }).join('');
 }
 
 function openMessageModal(id) {
-  const msg = mockMessages.find(m => m.id === id);
+  const messages = getAllMessages();
+  const msg = messages.find(m => String(m.id) === String(id));
   if(!msg) return;
   currentReplyingMessage = msg;
   
@@ -238,6 +250,10 @@ function openMessageModal(id) {
     btn.style.display = 'none';
   }
   
+  // Mark as read
+  msg.status = 'Read';
+  saveMessages(messages);
+  
   document.getElementById('messageModal').classList.add('active');
 }
 
@@ -256,13 +272,17 @@ function sendMessageReply() {
   btn.textContent = 'Sending...';
   btn.disabled = true;
   
-  // Simulate sending email
   setTimeout(() => {
     currentReplyingMessage.status = 'Replied';
+    // Persist reply status
+    const messages = getAllMessages();
+    const idx = messages.findIndex(m => String(m.id) === String(currentReplyingMessage.id));
+    if (idx >= 0) messages[idx].status = 'Replied';
+    saveMessages(messages);
     showToast(`Reply sent successfully to ${currentReplyingMessage.email}`, 'success');
     closeMessageModal();
     renderMessagesTable();
-    updateDashboardMetrics(); // update the top unread count
+    updateDashboardMetrics();
   }, 1000);
 }
 
@@ -325,13 +345,10 @@ function saveAdminProduct() {
   renderProductsTable();
 }
 
-function deleteAdminProduct(id) {
-  if (!confirm('Delete this product?')) return;
-  const products = getAdminProducts().filter(p => p.id !== id);
-  saveAdminProducts(products);
-  showToast('Product deleted.', 'success');
-  renderProductsTable();
-}
+/* ========================================================
+   FULL PRODUCT EDIT & DELETE — admin.js
+   ======================================================== */
+let editingProductId = null;
 
 function renderProductsTable(searchQuery = '') {
   const q = searchQuery.toLowerCase();
@@ -350,12 +367,22 @@ function renderProductsTable(searchQuery = '') {
   }
   tbody.innerHTML = allProducts.map(p => {
     const hasImg = p.img && p.img.length > 0;
-    const imgHtml = hasImg ? `<img src="${p.img}" style="width:40px;height:40px;object-fit:contain;border-radius:6px">` : `<i class="fa-solid fa-pills" style="font-size:22px;color:var(--primary-300)"></i>`;
-    const stockBadge = p.inStock !== false ? '<span class="status-badge status-delivered">In Stock</span>' : '<span class="status-badge status-pending">Out of Stock</span>';
-    const sourceBadge = p._source === 'admin' ? '<span class="status-badge status-processing">Admin Added</span>' : '<span class="status-badge" style="background:#f3f4f6;color:#555">Catalog</span>';
-    const actions = p._source === 'admin'
-      ? `<button class="btn btn-sm btn-primary" onclick="openProductModal('${p.id}')">Edit Image</button> <button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c" onclick="deleteAdminProduct('${p.id}')">Delete</button>`
-      : `<button class="btn btn-sm btn-primary" onclick="openProductModal(${p.id})">Edit Image</button>`;
+    const imgHtml = hasImg
+      ? `<img src="${p.img}" style="width:40px;height:40px;object-fit:contain;border-radius:6px">`
+      : `<i class="fa-solid fa-pills" style="font-size:22px;color:var(--primary-300)"></i>`;
+    const stockBadge = p.inStock !== false
+      ? '<span class="status-badge status-delivered">In Stock</span>'
+      : '<span class="status-badge status-pending">Out of Stock</span>';
+    const sourceBadge = p._source === 'admin'
+      ? '<span class="status-badge status-processing">Admin Added</span>'
+      : '<span class="status-badge" style="background:#f3f4f6;color:#555">Catalog</span>';
+    // All products get Edit + Delete
+    const pid = JSON.stringify(p.id);
+    const actions = `
+      <button class="btn btn-sm btn-primary" style="margin-right:4px" onclick="openEditProductModal(${pid}, '${p._source}')"
+        title="Edit all fields"><i class="fa-solid fa-pen"></i> Edit</button>
+      <button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c" onclick="deleteProduct(${pid}, '${p._source}')"
+        title="Delete product"><i class="fa-solid fa-trash"></i></button>`;
     return `<tr>
       <td><div class="prod-img-preview">${imgHtml}</div></td>
       <td><div style="font-weight:600">${p.name}</div><div style="font-size:12px;color:var(--neutral-500)">${p.division || 'Medicine'}</div></td>
@@ -365,6 +392,106 @@ function renderProductsTable(searchQuery = '') {
       <td>${actions}</td>
     </tr>`;
   }).join('');
+}
+
+function deleteProduct(id, source) {
+  if (!confirm('Delete this product permanently?')) return;
+  if (source === 'admin') {
+    const products = getAdminProducts().filter(p => String(p.id) !== String(id));
+    saveAdminProducts(products);
+  } else {
+    // For catalog products, mark as hidden in localStorage
+    const hidden = JSON.parse(localStorage.getItem('hidden_catalog_ids') || '[]');
+    hidden.push(String(id));
+    localStorage.setItem('hidden_catalog_ids', JSON.stringify(hidden));
+  }
+  showToast('Product deleted.', 'success');
+  renderProductsTable();
+  updateDashboardMetrics();
+}
+
+function openEditProductModal(id, source) {
+  let product;
+  if (source === 'admin') {
+    product = getAdminProducts().find(p => String(p.id) === String(id));
+  } else {
+    product = (typeof ProductData !== 'undefined' ? ProductData : []).find(p => String(p.id) === String(id));
+  }
+  if (!product) return;
+  editingProductId = id;
+  
+  // Populate edit modal fields
+  document.getElementById('ep_name').value = product.name || '';
+  document.getElementById('ep_division').value = product.division || '';
+  document.getElementById('ep_mrp').value = product.mrp || '';
+  document.getElementById('ep_stock').checked = product.inStock !== false && product.stock !== false;
+  document.getElementById('ep_desc').value = product.composition || product.desc || '';
+  document.getElementById('ep_source').value = source;
+  document.getElementById('ep_id').value = id;
+  
+  // Show current image
+  const imgWrap = document.getElementById('epImgPreviewWrap');
+  if (product.img) {
+    imgWrap.innerHTML = `<img src="${product.img}" style="max-height:120px;max-width:100%;border-radius:8px;object-fit:contain">`;
+  } else {
+    imgWrap.innerHTML = '<i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i><span style="font-size:13px;color:var(--neutral-400)">Click to upload image</span>';
+  }
+  epImageDataUrl = product.img || '';
+  
+  document.getElementById('editProductModal').classList.add('active');
+}
+
+let epImageDataUrl = '';
+function previewEpImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    epImageDataUrl = e.target.result;
+    document.getElementById('epImgPreviewWrap').innerHTML = `<img src="${e.target.result}" style="max-height:120px;max-width:100%;border-radius:8px;object-fit:contain">`;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function saveEditedProduct() {
+  const id = document.getElementById('ep_id').value;
+  const source = document.getElementById('ep_source').value;
+  const name = document.getElementById('ep_name').value.trim();
+  const division = document.getElementById('ep_division').value.trim();
+  const mrp = parseFloat(document.getElementById('ep_mrp').value);
+  const inStock = document.getElementById('ep_stock').checked;
+  const desc = document.getElementById('ep_desc').value.trim();
+  
+  if (!name || !division || !mrp) {
+    showToast('Name, Division and MRP are required.', 'warning'); return;
+  }
+  
+  if (source === 'admin') {
+    const products = getAdminProducts();
+    const idx = products.findIndex(p => String(p.id) === String(id));
+    if (idx >= 0) {
+      products[idx] = { ...products[idx], name, division, mrp, inStock, desc, img: epImageDataUrl || products[idx].img };
+      saveAdminProducts(products);
+    }
+  } else {
+    // Store catalog overrides in localStorage
+    const overrides = JSON.parse(localStorage.getItem('catalog_overrides') || '{}');
+    overrides[String(id)] = { name, division, mrp, inStock, desc, img: epImageDataUrl };
+    localStorage.setItem('catalog_overrides', JSON.stringify(overrides));
+    // Also update in-memory ProductData
+    if (typeof ProductData !== 'undefined') {
+      const p = ProductData.find(p => String(p.id) === String(id));
+      if (p) { p.name = name; p.division = division; p.mrp = mrp; p.stock = inStock; if (epImageDataUrl) p.img = epImageDataUrl; }
+    }
+  }
+  
+  showToast(`"${name}" updated successfully!`, 'success');
+  document.getElementById('editProductModal').classList.remove('active');
+  renderProductsTable();
+  updateDashboardMetrics();
+}
+
+function closeEditProductModal() {
+  document.getElementById('editProductModal').classList.remove('active');
 }
 
 function filterAdminProducts(query) {

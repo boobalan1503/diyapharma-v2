@@ -324,6 +324,63 @@
     </div>
   </div>
 
+  <!-- Edit Product Modal (Full Fields) -->
+  <div class="admin-modal-overlay" id="editProductModal">
+    <div class="admin-modal" style="max-width:700px;">
+      <div class="admin-modal-header">
+        <h3 style="font-family:var(--font-heading)">Edit Product</h3>
+        <button class="close-modal" onclick="closeEditProductModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <input type="hidden" id="ep_id">
+        <input type="hidden" id="ep_source">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <label class="form-label">Product Name *</label>
+            <input type="text" class="form-input" id="ep_name" placeholder="Product name" style="margin-bottom:14px">
+            <label class="form-label">Division / Category *</label>
+            <select class="form-input" id="ep_division" style="margin-bottom:14px">
+              <option value="">Select Division</option>
+              <optgroup label="── Main Categories ──">
+                <option>MEDICINES</option><option>SURGICALS</option><option>DIAPERS</option>
+                <option>OTC PRODUCTS</option><option>MEDICINE COVERS</option>
+              </optgroup>
+              <optgroup label="── Sub Divisions ──">
+                <option>TABLETS</option><option>AUSPIN</option><option>CURE</option><option>GRACE</option>
+                <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
+                <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
+                <option>MEDANOR</option><option>VENTILA</option>
+              </optgroup>
+            </select>
+            <label class="form-label">MRP (₹) *</label>
+            <input type="number" class="form-input" id="ep_mrp" placeholder="e.g. 250" style="margin-bottom:14px">
+            <label class="form-label">Stock Available</label>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <input type="checkbox" id="ep_stock" style="width:18px;height:18px;cursor:pointer">
+              <label for="ep_stock" style="font-size:14px;cursor:pointer">In Stock</label>
+            </div>
+            <label class="form-label">Description / Composition</label>
+            <textarea class="form-input" id="ep_desc" rows="3" placeholder="Product description or composition..." style="resize:vertical"></textarea>
+          </div>
+          <div>
+            <label class="form-label">Product Image</label>
+            <div class="upload-zone" style="margin-bottom:14px;min-height:140px;" onclick="document.getElementById('ep_image').click()">
+              <input type="file" id="ep_image" accept="image/*" style="display:none" onchange="previewEpImage(this)">
+              <div id="epImgPreviewWrap" style="width:100%;height:140px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                <i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i>
+                <span style="font-size:13px;color:var(--neutral-400)">Click to change image</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn btn-secondary" onclick="closeEditProductModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditedProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Message Reply Modal -->
   <div class="admin-modal-overlay" id="messageModal">
     <div class="admin-modal" style="max-width:700px;">

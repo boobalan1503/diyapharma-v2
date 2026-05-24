@@ -43,14 +43,14 @@
   <div class="contact-grid">
     <div class="contact-form-card fade-in-left">
       <h3 style="margin-bottom:var(--space-6)">Send us a message</h3>
-      <form onsubmit="event.preventDefault();showToast('Message sent! We will respond within 24 hours.','success');this.reset()">
-        <div class="form-group"><label class="form-label">Name *</label><input type="text" class="form-input" placeholder="Your full name" required></div>
-        <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
-        <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX"></div>
+      <form id="contactForm" onsubmit="saveContactMessage(event)">
+        <div class="form-group"><label class="form-label">Name *</label><input type="text" id="cf_name" class="form-input" placeholder="Your full name" required></div>
+        <div class="form-group"><label class="form-label">Email *</label><input type="email" id="cf_email" class="form-input" placeholder="your@email.com" required></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="cf_phone" class="form-input" placeholder="+91 XXXXX XXXXX"></div>
         <div class="form-group"><label class="form-label">Subject</label>
-          <select class="form-input form-select"><option>General Inquiry</option><option>Wholesale Partnership</option><option>Product Information</option><option>Order Support</option><option>Other</option></select>
+          <select id="cf_subject" class="form-input form-select"><option>General Inquiry</option><option>Wholesale Partnership</option><option>Product Information</option><option>Order Support</option><option>Other</option></select>
         </div>
-        <div class="form-group"><label class="form-label">Message *</label><textarea class="form-input" rows="5" placeholder="How can we help you?" required style="resize:vertical"></textarea></div>
+        <div class="form-group"><label class="form-label">Message *</label><textarea id="cf_message" class="form-input" rows="5" placeholder="How can we help you?" required style="resize:vertical"></textarea></div>
         <button type="submit" class="btn btn-primary btn-lg w-full">Send Message</button>
       </form>
     </div>
@@ -113,5 +113,25 @@
 <script src="js/products.js?v=8"></script>
 <script src="js/app.js?v=8"></script>
 <script src="js/ui.js?v=8"></script>
+<script>
+function saveContactMessage(e) {
+  e.preventDefault();
+  const msgs = JSON.parse(localStorage.getItem('diya_messages') || '[]');
+  msgs.unshift({
+    id: 'msg_' + Date.now(),
+    sender: document.getElementById('cf_name').value.trim(),
+    email: document.getElementById('cf_email').value.trim(),
+    phone: document.getElementById('cf_phone').value.trim() || '',
+    subject: document.getElementById('cf_subject').value,
+    body: document.getElementById('cf_message').value.trim(),
+    date: new Date().toISOString(),
+    status: 'Unread',
+    source: 'Contact Page'
+  });
+  localStorage.setItem('diya_messages', JSON.stringify(msgs));
+  if (typeof showToast === 'function') showToast('Message sent! We will respond within 24 hours.', 'success');
+  document.getElementById('contactForm').reset();
+}
+</script>
 </body>
 </html>

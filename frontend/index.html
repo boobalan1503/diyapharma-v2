@@ -323,13 +323,13 @@ function toggleCatCompanies(key) {
         <h2>Ready to Grow Your Pharma Business?</h2>
         <p>Join our network of 5000+ satisfied partners. Get access to competitive pricing, reliable supply, and dedicated support.</p>
       </div>
-      <form class="cta-form fade-in-right" id="enquiryForm" onsubmit="event.preventDefault(); showToast('Enquiry submitted successfully! We will contact you soon.','success'); this.reset();">
+      <form class="cta-form fade-in-right" id="enquiryForm" onsubmit="saveEnquiryMessage(event)">
         <h3 style="color:#fff;margin-bottom:var(--space-6)">Send Enquiry</h3>
-        <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" placeholder="Your full name" required></div>
-        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
-        <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" required></div>
+        <div class="form-group"><label class="form-label">Name</label><input type="text" id="eq_name" class="form-input" placeholder="Your full name" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" id="eq_email" class="form-input" placeholder="your@email.com" required></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="eq_phone" class="form-input" placeholder="+91 XXXXX XXXXX" required></div>
         <div class="form-group"><label class="form-label">Do you have a drug license?</label>
-          <select class="form-input form-select"><option>Yes</option><option>No</option><option>Applied For</option></select>
+          <select id="eq_license" class="form-input form-select"><option>Yes</option><option>No</option><option>Applied For</option></select>
         </div>
         <button type="submit" class="btn btn-accent btn-lg w-full">Send Enquiry</button>
       </form>
@@ -645,6 +645,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btn) { btn.textContent = 'Dashboard'; btn.href = 'dashboard.html'; }
   }
 });
+</script>
+<script>
+function saveEnquiryMessage(e) {
+  e.preventDefault();
+  const msgs = JSON.parse(localStorage.getItem('diya_messages') || '[]');
+  msgs.unshift({
+    id: 'msg_' + Date.now(),
+    sender: document.getElementById('eq_name').value.trim(),
+    email: document.getElementById('eq_email').value.trim(),
+    phone: document.getElementById('eq_phone').value.trim() || '',
+    subject: 'Enquiry — Drug License: ' + (document.getElementById('eq_license').value || 'N/A'),
+    body: 'New partnership enquiry from ' + document.getElementById('eq_name').value.trim() +
+          '. Phone: ' + (document.getElementById('eq_phone').value.trim() || 'N/A') +
+          '. Drug License: ' + document.getElementById('eq_license').value,
+    date: new Date().toISOString(),
+    status: 'Unread',
+    source: 'Home Page Enquiry'
+  });
+  localStorage.setItem('diya_messages', JSON.stringify(msgs));
+  if (typeof showToast === 'function') showToast('Enquiry submitted successfully! We will contact you soon.', 'success');
+  document.getElementById('enquiryForm').reset();
+}
 </script>
 </body>
 </html>

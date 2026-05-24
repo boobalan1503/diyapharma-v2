@@ -209,52 +209,57 @@ function generateQuotation() {
 
 function proceedToInvoice(mode) {
     invoiceMode = mode;
-    const user = DhiyaMedical.user;
+    const user = DhiyaMedical ? DhiyaMedical.user : null;
 
     // Populate User Details
     const userDetails = document.getElementById('invoiceUserDetails');
     userDetails.innerHTML = `
         <h4>Quotation For</h4>
-        <p><strong>${user.name || user.email || 'Valued Customer'}</strong></p>
-        <p>${user.email || ''}</p>
-        <p>${user.phone || ''}</p>
+        <p><strong>${user ? (user.name || user.email || 'Valued Customer') : 'Valued Customer'}</strong></p>
+        <p>${user ? (user.email || '') : ''}</p>
+        <p>${user ? (user.phone || '') : ''}</p>
         <p style="font-size:11px;color:var(--neutral-400);margin-top:8px">Date: ${new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})}</p>
     `;
 
     const keys = Object.keys(selectedProducts);
-    const medKeys = keys.filter(k => k.startsWith('medicines_')).map(k => parseInt(k.replace('medicines_', '')));
-    const diaperKeys = keys.filter(k => k.startsWith('diapers_')).map(k => parseInt(k.replace('diapers_', '')));
+    const medKeys = keys.filter(k => k.startsWith('medicines_')).map(k => k.replace('medicines_', ''));
+    const diaperKeys = keys.filter(k => k.startsWith('diapers_')).map(k => k.replace('diapers_', ''));
     
-    const selectedMeds = quoteDataCache.medicines.filter(p => medKeys.includes(p.id)).map(p => ({...p, type: 'medicines'}));
-    const selectedDiapers = quoteDataCache.diapers.filter(p => diaperKeys.includes(p.id)).map(p => ({...p, type: 'diapers'}));
+    const selectedMeds = quoteDataCache.medicines
+        .filter(p => medKeys.includes(String(p.id)))
+        .map(p => ({...p, type: 'medicines'}));
+    const selectedDiapers = quoteDataCache.diapers
+        .filter(p => diaperKeys.includes(String(p.id)))
+        .map(p => ({...p, type: 'diapers'}));
     
-    let itemsToRender = [];
-    if (mode === 'combined') {
-        itemsToRender = [...selectedMeds, ...selectedDiapers];
-    } else {
-        // Just show all of them sequentially in UI, but group them.
-        itemsToRender = [...selectedMeds, ...selectedDiapers];
-    }
+    const itemsToRender = [...selectedMeds, ...selectedDiapers];
 
     const tableBody = document.getElementById('invoiceTableBody');
     let subtotal = 0;
 
-    tableBody.innerHTML = itemsToRender.map(p => {
-        const key = `${p.type}_${p.id}`;
-        const qty = selectedProducts[key] || 1;
-        const lineTotal = p.mrp * qty;
-        subtotal += lineTotal;
-        return `
-            <tr>
-                <td style="font-weight:600">${p.name} <span style="font-size:10px;color:#aaa">(${p.type==='diapers'?'Diaper':'Med'})</span></td>
-                <td style="font-size:12px;color:var(--neutral-600)">${p.composition}</td>
-                <td>${p.packType}</td>
-                <td style="text-align:center">${qty}</td>
-                <td style="text-align:right">₹${p.mrp.toFixed(2)}</td>
-                <td style="text-align:right;font-weight:600">₹${lineTotal.toFixed(2)}</td>
-            </tr>
-        `;
-    }).join('');
+    if (itemsToRender.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--neutral-400)">No products selected.</td></tr>';
+    } else {
+        tableBody.innerHTML = itemsToRender.map(p => {
+            const key = `${p.type}_${p.id}`;
+            const qty = selectedProducts[key] || 1;
+            const mrp = parseFloat(p.mrp) || 0;
+            const lineTotal = mrp * qty;
+            subtotal += lineTotal;
+            const comp = p.composition || p.desc || '';
+            const pack = p.packType || '';
+            return `
+                <tr>
+                    <td style="font-weight:600">${p.name} <span style="font-size:10px;color:#aaa">(${p.type==='diapers'?'Diaper':'Med'})</span></td>
+                    <td style="font-size:12px;color:var(--neutral-600)">${comp}</td>
+                    <td>${pack}</td>
+                    <td style="text-align:center">${qty}</td>
+                    <td style="text-align:right">₹${mrp.toFixed(2)}</td>
+                    <td style="text-align:right;font-weight:600">₹${lineTotal.toFixed(2)}</td>
+                </tr>
+            `;
+        }).join('');
+    }
 
     const tax = subtotal * 0.12;
     const grandTotal = subtotal + tax;
@@ -263,19 +268,27 @@ function proceedToInvoice(mode) {
     document.getElementById('quoteTax').textContent = `₹${tax.toFixed(2)}`;
     document.getElementById('quoteGrandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
 
-    // Switch Views
-    document.getElementById('quoteOptionsView').classList.add('hidden');
-    document.getElementById('quoteSelectionView').classList.add('hidden');
-    document.getElementById('selectionActions').classList.add('hidden');
-    document.getElementById('quoteInvoiceView').classList.remove('hidden');
-    document.getElementById('invoiceActions').classList.remove('hidden');
+    // Switch Views — hide all, show invoice
+    const selView = document.getElementById('quoteSelectionView');
+    const optView = document.getElementById('quoteOptionsView');
+    const invView = document.getElementById('quoteInvoiceView');
+    const selAct  = document.getElementById('selectionActions');
+    const invAct  = document.getElementById('invoiceActions');
+
+    if (selView) { selView.classList.add('hidden'); }
+    if (optView) { optView.classList.add('hidden'); }
+    if (selAct)  { selAct.classList.add('hidden'); }
+    if (invView) { invView.classList.remove('hidden'); }
+    if (invAct)  { invAct.classList.remove('hidden'); }
     
     // Update button text if separate
     const downloadBtn = document.querySelector('#invoiceActions .btn-accent');
-    if (mode === 'separate' && selectedMeds.length > 0 && selectedDiapers.length > 0) {
-        downloadBtn.textContent = '📄 Download Separate PDFs (2)';
-    } else {
-        downloadBtn.textContent = '📄 View / Download PDF';
+    if (downloadBtn) {
+        if (mode === 'separate' && selectedMeds.length > 0 && selectedDiapers.length > 0) {
+            downloadBtn.textContent = '📄 Download Separate PDFs (2)';
+        } else {
+            downloadBtn.textContent = '📄 View / Download PDF';
+        }
     }
 }
 
