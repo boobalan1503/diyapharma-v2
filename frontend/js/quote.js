@@ -317,38 +317,38 @@ function generateSinglePDF(items, type, filenamePrefix) {
     const doc = new jsPDF();
     const user = DhiyaMedical.user;
 
-    // ── LOGO (drawn with jsPDF shapes matching the SVG logo) ──
-    const lx = 14, ly = 10; // logo origin
-    // Navy "D" vertical bar
-    doc.setFillColor(3, 3, 88);
-    doc.rect(lx, ly, 2.5, 20, 'F');
-    doc.rect(lx, ly, 12, 2, 'F');
-    doc.rect(lx, ly + 18, 12, 2, 'F');
-    // Gold arc "D" fill (approximate with ellipse segment)
-    doc.setFillColor(248, 162, 23);
-    doc.ellipse(lx + 9, ly + 10, 7, 10, 'F');
-    // Cover left of ellipse with navy to make D shape
-    doc.setFillColor(3, 3, 88);
-    doc.rect(lx + 2, ly + 2, 5, 16, 'F');
-    // Gold plus sign in center of D
-    doc.setFillColor(248, 162, 23);
-    doc.rect(lx + 3, ly + 7, 6, 6, 'F');
+    // ── LOGO: Navy badge with gold "D" + company name ──
+    const lx = 14, ly = 8;
 
-    // Company name text
-    doc.setFontSize(18);
+    // Navy rounded square badge (logo background)
+    doc.setFillColor(3, 3, 88);
+    doc.roundedRect(lx, ly, 22, 22, 3, 3, 'F');
+
+    // Gold "D" letter inside badge
+    doc.setFontSize(17);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(248, 162, 23);
+    doc.text("D", lx + 5.5, ly + 15.5);
+
+    // Gold horizontal stripe accent in badge (bottom of badge)
+    doc.setFillColor(248, 162, 23);
+    doc.rect(lx, ly + 17, 22, 4, 'F');
+
+    // Company name
+    doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
     doc.setTextColor(3, 3, 88);
-    doc.text("DHIYA MEDICAL AGENCY", lx + 22, ly + 8);
+    doc.text("DHIYA MEDICAL AGENCY", lx + 26, ly + 10);
 
-    // Gold bar behind tagline
+    // Gold tagline bar
     doc.setFillColor(248, 162, 23);
-    doc.rect(lx + 22, ly + 10, 74, 7, 'F');
+    doc.rect(lx + 26, ly + 13, 80, 7, 'F');
 
-    // Tagline on gold bar
+    // Tagline text on gold bar
     doc.setFontSize(8);
     doc.setFont(undefined, 'bold');
     doc.setTextColor(3, 3, 88);
-    doc.text("Empowering Health, Every Day", lx + 24, ly + 15.5);
+    doc.text("Empowering Health, Every Day", lx + 28, ly + 18);
 
     // ── License & GST (right side of header) ──
     doc.setFontSize(7);
