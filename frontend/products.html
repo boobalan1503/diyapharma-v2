@@ -149,10 +149,10 @@
   </div>
 </section>
 
-<!-- ===== 3 CATEGORY TABS ===== -->
+<!-- ===== 5 CATEGORY TABS ===== -->
 <section class="category-tabs-bar">
   <div class="container">
-    <div class="category-tabs">
+    <div class="category-tabs" style="flex-wrap:wrap;gap:8px">
       <button class="cat-tab active" id="tabTablets" onclick="switchCategory('tablets')">
         <i class="fa-solid fa-pills"></i>
         Tablets &amp; Medicines
@@ -167,6 +167,16 @@
         <i class="fa-solid fa-baby"></i>
         Diapers
         <span class="cat-tab-count" id="countDiapers">–</span>
+      </button>
+      <button class="cat-tab" id="tabOtc" onclick="switchCategory('otc')">
+        <i class="fa-solid fa-box-open"></i>
+        OTC Products
+        <span class="cat-tab-count" id="countOtc">0</span>
+      </button>
+      <button class="cat-tab" id="tabCovers" onclick="switchCategory('covers')">
+        <i class="fa-solid fa-prescription-bottle-medical"></i>
+        Medicine Covers
+        <span class="cat-tab-count" id="countCovers">0</span>
       </button>
     </div>
   </div>
@@ -242,6 +252,34 @@
   </section>
 </div>
 
+<!-- ===== OTC PRODUCTS PANEL ===== -->
+<div id="panelOtc" style="display:none">
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="otcGrid">
+      <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200);grid-column:1/-1" id="otcEmptyState">
+        <i class="fa-solid fa-box-open" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+        <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">OTC Products</h3>
+        <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Over-the-counter healthcare products. Admin can add products under the <strong>OTC PRODUCTS</strong> category to display them here.</p>
+        <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for OTC Products</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MEDICINE COVERS PANEL ===== -->
+<div id="panelCovers" style="display:none">
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="coversGrid">
+      <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200);grid-column:1/-1" id="coversEmptyState">
+        <i class="fa-solid fa-prescription-bottle-medical" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+        <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">Medicine Covers</h3>
+        <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Packaging and cover solutions for medicines. Admin can add products under the <strong>MEDICINE COVERS</strong> category to display them here.</p>
+        <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for Medicine Covers</a>
+      </div>
+    </div>
+  </section>
+</div>
+
 <!-- Footer -->
 <footer class="footer"><div class="container"><div class="footer-grid">
   <div class="footer-brand">
@@ -261,8 +299,8 @@
 <script src="js/ui.js?v=8"></script>
 <script>
 /* ============================================================
-   Dhiya Medical Agency — Products Page with 3-Tab Category System
-   Tabs: Tablets/Medicines | Surgicals | Diapers
+   Dhiya Medical Agency — Products Page with 5-Tab Category System
+   Tabs: Tablets/Medicines | Surgicals | Diapers | OTC | Medicine Covers
    ============================================================ */
 
 const PER_PAGE = 16;
@@ -272,33 +310,82 @@ let activeFilters = {};
 let currentCategory = 'tablets';
 
 /* ---- Category switcher ---- */
+const ALL_TABS = ['Tablets','Surgicals','Diapers','Otc','Covers'];
 function switchCategory(cat) {
   currentCategory = cat;
-  // Update tab UI
-  ['Tablets','Surgicals','Diapers'].forEach(c => {
-    document.getElementById('tab' + c).classList.remove('active');
-    document.getElementById('panel' + c).style.display = 'none';
+  // Update tab UI - hide all panels and remove active from all tabs
+  ALL_TABS.forEach(c => {
+    const tabEl = document.getElementById('tab' + c);
+    const panelEl = document.getElementById('panel' + c);
+    if (tabEl) tabEl.classList.remove('active');
+    if (panelEl) panelEl.style.display = 'none';
   });
   
   const capCat = cat.charAt(0).toUpperCase() + cat.slice(1);
-  document.getElementById('tab' + capCat).classList.add('active');
-  document.getElementById('panel' + capCat).style.display = 'block';
+  const tabEl = document.getElementById('tab' + capCat);
+  const panelEl = document.getElementById('panel' + capCat);
+  if (tabEl) tabEl.classList.add('active');
+  if (panelEl) panelEl.style.display = 'block';
 
   // Update breadcrumb + title
-  const titles = { tablets: 'Tablets & Medicines', surgicals: 'Surgical Products', diapers: 'Adult Diapers' };
+  const titles = { 
+    tablets: 'Tablets & Medicines', 
+    surgicals: 'Surgical Products', 
+    diapers: 'Adult Diapers',
+    otc: 'OTC Products',
+    covers: 'Medicine Covers'
+  };
   const subtitles = {
     tablets: 'Quality formulations across all therapeutic divisions',
     surgicals: 'Surgical and medical supplies',
-    diapers: 'Premium adult diaper collection'
+    diapers: 'Premium adult diaper collection',
+    otc: 'Over-the-counter healthcare products',
+    covers: 'Medicine packaging and cover solutions'
   };
-  document.getElementById('breadcrumbCat').textContent = titles[cat];
-  document.getElementById('pageTitle').textContent = titles[cat];
-  document.getElementById('pageSubtitle').textContent = subtitles[cat];
+  document.getElementById('breadcrumbCat').textContent = titles[cat] || cat;
+  document.getElementById('pageTitle').textContent = titles[cat] || cat;
+  document.getElementById('pageSubtitle').textContent = subtitles[cat] || '';
 
-  // Load diapers preview on first visit
+  // Load content per category
   if (cat === 'diapers') loadDiaperPreview();
+  if (cat === 'otc') loadAdminCategoryProducts('OTC PRODUCTS', 'otcGrid', 'otcEmptyState', 'countOtc');
+  if (cat === 'covers') loadAdminCategoryProducts('MEDICINE COVERS', 'coversGrid', 'coversEmptyState', 'countCovers');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+/* ---- Load admin-added products for a given category ---- */
+function loadAdminCategoryProducts(categoryName, gridId, emptyId, countId) {
+  const grid = document.getElementById(gridId);
+  const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+  const catProds = adminProds.filter(p => (p.division || '').toUpperCase() === categoryName.toUpperCase());
+  
+  const countEl = document.getElementById(countId);
+  if (countEl) countEl.textContent = catProds.length || 0;
+
+  if (catProds.length === 0) {
+    // show the empty state placeholder
+    const emptyEl = document.getElementById(emptyId);
+    if (emptyEl) emptyEl.style.display = 'block';
+    return;
+  }
+  // Hide empty state, show products
+  const emptyEl = document.getElementById(emptyId);
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  const formattedProds = catProds.map(p => ({
+    ...p,
+    stock: p.inStock !== false,
+    isNew: true,
+    composition: p.desc || '',
+    therapeutic: p.division,
+    packing: '',
+    packType: '',
+    ptr: p.mrp * 0.76,
+    pts: p.mrp * 0.68
+  }));
+  grid.innerHTML = formattedProds.map(p => generateProductCard(p, showWholesale)).join('');
+}
+
 
 /* ---- Products (Tablets/Medicines) ---- */
 function populateDropdowns() {

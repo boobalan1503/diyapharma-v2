@@ -317,29 +317,75 @@ function generateSinglePDF(items, type, filenamePrefix) {
     const doc = new jsPDF();
     const user = DhiyaMedical.user;
 
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(0, 31, 91);
-    doc.text("DIYA PHARMA", 14, 20);
+    // ── LOGO (drawn with jsPDF shapes matching the SVG logo) ──
+    const lx = 14, ly = 10; // logo origin
+    // Navy "D" vertical bar
+    doc.setFillColor(3, 3, 88);
+    doc.rect(lx, ly, 2.5, 20, 'F');
+    doc.rect(lx, ly, 12, 2, 'F');
+    doc.rect(lx, ly + 18, 12, 2, 'F');
+    // Gold arc "D" fill (approximate with ellipse segment)
+    doc.setFillColor(248, 162, 23);
+    doc.ellipse(lx + 9, ly + 10, 7, 10, 'F');
+    // Cover left of ellipse with navy to make D shape
+    doc.setFillColor(3, 3, 88);
+    doc.rect(lx + 2, ly + 2, 5, 16, 'F');
+    // Gold plus sign in center of D
+    doc.setFillColor(248, 162, 23);
+    doc.rect(lx + 3, ly + 7, 6, 6, 'F');
 
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text("Quality Healthcare Solutions", 14, 26);
-    doc.text("Quotation Date: " + new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}), 14, 32);
+    // Company name text
+    doc.setFontSize(18);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(3, 3, 88);
+    doc.text("DHIYA MEDICAL AGENCY", lx + 22, ly + 8);
+
+    // Gold bar behind tagline
+    doc.setFillColor(248, 162, 23);
+    doc.rect(lx + 22, ly + 10, 74, 7, 'F');
+
+    // Tagline on gold bar
+    doc.setFontSize(8);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(3, 3, 88);
+    doc.text("Empowering Health, Every Day", lx + 24, ly + 15.5);
+
+    // ── License & GST (right side of header) ──
+    doc.setFontSize(7);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(80);
+    doc.text("D.L.No: TN/TUT/01100/20B", 148, ly + 6);
+    doc.text("         TN/TUT/01100/21B", 148, ly + 11);
+    doc.text("GSTIN: 33CBVPN8913R1ZJ", 148, ly + 16);
+
+    // Divider line
+    doc.setDrawColor(3, 3, 88);
+    doc.setLineWidth(0.5);
+    doc.line(14, 34, 196, 34);
 
     // Quotation number
-    doc.setFontSize(10);
-    doc.setTextColor(0, 31, 91);
-    doc.text("Quotation #: DPQ-" + Date.now().toString().slice(-6), 140, 20);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(3, 3, 88);
+    doc.text("Quotation #: DMQ-" + Date.now().toString().slice(-6), 148, 40);
+
+    // Date & Type
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(80);
+    doc.text("Quotation Date: " + new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}), 14, 40);
+    doc.text("Type: " + (type === 'medicines' ? 'Medicines' : type === 'diapers' ? 'Diapers' : 'Combined'), 14, 46);
 
     // Customer Details
-    doc.setFontSize(12);
-    doc.setTextColor(0);
-    doc.text("Quotation For: " + (type === 'medicines' ? '(Medicines)' : type === 'diapers' ? '(Diapers)' : ''), 14, 45);
     doc.setFontSize(10);
-    doc.text("Name: " + (user ? (user.name || user.email) : "N/A"), 14, 52);
-    doc.text("Email: " + (user ? user.email : "N/A"), 14, 58);
-    doc.text("Phone: " + (user ? (user.phone || "N/A") : "N/A"), 14, 64);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(0);
+    doc.text("Quotation For:", 14, 54);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.text("Name:  " + (user ? (user.name || user.email) : "N/A"), 14, 60);
+    doc.text("Email: " + (user ? user.email : "N/A"), 14, 66);
+    doc.text("Phone: " + (user ? (user.phone || "N/A") : "N/A"), 14, 72);
 
     // Table
     const tableData = items.map(p => {
@@ -356,12 +402,13 @@ function generateSinglePDF(items, type, filenamePrefix) {
     });
 
     doc.autoTable({
-        startY: 75,
+        startY: 78,
         head: [['Product', 'Composition', 'Pack', 'Qty', 'Unit Price', 'Total']],
         body: tableData,
         theme: 'striped',
-        headStyles: { fillColor: [0, 31, 91], fontSize: 8 },
+        headStyles: { fillColor: [3, 3, 88], fontSize: 8, textColor: [255,255,255] },
         bodyStyles: { fontSize: 7 },
+        alternateRowStyles: { fillColor: [240, 240, 250] },
         columnStyles: {
             0: { cellWidth: 30 },
             1: { cellWidth: 50 },
@@ -381,20 +428,33 @@ function generateSinglePDF(items, type, filenamePrefix) {
     const tax = subtotal * 0.12;
     const total = subtotal + tax;
 
-    doc.setFontSize(10);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(60);
     doc.text(`Subtotal: Rs. ${subtotal.toFixed(2)}`, 140, finalY);
     doc.text(`GST (12%): Rs. ${tax.toFixed(2)}`, 140, finalY + 7);
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont(undefined, 'bold');
-    doc.setTextColor(0, 31, 91);
+    doc.setTextColor(3, 3, 88);
     doc.text(`Grand Total: Rs. ${total.toFixed(2)}`, 140, finalY + 16);
 
-    // Footer
-    doc.setFontSize(8);
+    // Footer line
+    const pageH = doc.internal.pageSize.height;
+    doc.setDrawColor(248, 162, 23);
+    doc.setLineWidth(1);
+    doc.line(14, pageH - 20, 196, pageH - 20);
+
+    // Footer text
+    doc.setFontSize(7);
     doc.setFont(undefined, 'normal');
-    doc.setTextColor(150);
-    doc.text("This is a computer-generated quotation for estimation purposes only. Prices are subject to change.", 14, doc.internal.pageSize.height - 15);
-    doc.text("Contact: 9629622844 / 8428622844 | dhiyamedicalagency@gmail.com | GSTIN: 33CBVPN8913R1ZJ", 14, doc.internal.pageSize.height - 10);
+    doc.setTextColor(120);
+    doc.text("This is a computer-generated quotation for estimation purposes only. Prices are subject to change.", 14, pageH - 14);
+    doc.setTextColor(3, 3, 88);
+    doc.setFont(undefined, 'bold');
+    doc.text("DHIYA MEDICAL AGENCY", 14, pageH - 8);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(80);
+    doc.text(" | 9629622844 / 8428622844 | dhiyamedicalagency@gmail.com | GSTIN: 33CBVPN8913R1ZJ", 57, pageH - 8);
 
     // Open & Download
     var pdfBlob = doc.output('blob');
@@ -402,3 +462,4 @@ function generateSinglePDF(items, type, filenamePrefix) {
     window.open(blobURL, '_blank');
     doc.save(`${filenamePrefix}_${new Date().toISOString().slice(0,10)}.pdf`);
 }
+

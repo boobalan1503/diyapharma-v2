@@ -116,11 +116,20 @@
                 <label class="form-label">Division / Category *</label>
                 <select class="form-input" id="ap_division" style="margin-bottom:16px">
                   <option value="">Select Division</option>
-                  <option>TABLETS</option><option>SURGICALS</option><option>DIAPERS</option>
-                  <option>AUSPIN</option><option>CURE</option><option>GRACE</option>
-                  <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
-                  <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
-                  <option>MEDANOR</option><option>VENTILA</option>
+                  <optgroup label="── Main Categories ──">
+                    <option>MEDICINES</option>
+                    <option>SURGICALS</option>
+                    <option>DIAPERS</option>
+                    <option>OTC PRODUCTS</option>
+                    <option>MEDICINE COVERS</option>
+                  </optgroup>
+                  <optgroup label="── Sub Divisions ──">
+                    <option>TABLETS</option>
+                    <option>AUSPIN</option><option>CURE</option><option>GRACE</option>
+                    <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
+                    <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
+                    <option>MEDANOR</option><option>VENTILA</option>
+                  </optgroup>
                 </select>
                 <label class="form-label">MRP (₹) *</label>
                 <input type="number" class="form-input" id="ap_mrp" placeholder="e.g. 250" style="margin-bottom:16px">
