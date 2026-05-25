@@ -269,21 +269,38 @@ function sendMessageReply() {
   }
   
   const btn = document.getElementById('btnSendReply');
-  btn.textContent = 'Sending...';
+  btn.textContent = 'Opening Email...';
   btn.disabled = true;
-  
+
+  const msg = currentReplyingMessage;
+  const subject = encodeURIComponent('Re: ' + (msg.subject || 'Your Enquiry'));
+  const body = encodeURIComponent(
+    text +
+    '\n\n---\n' +
+    'Dhiya Medical Agency\n' +
+    'Phone: 9629622844 / 8428622844\n' +
+    'Email: dhiyamedicalagency@gmail.com\n' +
+    'Website: https://diyapharma-v2.github.io'
+  );
+  const mailtoLink = `mailto:${msg.email}?subject=${subject}&body=${body}`;
+
+  // Open the default mail client with the reply pre-filled
+  window.location.href = mailtoLink;
+
+  // After a short delay, mark message as replied and close the modal
   setTimeout(() => {
     currentReplyingMessage.status = 'Replied';
-    // Persist reply status
     const messages = getAllMessages();
     const idx = messages.findIndex(m => String(m.id) === String(currentReplyingMessage.id));
     if (idx >= 0) messages[idx].status = 'Replied';
     saveMessages(messages);
-    showToast(`Reply sent successfully to ${currentReplyingMessage.email}`, 'success');
+    showToast(`Email client opened for ${msg.email}. Message marked as Replied.`, 'success');
+    btn.textContent = 'Send Reply';
+    btn.disabled = false;
     closeMessageModal();
     renderMessagesTable();
     updateDashboardMetrics();
-  }, 1000);
+  }, 1500);
 }
 
 // ---- Admin Product Management ----

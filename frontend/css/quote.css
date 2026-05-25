@@ -52,14 +52,17 @@
 /* ── Body wrapper: the 1fr grid row, scrollable ── */
 .quote-modal-body {
     overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     min-height: 0;
+    height: 100%;
     position: relative;
 }
 
 /* Each view panel inside the wrapper */
 .quote-body {
     padding: var(--space-6);
-    min-height: 100%;
+    /* No min-height here — let the scroll container control height */
 }
 
 .quote-body.hidden { display: none !important; }
