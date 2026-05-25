@@ -104,8 +104,9 @@ async function openQuoteModal() {
     if (selView) selView.classList.remove('hidden');
     if (optView) optView.classList.add('hidden');
     if (invView) invView.classList.add('hidden');
-    if (selAct)  { selAct.style.display = 'flex'; selAct.classList.remove('hidden'); }
-    if (invAct)  { invAct.style.display = 'none'; invAct.classList.add('hidden'); }
+    // selectionActions: always visible (no .hidden, no .visible needed)
+    // invoiceActions: hidden by CSS default; remove .visible to hide
+    if (invAct)  invAct.classList.remove('visible');
 
     // Reset search
     document.getElementById('quoteSearch').value = '';
@@ -334,9 +335,9 @@ function proceedToInvoice(mode) {
 
     if (selView) selView.classList.add('hidden');
     if (optView) optView.classList.add('hidden');
-    if (selAct)  { selAct.style.display = 'none'; selAct.classList.add('hidden'); }
-    if (invView) invView.classList.remove('hidden');
-    if (invAct)  { invAct.style.display = 'flex'; invAct.classList.remove('hidden'); }
+    if (selAct)  selAct.classList.add('hidden');      // hide selection footer
+    if (invView) invView.classList.remove('hidden');  // show invoice view
+    if (invAct)  invAct.classList.add('visible');     // show invoice footer
     
     // Update button text if separate
     const downloadBtn = document.querySelector('#invoiceActions .btn-accent');
@@ -358,9 +359,9 @@ function backToSelection() {
 
     if (optView) optView.classList.add('hidden');
     if (invView) invView.classList.add('hidden');
-    if (invAct)  { invAct.style.display = 'none'; invAct.classList.add('hidden'); }
-    if (selView) selView.classList.remove('hidden');
-    if (selAct)  { selAct.style.display = 'flex'; selAct.classList.remove('hidden'); }
+    if (invAct)  invAct.classList.remove('visible');  // hide invoice footer
+    if (selView) selView.classList.remove('hidden');  // show selection view
+    if (selAct)  selAct.classList.remove('hidden');   // show selection footer
     
     if (currentQuoteCategory === 'diapers' && quoteDataCache.diapers.length === 0) {
         fetchDiapersForQuote().then(() => renderQuoteProductList(quoteDataCache.diapers));

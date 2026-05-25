@@ -15,16 +15,16 @@
 
 .quote-modal-overlay.active { display: flex; }
 
+/* ── Modal uses CSS Grid: header / body / footer ── */
 .quote-modal {
     background: #fff;
     width: 94%;
     max-width: 950px;
     height: 88vh;
     border-radius: var(--radius-xl);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr auto;  /* header | scrollable body | footer */
     overflow: hidden;
-    position: relative;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
@@ -35,7 +35,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0;
 }
 
 .quote-modal-header h3 { margin: 0; color: #fff; }
@@ -48,31 +47,40 @@
     color: #fff;
     opacity: 0.8;
 }
-
 .quote-close:hover { opacity: 1; }
 
-.quote-body {
-    flex: 1;
-    min-height: 0;
+/* ── Body wrapper: the 1fr grid row, scrollable ── */
+.quote-modal-body {
     overflow-y: auto;
-    padding: var(--space-6);
+    min-height: 0;
+    position: relative;
 }
 
-/* Selection Step */
+/* Each view panel inside the wrapper */
+.quote-body {
+    padding: var(--space-6);
+    min-height: 100%;
+}
+
+.quote-body.hidden { display: none !important; }
+
+/* ── Sticky search/tabs header inside scrollable body ── */
 .quote-selection-header {
     display: flex;
-    gap: var(--space-3);
+    flex-direction: column;
+    gap: 16px;
     position: sticky;
-    top: calc(-1 * var(--space-6));
-    margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-4) calc(-1 * var(--space-6));
-    padding: var(--space-6) var(--space-6) 8px var(--space-6);
+    top: 0;
     background: #fff;
-    z-index: 100;
-    align-items: center;
+    z-index: 10;
+    padding: var(--space-4) 0 var(--space-3);
+    margin: calc(-1 * var(--space-6)) 0 var(--space-4);
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .quote-search {
-    flex: 1;
+    width: 100%;
     padding: 10px 14px;
     border: 2px solid var(--neutral-100);
     border-radius: var(--radius-md);
@@ -158,9 +166,7 @@
 }
 
 /* Invoice Step */
-.invoice-view {
-    padding: var(--space-4);
-}
+.invoice-view { padding: var(--space-4); }
 
 .invoice-header {
     display: flex;
@@ -226,31 +232,49 @@
     padding-top: 10px;
 }
 
+/* ── Footer: always pinned at bottom (3rd grid row) ── */
 .quote-footer {
-    flex-shrink: 0;
-    padding: var(--space-3) var(--space-6);
-    border-top: 1px solid var(--neutral-100);
+    padding: 12px var(--space-6);
+    border-top: 2px solid var(--neutral-200);
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: var(--space-3);
     background: var(--neutral-50);
-    z-index: 20;
+    min-height: 60px;
 }
 
-#selectionActions, #invoiceActions {
+#selectionActions {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    width: 100%;
+    justify-content: flex-end;
 }
 
 #invoiceActions {
     display: none;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    justify-content: flex-end;
 }
 
-/* When .hidden is applied, always hide */
-.hidden {
-    display: none !important;
+#invoiceActions.visible { display: flex !important; }
+
+/* Generate Quotation button visual state */
+#btnGenerateQuote:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+#btnGenerateQuote:not(:disabled) {
+    opacity: 1;
+    animation: pulse-btn 1.5s ease-in-out infinite;
+}
+@keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 4px 16px rgba(3,3,88,0.30); }
+    50% { box-shadow: 0 6px 24px rgba(3,3,88,0.55); }
 }
 
 /* About section video fix */
@@ -264,28 +288,23 @@
 @media (max-width: 768px) {
     .quote-modal {
         width: 100%;
-        height: 100vh;
+        height: 100dvh;  /* uses dynamic viewport height on mobile */
         border-radius: 0;
     }
     .quote-product-list {
         grid-template-columns: 1fr;
     }
-    .quote-selection-header {
-        flex-wrap: wrap;
-    }
-    .quote-search {
-        width: 100%;
-    }
+    .quote-search { width: 100%; }
     .invoice-header {
         flex-direction: column;
         gap: var(--space-4);
     }
-    .invoice-totals {
-        float: none;
-        width: 100%;
+    .invoice-totals { float: none; width: 100%; }
+    .invoice-table th, .invoice-table td { padding: 6px 4px; font-size: 11px; }
+    .quote-footer {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px var(--space-4);
     }
-    .invoice-table th, .invoice-table td {
-        padding: 6px 4px;
-        font-size: 11px;
-    }
+    #selectionActions, #invoiceActions { flex-wrap: wrap; justify-content: center; }
 }
