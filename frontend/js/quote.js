@@ -94,9 +94,25 @@ async function openQuoteModal() {
         console.error("Error merging admin products for quote:", e);
     }
     
-    // reset state
+    // ---- ALWAYS reset all views to selection state ----
+    const selView = document.getElementById('quoteSelectionView');
+    const optView = document.getElementById('quoteOptionsView');
+    const invView = document.getElementById('quoteInvoiceView');
+    const selAct  = document.getElementById('selectionActions');
+    const invAct  = document.getElementById('invoiceActions');
+
+    if (selView) selView.classList.remove('hidden');
+    if (optView) optView.classList.add('hidden');
+    if (invView) invView.classList.add('hidden');
+    if (selAct)  { selAct.style.display = 'flex'; selAct.classList.remove('hidden'); }
+    if (invAct)  { invAct.style.display = 'none'; invAct.classList.add('hidden'); }
+
+    // Reset search
     document.getElementById('quoteSearch').value = '';
-    switchQuoteCategory('medicines', true); // TRUE to render immediately
+    // Reset category to medicines tab and render
+    switchQuoteCategory('medicines', true);
+    // Update selection count badge
+    updateSelectionUI();
     
     document.getElementById('quoteModal').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -108,7 +124,7 @@ async function openQuoteModal() {
 function closeQuoteModal() {
     document.getElementById('quoteModal').classList.remove('active');
     document.body.style.overflow = '';
-    backToSelection();
+    // Don't call backToSelection here – will be reset on next open
 }
 
 function switchQuoteCategory(category, render = true) {
@@ -222,8 +238,14 @@ function clearAllProducts() {
 
 function updateSelectionUI() {
     const count = Object.keys(selectedProducts).length;
-    document.getElementById('selectedCount').textContent = `${count} product${count !== 1 ? 's' : ''} selected`;
-    document.getElementById('btnGenerateQuote').disabled = count === 0;
+    const countEl = document.getElementById('selectedCount');
+    const btn = document.getElementById('btnGenerateQuote');
+    if (countEl) countEl.textContent = `${count} product${count !== 1 ? 's' : ''} selected`;
+    if (btn) {
+        btn.disabled = count === 0;
+        btn.style.opacity = count === 0 ? '0.5' : '1';
+        btn.style.cursor = count === 0 ? 'not-allowed' : 'pointer';
+    }
 }
 
 function generateQuotation() {
@@ -310,11 +332,11 @@ function proceedToInvoice(mode) {
     const selAct  = document.getElementById('selectionActions');
     const invAct  = document.getElementById('invoiceActions');
 
-    if (selView) { selView.classList.add('hidden'); }
-    if (optView) { optView.classList.add('hidden'); }
-    if (selAct)  { selAct.classList.add('hidden'); }
-    if (invView) { invView.classList.remove('hidden'); }
-    if (invAct)  { invAct.classList.remove('hidden'); }
+    if (selView) selView.classList.add('hidden');
+    if (optView) optView.classList.add('hidden');
+    if (selAct)  { selAct.style.display = 'none'; selAct.classList.add('hidden'); }
+    if (invView) invView.classList.remove('hidden');
+    if (invAct)  { invAct.style.display = 'flex'; invAct.classList.remove('hidden'); }
     
     // Update button text if separate
     const downloadBtn = document.querySelector('#invoiceActions .btn-accent');
@@ -328,11 +350,17 @@ function proceedToInvoice(mode) {
 }
 
 function backToSelection() {
-    document.getElementById('quoteOptionsView').classList.add('hidden');
-    document.getElementById('quoteSelectionView').classList.remove('hidden');
-    document.getElementById('selectionActions').classList.remove('hidden');
-    document.getElementById('quoteInvoiceView').classList.add('hidden');
-    document.getElementById('invoiceActions').classList.add('hidden');
+    const selView = document.getElementById('quoteSelectionView');
+    const optView = document.getElementById('quoteOptionsView');
+    const invView = document.getElementById('quoteInvoiceView');
+    const selAct  = document.getElementById('selectionActions');
+    const invAct  = document.getElementById('invoiceActions');
+
+    if (optView) optView.classList.add('hidden');
+    if (invView) invView.classList.add('hidden');
+    if (invAct)  { invAct.style.display = 'none'; invAct.classList.add('hidden'); }
+    if (selView) selView.classList.remove('hidden');
+    if (selAct)  { selAct.style.display = 'flex'; selAct.classList.remove('hidden'); }
     
     if (currentQuoteCategory === 'diapers' && quoteDataCache.diapers.length === 0) {
         fetchDiapersForQuote().then(() => renderQuoteProductList(quoteDataCache.diapers));

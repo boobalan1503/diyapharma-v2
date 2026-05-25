@@ -238,12 +238,19 @@
     z-index: 20;
 }
 
-.quote-footer .hidden { display: none !important; }
-
 #selectionActions, #invoiceActions {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+}
+
+#invoiceActions {
+    display: none;
+}
+
+/* When .hidden is applied, always hide */
+.hidden {
+    display: none !important;
 }
 
 /* About section video fix */

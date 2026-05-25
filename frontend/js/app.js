@@ -234,4 +234,36 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   animateCounters();
   DhiyaMedical.updateCartBadge();
+  initAutoLogout();
 });
+
+/* ---------- Auto-Logout after 1 hour inactivity ---------- */
+function initAutoLogout() {
+  if (!DhiyaMedical.user) return; // Only for logged-in users
+
+  const TIMEOUT_MS = 60 * 60 * 1000; // 1 hour
+  let logoutTimer;
+
+  function resetTimer() {
+    clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(performAutoLogout, TIMEOUT_MS);
+  }
+
+  function performAutoLogout() {
+    if (!DhiyaMedical.user) return;
+    DhiyaMedical.logout();
+    showToast('You have been logged out due to 1 hour of inactivity.', 'warning', 5000);
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000);
+  }
+
+  // Listen for activity events to reset the timer
+  const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'touchmove', 'scroll', 'click'];
+  activityEvents.forEach(evt => {
+    document.addEventListener(evt, resetTimer, { passive: true });
+  });
+
+  // Start the timer on page load
+  resetTimer();
+}
