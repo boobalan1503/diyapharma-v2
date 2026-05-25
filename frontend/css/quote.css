@@ -55,7 +55,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: var(--space-6) var(--space-6) 80px var(--space-6);
+    padding: var(--space-6);
 }
 
 /* Selection Step */
@@ -227,10 +227,7 @@
 }
 
 .quote-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    flex-shrink: 0;
     padding: var(--space-3) var(--space-6);
     border-top: 1px solid var(--neutral-100);
     display: flex;

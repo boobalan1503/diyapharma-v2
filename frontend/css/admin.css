@@ -317,3 +317,204 @@
 .prod-img-preview img {
   width: 80%; height: 80%; object-fit: contain;
 }
+
+/* ============================================
+   ADMIN DASHBOARD — Mobile Responsive Styles
+   ============================================ */
+
+/* Hamburger toggle button for mobile sidebar */
+.admin-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+  margin-right: 12px;
+}
+.admin-menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--neutral-700);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Sidebar overlay on mobile */
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+  /* Switch to column layout on mobile */
+  .admin-layout {
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Sidebar slides in from left as a drawer */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100vh;
+    z-index: 200;
+    transition: left 0.3s ease;
+    box-shadow: none;
+  }
+
+  .admin-sidebar.open {
+    left: 0;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  }
+
+  .admin-sidebar-overlay.visible {
+    display: block;
+  }
+
+  /* Main takes full width */
+  .admin-main {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Header — show hamburger, shrink */
+  .admin-header {
+    padding: 0 var(--space-4);
+    gap: 8px;
+  }
+
+  .admin-header-title {
+    font-size: var(--text-base);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .admin-user span {
+    display: none;
+  }
+
+  .admin-menu-toggle {
+    display: flex;
+  }
+
+  /* Content padding */
+  .admin-content {
+    padding: var(--space-4);
+  }
+
+  /* Metrics — single column */
+  .admin-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .metric-card {
+    padding: var(--space-4);
+    gap: 10px;
+  }
+
+  .metric-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .metric-info .metric-value {
+    font-size: var(--text-xl);
+  }
+
+  /* Cards */
+  .admin-card {
+    margin-bottom: var(--space-4);
+    border-radius: 10px;
+  }
+
+  .admin-card-header {
+    padding: var(--space-4);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .admin-card-header input[type="text"] {
+    width: 100% !important;
+  }
+
+  /* Tables — horizontal scroll */
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  /* Buttons in table cells */
+  .admin-table td .btn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  /* Add product form — single column */
+  #addProductForm > div[style*="grid-template-columns"],
+  .admin-modal-body div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Settings grid */
+  #panel-settings div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Modals */
+  .admin-modal {
+    width: 95%;
+    border-radius: 12px;
+  }
+
+  .admin-modal-body {
+    padding: 16px;
+  }
+
+  .admin-modal-footer {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
+
+  /* Status badges */
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header-title {
+    font-size: 14px;
+  }
+
+  .metric-card {
+    flex-direction: row;
+    padding: var(--space-3);
+  }
+}

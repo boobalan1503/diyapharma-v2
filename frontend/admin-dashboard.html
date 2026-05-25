@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin CMS | Dhiya Medical Agency</title>
-  <link rel="stylesheet" href="css/style.css?v=8">
-  <link rel="stylesheet" href="css/admin.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/admin.css?v=9">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
 </head>
 <body class="admin-layout">
+
+  <!-- Mobile sidebar overlay -->
+  <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeMobileSidebar()"></div>
 
   <!-- Sidebar -->
   <aside class="admin-sidebar">
@@ -38,6 +41,9 @@
   <main class="admin-main">
     <!-- Header -->
     <header class="admin-header">
+      <button class="admin-menu-toggle" id="adminMenuToggle" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="admin-header-title" id="pageTitle">Dashboard Overview</div>
       <div class="admin-user">
         <span style="font-weight:500; color:var(--neutral-700)">Admin User</span>
@@ -407,9 +413,29 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=8"></script>
-  <script src="js/products.js?v=8"></script>
-  <script src="js/app.js?v=8"></script>
-  <script src="js/admin.js?v=8"></script>
+  <script src="js/config.js?v=9"></script>
+  <script src="js/products.js?v=9"></script>
+  <script src="js/app.js?v=9"></script>
+  <script src="js/admin.js?v=9"></script>
+  <script>
+  function toggleMobileSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('adminSidebarOverlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible');
+  }
+  function closeMobileSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('adminSidebarOverlay');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+  }
+  // Close sidebar when a nav link is clicked on mobile
+  document.querySelectorAll('.admin-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeMobileSidebar();
+    });
+  });
+  </script>
 </body>
 </html>
