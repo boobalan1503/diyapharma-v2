@@ -28,12 +28,35 @@ const DhiyaMedical = {
       product = itemOrId;
       qty = product.qty || qty;
     } else {
-      product = typeof ProductData !== 'undefined' ? ProductData.find(p => p.id === itemOrId) : null;
+      // Search built-in catalog first
+      product = typeof ProductData !== 'undefined' ? ProductData.find(p => p.id === itemOrId || String(p.id) === String(itemOrId)) : null;
+      // If not found, search admin-added products from localStorage
+      if (!product) {
+        try {
+          const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+          product = adminProds.find(p => String(p.id) === String(itemOrId));
+          if (product) {
+            // Normalize admin product fields to match catalog structure
+            product = {
+              ...product,
+              stock: product.inStock !== false,
+              composition: product.desc || product.composition || '',
+              mrp: parseFloat(product.mrp) || 0,
+              ptr: product.ptr || (parseFloat(product.mrp) * 0.76),
+              pts: product.pts || (parseFloat(product.mrp) * 0.68),
+              packType: product.packType || '',
+              packing: product.packing || ''
+            };
+          }
+        } catch (e) {
+          console.error('[Cart] Error searching admin products:', e);
+        }
+      }
     }
     
     if (!product) { console.error("Product not found"); return; }
     
-    const existing = this.cart.find(i => i.id === product.id);
+    const existing = this.cart.find(i => String(i.id) === String(product.id));
     if (existing) { existing.qty += qty; }
     else { this.cart.push({ ...product, qty }); }
     this.saveCart();

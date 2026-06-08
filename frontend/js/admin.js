@@ -261,6 +261,17 @@ function closeMessageModal() {
   document.getElementById('messageModal').classList.remove('active');
 }
 
+// ─── EmailJS Configuration for Admin Replies ───
+// Same credentials as contact page — set these once:
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';           // ← Replace with your EmailJS Public Key
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';           // ← Replace with your EmailJS Service ID
+const EMAILJS_REPLY_TEMPLATE_ID = 'YOUR_REPLY_TEMPLATE_ID'; // ← Replace with your EmailJS Reply Template ID
+
+// Initialize EmailJS
+if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
 function sendMessageReply() {
   const text = document.getElementById('replyTextarea').value.trim();
   if(!text) {
@@ -269,11 +280,43 @@ function sendMessageReply() {
   }
   
   const btn = document.getElementById('btnSendReply');
-  btn.textContent = 'Opening Email...';
+  btn.textContent = 'Sending...';
   btn.disabled = true;
 
   const msg = currentReplyingMessage;
-  const subject = encodeURIComponent('Re: ' + (msg.subject || 'Your Enquiry'));
+  const replySubject = 'Re: ' + (msg.subject || 'Your Enquiry');
+
+  // Try EmailJS first (sends real email to customer)
+  if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_REPLY_TEMPLATE_ID, {
+      to_name: msg.sender,
+      to_email: msg.email,
+      subject: replySubject,
+      message: text,
+      reply_to: 'dhiyamedicalagency@gmail.com'
+    })
+    .then(() => {
+      // Success — email sent via EmailJS
+      markMessageAsReplied(msg);
+      showToast(`Reply sent to ${msg.email} via email!`, 'success');
+      btn.textContent = 'Send Reply';
+      btn.disabled = false;
+      closeMessageModal();
+      renderMessagesTable();
+      updateDashboardMetrics();
+    })
+    .catch(err => {
+      console.warn('[Reply] EmailJS send failed, falling back to mailto:', err);
+      fallbackToMailto(msg, replySubject, text, btn);
+    });
+  } else {
+    // EmailJS not configured, use mailto fallback
+    fallbackToMailto(msg, replySubject, text, btn);
+  }
+}
+
+function fallbackToMailto(msg, subject, text, btn) {
+  const subjectEncoded = encodeURIComponent(subject);
   const body = encodeURIComponent(
     text +
     '\n\n---\n' +
@@ -282,18 +325,11 @@ function sendMessageReply() {
     'Email: dhiyamedicalagency@gmail.com\n' +
     'Website: https://diyapharma-v2.github.io'
   );
-  const mailtoLink = `mailto:${msg.email}?subject=${subject}&body=${body}`;
+  const mailtoLink = `mailto:${msg.email}?subject=${subjectEncoded}&body=${body}`;
+  window.open(mailtoLink, '_blank');
 
-  // Open the default mail client with the reply pre-filled
-  window.location.href = mailtoLink;
-
-  // After a short delay, mark message as replied and close the modal
   setTimeout(() => {
-    currentReplyingMessage.status = 'Replied';
-    const messages = getAllMessages();
-    const idx = messages.findIndex(m => String(m.id) === String(currentReplyingMessage.id));
-    if (idx >= 0) messages[idx].status = 'Replied';
-    saveMessages(messages);
+    markMessageAsReplied(msg);
     showToast(`Email client opened for ${msg.email}. Message marked as Replied.`, 'success');
     btn.textContent = 'Send Reply';
     btn.disabled = false;
@@ -301,6 +337,14 @@ function sendMessageReply() {
     renderMessagesTable();
     updateDashboardMetrics();
   }, 1500);
+}
+
+function markMessageAsReplied(msg) {
+  msg.status = 'Replied';
+  const messages = getAllMessages();
+  const idx = messages.findIndex(m => String(m.id) === String(msg.id));
+  if (idx >= 0) messages[idx].status = 'Replied';
+  saveMessages(messages);
 }
 
 // ---- Admin Product Management ----

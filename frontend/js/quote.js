@@ -2,6 +2,33 @@
    DIYA PHARMA — Quotation System Logic
    ============================================ */
 
+/* ---------- Logo Preloader for PDF ---------- */
+let cachedLogoDataUrl = null;
+
+(function preloadLogoForPDF() {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function () {
+    try {
+      const canvas = document.createElement('canvas');
+      // Render at 2x for crisp PDF output
+      const scale = 2;
+      canvas.width = img.naturalWidth * scale;
+      canvas.height = img.naturalHeight * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      cachedLogoDataUrl = canvas.toDataURL('image/png');
+      console.log('[QuotePDF] Logo preloaded successfully for PDF generation.');
+    } catch (e) {
+      console.warn('[QuotePDF] Logo preload failed (canvas):', e);
+    }
+  };
+  img.onerror = function () {
+    console.warn('[QuotePDF] Could not load logo image for PDF. Will use text fallback.');
+  };
+  img.src = 'images/logo.svg';
+})();
+
 let selectedProducts = {}; // e.g. { 'medicines_1': 2, 'diapers_3': 1 }
 let quoteDataCache = {
     medicines: typeof ProductData !== 'undefined' ? ProductData : [],
@@ -394,38 +421,34 @@ function generateSinglePDF(items, type, filenamePrefix) {
     const doc = new jsPDF();
     const user = DhiyaMedical.user;
 
-    // ── LOGO: Navy badge with gold "D" + company name ──
+    // ── LOGO: Embed actual company logo image ──
     const lx = 14, ly = 8;
 
-    // Step 1: Navy rounded square badge (background)
-    doc.setFillColor(3, 3, 88);
-    doc.roundedRect(lx, ly, 24, 24, 3, 3, 'F');
-
-    // Step 2: Gold horizontal accent stripe at bottom of badge
-    doc.setFillColor(248, 162, 23);
-    doc.rect(lx, ly + 17, 24, 7, 'F');
-
-    // Step 3: "D" letter on top (drawn AFTER the stripe, so it shows over it)
-    doc.setFontSize(20);
-    doc.setFont(undefined, 'bold');
-    doc.setTextColor(248, 162, 23);
-    doc.text("D", lx + 5, ly + 15);
-
-    // Company name (right of badge)
-    doc.setFontSize(16);
-    doc.setFont(undefined, 'bold');
-    doc.setTextColor(3, 3, 88);
-    doc.text("DHIYA MEDICAL AGENCY", lx + 28, ly + 11);
-
-    // Gold tagline bar
-    doc.setFillColor(248, 162, 23);
-    doc.rect(lx + 28, ly + 14, 82, 7, 'F');
-
-    // Tagline text on gold bar
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'bold');
-    doc.setTextColor(3, 3, 88);
-    doc.text("Empowering Health, Every Day", lx + 30, ly + 19);
+    if (cachedLogoDataUrl) {
+      // Embed the real logo image (aspect ratio ~4.2:1 from 420x100 SVG)
+      const logoW = 90, logoH = 21;
+      doc.addImage(cachedLogoDataUrl, 'PNG', lx, ly, logoW, logoH);
+    } else {
+      // Fallback: draw text-based logo if image failed to load
+      doc.setFillColor(3, 3, 88);
+      doc.roundedRect(lx, ly, 24, 24, 3, 3, 'F');
+      doc.setFillColor(248, 162, 23);
+      doc.rect(lx, ly + 17, 24, 7, 'F');
+      doc.setFontSize(20);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(248, 162, 23);
+      doc.text("D", lx + 5, ly + 15);
+      doc.setFontSize(16);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(3, 3, 88);
+      doc.text("DHIYA MEDICAL AGENCY", lx + 28, ly + 11);
+      doc.setFillColor(248, 162, 23);
+      doc.rect(lx + 28, ly + 14, 82, 7, 'F');
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(3, 3, 88);
+      doc.text("Empowering Health, Every Day", lx + 30, ly + 19);
+    }
 
     // ── License & GST (right side of header) ──
     doc.setFontSize(7);

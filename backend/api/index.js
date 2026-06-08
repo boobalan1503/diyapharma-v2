@@ -30,6 +30,8 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseKey || 'placeholder');
 
+
+
 // ==========================================
 // API Routes
 // ==========================================
@@ -317,6 +319,70 @@ app.get('/api/orders/:userId', async (req, res) => {
   } catch (error) {
     console.error('Fetch orders error:', error.message);
     res.status(500).json({ error: 'Failed to fetch orders' });
+  }
+});
+
+// ===== ENQUIRY / CONTACT FORM ROUTES =====
+
+// Receive contact form submission & store in DB
+// (Email notification is handled via EmailJS on the frontend)
+app.post('/api/enquiry', async (req, res) => {
+  const { name, email, phone, subject, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Name, email, and message are required.' });
+  }
+
+  console.log(`[Enquiry] Received from ${name} <${email}> — Subject: ${subject}`);
+
+  // Store in Supabase (enquiries table)
+  let dbSaved = false;
+  try {
+    const { error: dbError } = await supabase
+      .from('enquiries')
+      .insert([{
+        sender_name: name,
+        sender_email: email,
+        sender_phone: phone || '',
+        subject: subject || 'General Inquiry',
+        body: message,
+        status: 'Unread',
+        source: 'Contact Page'
+      }]);
+    if (dbError) {
+      console.warn('[Enquiry] DB save failed (table may not exist):', dbError.message);
+    } else {
+      dbSaved = true;
+      console.log('[Enquiry] Saved to database successfully.');
+    }
+  } catch (e) {
+    console.warn('[Enquiry] DB save error:', e.message);
+  }
+
+  res.status(201).json({
+    success: true,
+    message: 'Enquiry received successfully.',
+    dbSaved
+  });
+});
+
+// Update enquiry status (called after EmailJS sends the reply)
+app.post('/api/enquiry/status', async (req, res) => {
+  const { enquiryId, status } = req.body;
+
+  if (!enquiryId) {
+    return res.status(400).json({ error: 'Enquiry ID is required.' });
+  }
+
+  try {
+    await supabase
+      .from('enquiries')
+      .update({ status: status || 'Replied' })
+      .eq('id', enquiryId);
+    res.json({ success: true });
+  } catch (e) {
+    console.warn('[Enquiry] DB status update failed:', e.message);
+    res.status(500).json({ error: 'Failed to update status.' });
   }
 });
 

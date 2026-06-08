@@ -110,26 +110,99 @@
   <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
   <div class="footer-contact"><h4>Contact</h4><p>📍 2/178/4 Sayalkudi Main Road, Kaanavilaku, Thummuchinnampatti, Aruppukottai Tk, Virudhunagar Dt - 626118</p><p>📞 9629622844 / 8428622844</p><p>☎️ 04566 284 223</p><p>✉️ dhiyamedicalagency@gmail.com</p></div>
 </div><div class="footer-bottom"><span>© 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="js/config.js?v=8"></script>
 <script src="js/products.js?v=8"></script>
 <script src="js/app.js?v=8"></script>
 <script src="js/ui.js?v=8"></script>
 <script>
-function saveContactMessage(e) {
+// ─── EmailJS Configuration ───
+// To set up EmailJS (free, works with any Gmail):
+// 1. Go to https://www.emailjs.com/ and sign up (free tier: 200 emails/month)
+// 2. Add Gmail as an Email Service → copy Service ID
+// 3. Create an Email Template with variables: {{from_name}}, {{from_email}}, {{phone}}, {{subject}}, {{message}}
+// 4. Copy your Public Key from Account → API Keys
+// 5. Replace the values below:
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';       // ← Replace with your EmailJS Public Key
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';       // ← Replace with your EmailJS Service ID
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // ← Replace with your EmailJS Template ID
+
+// Initialize EmailJS
+if (EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
+async function saveContactMessage(e) {
   e.preventDefault();
-  const msgs = JSON.parse(localStorage.getItem('diya_messages') || '[]');
-  msgs.unshift({
-    id: 'msg_' + Date.now(),
-    sender: document.getElementById('cf_name').value.trim(),
+
+  const formData = {
+    name: document.getElementById('cf_name').value.trim(),
     email: document.getElementById('cf_email').value.trim(),
     phone: document.getElementById('cf_phone').value.trim() || '',
     subject: document.getElementById('cf_subject').value,
-    body: document.getElementById('cf_message').value.trim(),
+    message: document.getElementById('cf_message').value.trim()
+  };
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  // 1. Always save to localStorage (for admin dashboard to pick up immediately)
+  const msgs = JSON.parse(localStorage.getItem('diya_messages') || '[]');
+  msgs.unshift({
+    id: 'msg_' + Date.now(),
+    sender: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    subject: formData.subject,
+    body: formData.message,
     date: new Date().toISOString(),
     status: 'Unread',
     source: 'Contact Page'
   });
   localStorage.setItem('diya_messages', JSON.stringify(msgs));
-  if (typeof showToast === 'function') showToast('Message sent! We will respond within 24 hours.', 'success');
+
+  // 2. Send email notification via EmailJS (delivers to your Gmail)
+  let emailSent = false;
+  if (EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message
+      });
+      emailSent = true;
+      console.log('[Contact] Email sent via EmailJS.');
+    } catch (err) {
+      console.warn('[Contact] EmailJS send failed:', err);
+    }
+  }
+
+  // 3. Also POST to backend for DB storage (optional, non-blocking)
+  try {
+    const apiUrl = (typeof CONFIG !== 'undefined' && CONFIG.API_BASE_URL) ? CONFIG.API_BASE_URL : '';
+    if (apiUrl) {
+      fetch(`${apiUrl}/enquiry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).catch(() => {});
+    }
+  } catch (err) {
+    // Non-critical — localStorage + email already handled
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = originalText;
+
+  if (emailSent) {
+    if (typeof showToast === 'function') showToast('Message sent successfully! We will respond within 24 hours.', 'success');
+  } else {
+    if (typeof showToast === 'function') showToast('Message saved! We will respond within 24 hours.', 'success');
+  }
   document.getElementById('contactForm').reset();
 }
 </script>

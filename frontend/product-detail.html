@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -67,8 +67,39 @@
 const colorMap = {AUSPIN:'#0EA5E9',CURE:'#8B5CF6',GRACE:'#EC4899',MIND:'#F59E0B',PRIMA:'#0A6E3D',OPTHO:'#06B6D4',NURALZ:'#F97316',EVERMED:'#10B981',GENVIMAX:'#6366F1',MEDANOR:'#EF4444',VENTILA:'#14B8A6'};
 function changeQty(d) { const i=document.getElementById('qtyInput'); i.value=Math.max(1,parseInt(i.value||1)+d); }
 document.addEventListener('DOMContentLoaded', () => {
-  const id = parseInt(new URLSearchParams(window.location.search).get('id'));
-  const product = ProductData.find(p => p.id === id);
+  const rawId = new URLSearchParams(window.location.search).get('id');
+  // Try numeric first for catalog products, but keep raw string for admin products
+  const numericId = parseInt(rawId);
+  let product = null;
+  
+  // Search built-in catalog
+  product = ProductData.find(p => p.id === numericId || String(p.id) === String(rawId));
+  
+  // If not found, search admin-added products from localStorage
+  if (!product) {
+    try {
+      const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+      product = adminProds.find(p => String(p.id) === String(rawId));
+      if (product) {
+        // Normalize admin product fields
+        product = {
+          ...product,
+          stock: product.inStock !== false,
+          composition: product.desc || product.composition || '',
+          therapeutic: product.division || 'GENERAL',
+          form: product.form || 'Custom',
+          mrp: parseFloat(product.mrp) || 0,
+          ptr: product.ptr || (parseFloat(product.mrp) * 0.76),
+          pts: product.pts || (parseFloat(product.mrp) * 0.68),
+          packType: product.packType || '',
+          packing: product.packing || ''
+        };
+      }
+    } catch (e) {
+      console.error('[ProductDetail] Error searching admin products:', e);
+    }
+  }
+  
   if (!product) { document.querySelector('.detail-grid').innerHTML = '<div class="no-results" style="grid-column:1/-1"><h3>Product not found</h3><p><a href="products.html">Browse all products</a></p></div>'; return; }
   const col = colorMap[product.division] || '#0A6E3D';
   document.title = `${product.name} | Dhiya Medical Agency`;
@@ -96,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
     <tr><td>PTS (Stockist)</td><td class="price-highlight" style="color:var(--accent-500)">₹${product.pts.toFixed(2)}</td><td>Stockist price</td></tr>`;
   document.getElementById('addToCartBtn').addEventListener('click', () => {
     const qty = parseInt(document.getElementById('qtyInput').value) || 1;
-    DhiyaMedical.addToCart(product.id, qty);
+    DhiyaMedical.addToCart(product, qty);
   });
-  // Related products
-  const related = ProductData.filter(p => p.division === product.division && p.id !== product.id).slice(0, 4);
+  // Related products (only from catalog for admin products)
+  const related = ProductData.filter(p => p.division === product.division && String(p.id) !== String(product.id)).slice(0, 4);
   document.getElementById('relatedGrid').innerHTML = related.map(p => generateProductCard(p, true)).join('');
 });
 </script>
