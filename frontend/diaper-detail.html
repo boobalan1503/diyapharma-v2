@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail | Dhiya Medical Agency</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/diapers.css?v=7">
-  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="stylesheet" href="css/style.css?v=17">
+  <link rel="stylesheet" href="css/diapers.css?v=17">
+  <link rel="stylesheet" href="css/product-detail.css?v=17">
+  <link rel="stylesheet" href="css/responsive.css?v=17">
+  <link rel="stylesheet" href="css/sticky-buttons.css?v=17">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
   <style>
     .detail-section { padding: var(--space-10) 0 var(--space-20); }
@@ -140,10 +142,12 @@
 
 <footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
 
-<script src="js/config.js?v=7"></script>
-<script src="js/products.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
-<script src="js/ui.js?v=7"></script>
+<script src="js/config.js?v=17"></script>
+<script src="js/products.js?v=17"></script>
+<script src="js/app.js?v=17"></script>
+<script src="js/ui.js?v=17"></script>
+<script src="js/pincode.js?v=17"></script>
+<script src="js/sticky-buttons.js?v=17"></script>
 <script>
 let product = null;
 let selectedSize = 0;
@@ -273,7 +277,24 @@ function renderProduct() {
       ${mrp > salePrice ? `<span class="detail-mrp">&#8377;${mrp}</span>` : ''}
       ${discount > 0 ? `<span class="detail-discount">${discount}% OFF</span>` : ''}
     </div>
+    ${(mrp - salePrice) > 0 ? `<div style="font-size:13px;font-weight:600;color:#2e7d32;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-piggy-bank"></i> You Save: &#8377;${mrp - salePrice}</div>` : ''}
     <div class="detail-pack-info">Pack of ${sel.pack_qty || 10} pcs | Free delivery on orders above &#8377;999</div>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges-strip" style="margin:16px 0;padding:12px 0;border-top:1px solid var(--neutral-100);border-bottom:1px solid var(--neutral-100);display:flex;gap:12px;flex-wrap:wrap">
+      <div class="trust-badge-item" style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--neutral-700);padding:5px 12px;background:var(--neutral-50);border-radius:20px;border:1px solid var(--neutral-200)">
+        <i class="fa-solid fa-truck-fast" style="color:#2d6a9f"></i> Fast Delivery
+      </div>
+      <div class="trust-badge-item" style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--neutral-700);padding:5px 12px;background:var(--neutral-50);border-radius:20px;border:1px solid var(--neutral-200)">
+        <i class="fa-solid fa-pills" style="color:#2d6a9f"></i> Genuine Products
+      </div>
+      <div class="trust-badge-item" style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--neutral-700);padding:5px 12px;background:var(--neutral-50);border-radius:20px;border:1px solid var(--neutral-200)">
+        <i class="fa-solid fa-certificate" style="color:#2d6a9f"></i> Licensed Distributor
+      </div>
+    </div>
+
+    <!-- Pincode Checker -->
+    <div id="diaperPincodeWidget"></div>
 
     <div class="detail-qty">
       <div class="qty-control">
@@ -327,7 +348,7 @@ function restoreImage() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', loadProduct);
+// Removed duplicate DOMContentLoaded — see below
 
 function changeQty(delta) {
   qty = Math.max(1, qty + delta);
@@ -350,8 +371,16 @@ function addDiaperToCart() {
   DhiyaMedical.addToCart(cartItem);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadProduct();
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadProduct();
+  // Init pincode widget after product renders
+  setTimeout(() => {
+    const pincodeContainer = document.getElementById('diaperPincodeWidget');
+    if (pincodeContainer && typeof PincodeChecker !== 'undefined') {
+      pincodeContainer.innerHTML = PincodeChecker.renderWidget();
+      PincodeChecker.initAutoCheck();
+    }
+  }, 300);
   if (DhiyaMedical.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
 });
 </script>

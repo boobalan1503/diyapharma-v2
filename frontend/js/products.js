@@ -103,6 +103,32 @@ function filterProducts(filters = {}) {
 function generateProductCard(product, showWholesale = false) {
   const colorMap = { AUSPIN:'#0EA5E9', CURE:'#8B5CF6', GRACE:'#EC4899', MIND:'#F59E0B', PRIMA:'#0A6E3D', OPTHO:'#06B6D4', NURALZ:'#F97316', EVERMED:'#10B981', GENVIMAX:'#6366F1', MEDANOR:'#EF4444', VENTILA:'#14B8A6' };
   const col = colorMap[product.division] || '#0A6E3D';
+
+  // Calculate retail pricing
+  const mrp = parseFloat(product.mrp || 0);
+  const sellingPrice = parseFloat(product.ptr || mrp * 0.76);
+  const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+  const savings = mrp - sellingPrice;
+
+  // Build pricing section
+  let pricingHTML = '';
+  if (showWholesale) {
+    pricingHTML = `
+      <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">&#8377;${mrp.toFixed(2)}</span></div>
+      <div class="price-item"><span class="price-label">PTR: </span><span class="price-value">&#8377;${parseFloat(product.ptr||0).toFixed(2)}</span></div>
+      <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">&#8377;${parseFloat(product.pts||0).toFixed(2)}</span></div>`;
+  } else {
+    pricingHTML = `
+      <div class="retail-price-block">
+        <div class="retail-price-row">
+          <span class="retail-our-price">&#8377;${sellingPrice.toFixed(2)}</span>
+          <span class="retail-mrp-strike">MRP: <s>&#8377;${mrp.toFixed(2)}</s></span>
+          ${discount > 0 ? `<span class="retail-discount-badge">${discount}% OFF</span>` : ''}
+        </div>
+        ${savings > 0 ? `<div class="retail-savings">You Save: &#8377;${savings.toFixed(2)}</div>` : ''}
+      </div>`;
+  }
+
   return `
     <div class="card product-card" onclick="window.location.href='product-detail.html?id=${product.id}'">
       <span class="card-badge" style="background:${col};color:#fff">${product.division}</span>
@@ -116,9 +142,7 @@ function generateProductCard(product, showWholesale = false) {
         <p class="card-composition">${product.composition||''}</p>
         <p class="card-packing">${product.packing ? product.packing + ' | ' : ''}${product.packType}</p>
         <div class="card-pricing">
-          <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">&#8377;${parseFloat(product.mrp||0).toFixed(2)}</span></div>
-          ${showWholesale ? `<div class="price-item"><span class="price-label">PTR: </span><span class="price-value">&#8377;${parseFloat(product.ptr||0).toFixed(2)}</span></div>
-          <div class="price-item"><span class="price-label">PTS: </span><span class="price-value">&#8377;${parseFloat(product.pts||0).toFixed(2)}</span></div>` : ''}
+          ${pricingHTML}
         </div>
       </div>
     </div>`;

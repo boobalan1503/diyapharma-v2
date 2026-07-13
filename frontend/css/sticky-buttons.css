@@ -1,0 +1,184 @@
+/* ============================================
+   DHIYA MEDICAL AGENCY — Sticky Call & WhatsApp Buttons
+   Floating buttons visible on all pages
+   ============================================ */
+
+/* Container */
+.sticky-buttons {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1500;
+  align-items: flex-end;
+}
+
+/* Individual Button */
+.sticky-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease,
+              transform 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  /* Entry animation */
+  opacity: 0;
+  transform: translateX(80px);
+  animation: stickySlideIn 0.5s ease forwards;
+}
+
+.sticky-btn:nth-child(1) { animation-delay: 0.3s; }
+.sticky-btn:nth-child(2) { animation-delay: 0.5s; }
+
+@keyframes stickySlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Icon circle inside */
+.sticky-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.sticky-btn-label {
+  opacity: 0;
+  max-width: 0;
+  transition: opacity 0.25s ease, max-width 0.35s ease;
+  pointer-events: none;
+  padding-right: 0;
+}
+
+/* Hover: expand to show label */
+.sticky-btn:hover {
+  width: auto;
+  padding-right: 20px;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.sticky-btn:hover .sticky-btn-label {
+  opacity: 1;
+  max-width: 150px;
+  padding-right: 0;
+}
+
+/* WhatsApp Button */
+.sticky-btn-whatsapp {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+}
+
+.sticky-btn-whatsapp:hover {
+  background: linear-gradient(135deg, #20BD5A, #0E7A6E);
+}
+
+/* WhatsApp pulse animation */
+.sticky-btn-whatsapp::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(37, 211, 102, 0.3);
+  z-index: -1;
+  animation: whatsappPulse 2s ease-in-out infinite;
+}
+
+@keyframes whatsappPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.sticky-btn-whatsapp:hover::before {
+  animation: none;
+  opacity: 0;
+}
+
+/* Call Button */
+.sticky-btn-call {
+  background: linear-gradient(135deg, #030358, #04047a);
+}
+
+.sticky-btn-call:hover {
+  background: linear-gradient(135deg, #020240, #030358);
+}
+
+/* ---- Mobile Responsive ---- */
+@media (max-width: 768px) {
+  .sticky-buttons {
+    bottom: 16px;
+    right: 16px;
+    gap: 12px;
+  }
+
+  .sticky-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+  }
+
+  .sticky-btn-icon {
+    min-width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  /* On mobile, don't expand — keep as icon-only */
+  .sticky-btn:hover {
+    width: 50px;
+    padding-right: 0;
+  }
+
+  .sticky-btn:hover .sticky-btn-label {
+    opacity: 0;
+    max-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sticky-buttons {
+    bottom: 12px;
+    right: 12px;
+    gap: 10px;
+  }
+
+  .sticky-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 23px;
+  }
+
+  .sticky-btn-icon {
+    min-width: 46px;
+    height: 46px;
+    font-size: 18px;
+  }
+}

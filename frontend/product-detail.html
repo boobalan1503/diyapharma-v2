@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail | Dhiya Medical Agency</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/product-detail.css?v=7">
-  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="stylesheet" href="css/style.css?v=17">
+  <link rel="stylesheet" href="css/product-detail.css?v=17">
+  <link rel="stylesheet" href="css/responsive.css?v=17">
+  <link rel="stylesheet" href="css/sticky-buttons.css?v=17">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
 </head>
 <body>
@@ -35,10 +36,29 @@
         <div class="meta-item"><span class="meta-label">Therapeutic: </span><span class="meta-value" id="detailTherapeutic">—</span></div>
       </div>
       <div id="detailStock"></div>
-      <table class="pricing-table">
-        <thead><tr><th>Price Type</th><th>Amount</th><th>For</th></tr></thead>
-        <tbody id="pricingBody"></tbody>
-      </table>
+
+      <!-- Retail Pricing Block -->
+      <div class="detail-retail-pricing" id="detailRetailPricing"></div>
+
+      <!-- Trust Badges -->
+      <div class="trust-badges-strip">
+        <div class="trust-badge-item">
+          <i class="fa-solid fa-truck-fast"></i>
+          <span>Fast Delivery</span>
+        </div>
+        <div class="trust-badge-item">
+          <i class="fa-solid fa-pills"></i>
+          <span>Genuine Medicines</span>
+        </div>
+        <div class="trust-badge-item">
+          <i class="fa-solid fa-certificate"></i>
+          <span>Licensed Distributor</span>
+        </div>
+      </div>
+
+      <!-- Pincode Checker -->
+      <div id="pincodeWidget"></div>
+
       <div class="qty-selector">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="999">
@@ -61,8 +81,10 @@
 </main>
 
 <footer class="footer"><div class="container"><div class="footer-bottom"><span>© 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
-<script src="js/products.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/products.js?v=17"></script>
+<script src="js/app.js?v=17"></script>
+<script src="js/pincode.js?v=17"></script>
+<script src="js/sticky-buttons.js?v=17"></script>
 <script>
 const colorMap = {AUSPIN:'#0EA5E9',CURE:'#8B5CF6',GRACE:'#EC4899',MIND:'#F59E0B',PRIMA:'#0A6E3D',OPTHO:'#06B6D4',NURALZ:'#F97316',EVERMED:'#10B981',GENVIMAX:'#6366F1',MEDANOR:'#EF4444',VENTILA:'#14B8A6'};
 function changeQty(d) { const i=document.getElementById('qtyInput'); i.value=Math.max(1,parseInt(i.value||1)+d); }
@@ -121,18 +143,43 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.color = col;
   }
   document.getElementById('detailStock').innerHTML = product.stock ? '<div class="stock-badge stock-in">✓ In Stock</div>' : '<div class="stock-badge stock-out">✕ Out of Stock</div>';
-  document.getElementById('pricingBody').innerHTML = `
-    <tr><td>MRP (Retail)</td><td class="price-highlight">₹${product.mrp.toFixed(2)}</td><td>Per unit</td></tr>
-    <tr><td>PTR (Wholesale)</td><td class="price-highlight" style="color:var(--info)">₹${product.ptr.toFixed(2)}</td><td>Trade price</td></tr>
-    <tr><td>PTS (Stockist)</td><td class="price-highlight" style="color:var(--accent-500)">₹${product.pts.toFixed(2)}</td><td>Stockist price</td></tr>`;
+
+  // Retail Pricing Display
+  const mrp = parseFloat(product.mrp || 0);
+  const sellingPrice = parseFloat(product.ptr || mrp * 0.76);
+  const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+  const savings = mrp - sellingPrice;
+
+  document.getElementById('detailRetailPricing').innerHTML = `
+    <div class="retail-detail-pricing">
+      <div class="retail-detail-row">
+        <div class="retail-detail-main">
+          <span class="retail-detail-label">Our Price</span>
+          <span class="retail-detail-price">₹${sellingPrice.toFixed(2)}</span>
+        </div>
+        <div class="retail-detail-mrp">
+          <span class="retail-detail-label">MRP</span>
+          <span class="retail-detail-mrp-value"><s>₹${mrp.toFixed(2)}</s></span>
+        </div>
+        ${discount > 0 ? `<div class="retail-detail-discount">${discount}% OFF</div>` : ''}
+      </div>
+      ${savings > 0 ? `<div class="retail-detail-savings"><i class="fa-solid fa-piggy-bank"></i> You Save: ₹${savings.toFixed(2)}</div>` : ''}
+    </div>
+  `;
+
+  // Pincode Widget
+  document.getElementById('pincodeWidget').innerHTML = PincodeChecker.renderWidget();
+  PincodeChecker.initAutoCheck();
+
   document.getElementById('addToCartBtn').addEventListener('click', () => {
     const qty = parseInt(document.getElementById('qtyInput').value) || 1;
     DhiyaMedical.addToCart(product, qty);
   });
   // Related products (only from catalog for admin products)
   const related = ProductData.filter(p => p.division === product.division && String(p.id) !== String(product.id)).slice(0, 4);
-  document.getElementById('relatedGrid').innerHTML = related.map(p => generateProductCard(p, true)).join('');
+  document.getElementById('relatedGrid').innerHTML = related.map(p => generateProductCard(p, false)).join('');
 });
 </script>
 </body>
 </html>
+
