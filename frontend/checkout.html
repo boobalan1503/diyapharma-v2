@@ -5,27 +5,231 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout | Dhiya Medical Agency</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <link rel="stylesheet" href="css/cart.css?v=7">
-  <link rel="stylesheet" href="css/responsive.css?v=17">
-  <link rel="stylesheet" href="css/sticky-buttons.css?v=17">
+  <link rel="stylesheet" href="css/style.css?v=18">
+  <link rel="stylesheet" href="css/cart.css?v=18">
+  <link rel="stylesheet" href="css/responsive.css?v=18">
+  <link rel="stylesheet" href="css/sticky-buttons.css?v=18">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
   <style>
-    /* Recommended Section */
-    .rec-section { margin-top: var(--space-12); padding-top: var(--space-8); border-top: 1px solid var(--neutral-200); }
-    .rec-title { text-align: center; margin-bottom: var(--space-6); color: #001F5B; font-size: var(--text-2xl); }
-    .rec-grid { display: flex; gap: var(--space-6); justify-content: flex-start; overflow-x: auto; padding-bottom: 16px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
-    .rec-grid::-webkit-scrollbar { display: none; }
-    .rec-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; width: 130px; flex-shrink: 0; transition: transform 0.3s ease; }
-    .rec-card:hover { transform: translateY(-5px); }
-    .rec-img-wrap {
-      width: 110px; height: 110px; border-radius: 50%; background: #f8f9fc;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-      margin-bottom: var(--space-3); border: 2px solid var(--neutral-200);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    /* WhatsApp Checkout Styles */
+    .checkout-hero {
+      background: linear-gradient(135deg, #010120, #030358);
+      padding: var(--space-8) 0;
+      color: #fff;
+      margin-bottom: var(--space-8);
     }
-    .rec-img-wrap img { width: 75%; height: 75%; object-fit: contain; }
-    .rec-name { font-size: 11px; text-align: center; color: var(--neutral-800); font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .checkout-hero h1 { color: #fff; font-size: var(--text-3xl); margin-bottom: var(--space-2); }
+    .checkout-hero p { color: rgba(255,255,255,0.7); font-size: var(--text-sm); }
+
+    .checkout-form-card {
+      background: var(--white);
+      border: 1px solid var(--neutral-100);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .checkout-form-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 2px solid var(--neutral-100);
+    }
+    .checkout-form-card h3 i {
+      font-size: 20px;
+      color: var(--primary-500);
+    }
+
+    /* Delivery Slot Picker */
+    .slot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    .slot-date-input, .slot-time-select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      font-size: var(--text-base);
+      font-weight: 500;
+      color: var(--neutral-800);
+      background: var(--white);
+      transition: all var(--transition-fast);
+      font-family: var(--font-body);
+    }
+    .slot-date-input:focus, .slot-time-select:focus {
+      outline: none;
+      border-color: var(--primary-400);
+      box-shadow: 0 0 0 3px rgba(3,3,88,0.08);
+    }
+
+    /* WhatsApp Place Order Button */
+    .wa-order-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-heading);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: var(--space-6);
+    }
+    .wa-order-btn:hover {
+      background: linear-gradient(135deg, #20BD5A, #0E7A6E);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+    }
+    .wa-order-btn:active {
+      transform: translateY(0);
+    }
+    .wa-order-btn i {
+      font-size: 24px;
+    }
+
+    /* Order Items Preview */
+    .order-items-preview {
+      background: var(--neutral-50);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-4);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .order-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--neutral-100);
+      font-size: var(--text-sm);
+    }
+    .order-item-row:last-child { border-bottom: none; }
+    .order-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .order-item-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid var(--neutral-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .order-item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .order-item-name {
+      font-weight: 600;
+      color: var(--neutral-800);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .order-item-qty {
+      color: var(--neutral-500);
+      font-size: var(--text-xs);
+    }
+    .order-item-price {
+      font-weight: 700;
+      color: var(--primary-700);
+      white-space: nowrap;
+      margin-left: 12px;
+    }
+
+    /* Trust Strip in Checkout */
+    .checkout-trust {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--neutral-100);
+      flex-wrap: wrap;
+    }
+    .checkout-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--text-xs);
+      color: var(--neutral-500);
+      font-weight: 500;
+    }
+    .checkout-trust-item i {
+      color: var(--primary-400);
+      font-size: 14px;
+    }
+
+    /* Confirmation Screen */
+    .wa-confirm {
+      text-align: center;
+      padding: var(--space-12) var(--space-6);
+    }
+    .wa-confirm-icon {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-6);
+      font-size: 40px;
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    }
+    .wa-confirm h2 {
+      color: var(--neutral-900);
+      margin-bottom: var(--space-3);
+    }
+    .wa-confirm p {
+      color: var(--neutral-500);
+      margin-bottom: var(--space-6);
+      line-height: 1.6;
+    }
+
+    /* Form validation states */
+    .form-input.error {
+      border-color: var(--danger) !important;
+      box-shadow: 0 0 0 3px rgba(229,62,62,0.1);
+    }
+    .field-error {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: 4px;
+      display: none;
+    }
+    .field-error.show { display: block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+      .slot-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .checkout-trust { flex-direction: column; align-items: center; gap: var(--space-2); }
+    }
   </style>
 </head>
 <body>
@@ -36,211 +240,322 @@
   <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></header>
 <nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+
 <main>
-<section class="container checkout-section">
-  <div class="checkout-steps" id="checkoutSteps">
-    <div class="step active" data-step="1"><span class="step-num">1</span>Shipping</div>
-    <div class="step-line"></div>
-    <div class="step" data-step="2"><span class="step-num">2</span>Payment</div>
-    <div class="step-line"></div>
-    <div class="step" data-step="3"><span class="step-num">3</span>Confirmation</div>
+<!-- Hero -->
+<div class="checkout-hero">
+  <div class="container">
+    <div class="breadcrumb" style="color:rgba(255,255,255,.5);margin-bottom:var(--space-3)"><a href="index.html" style="color:rgba(255,255,255,.7)">Home</a><span>/</span><a href="cart.html" style="color:rgba(255,255,255,.7)">Cart</a><span>/</span><span style="color:#fff">Checkout</span></div>
+    <h1><i class="fa-brands fa-whatsapp" style="color:#25D366"></i> Order via WhatsApp</h1>
+    <p>Fill in your details and we'll send your order directly to our WhatsApp for fast processing!</p>
   </div>
+</div>
+
+<section class="container checkout-section">
   <div class="checkout-grid">
+    <!-- Main Form -->
     <div id="checkoutMain">
-      <!-- Step 1: Shipping -->
-      <div class="checkout-form" id="step1">
-        <h3>Shipping Address</h3>
-        <form id="shippingForm" onsubmit="event.preventDefault();goToStep(2);">
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-input" id="shipName" required placeholder="John Doe"></div>
-            <div class="form-group"><label class="form-label">Phone *</label><input type="tel" class="form-input" id="shipPhone" required placeholder="+91 XXXXX XXXXX"></div>
+      <!-- Customer Details Form -->
+      <div class="checkout-form-card" id="orderForm">
+        <h3><i class="fa-solid fa-user"></i> Customer Details</h3>
+        <div class="form-row" style="margin-bottom: var(--space-5)">
+          <div class="form-group">
+            <label class="form-label">Customer Name *</label>
+            <input type="text" class="form-input" id="custName" required placeholder="Your full name">
+            <div class="field-error" id="errName">Please enter your name</div>
           </div>
-          <div class="form-group"><label class="form-label">Address Line 1 *</label><input type="text" class="form-input" id="shipAddr1" required placeholder="Street address"></div>
-          <div class="form-group"><label class="form-label">Address Line 2</label><input type="text" class="form-input" id="shipAddr2" placeholder="Apartment, suite, etc."></div>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">City *</label><input type="text" class="form-input" id="shipCity" required placeholder="City"></div>
-            <div class="form-group"><label class="form-label">State *</label><input type="text" class="form-input" id="shipState" required placeholder="State"></div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number *</label>
+            <input type="tel" class="form-input" id="custPhone" required placeholder="+91 XXXXX XXXXX" maxlength="15">
+            <div class="field-error" id="errPhone">Please enter a valid mobile number</div>
           </div>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">PIN Code *</label><input type="text" class="form-input" id="shipPin" required placeholder="110001" pattern="[0-9]{6}"></div>
-            <div class="form-group"><label class="form-label">GST Number</label><input type="text" class="form-input" id="shipGST" placeholder="Optional"></div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg">Continue to Payment</button>
-        </form>
-      </div>
-      <!-- Step 2: Payment -->
-      <div class="checkout-form hidden" id="step2">
-        <h3>Payment Method</h3>
-        <div class="payment-options">
-          <label class="payment-option selected"><input type="radio" name="payment" value="cod" checked> <div><strong>Cash on Delivery</strong><br><span style="font-size:13px;color:var(--neutral-500)">Pay when you receive your order</span></div></label>
-          <label class="payment-option"><input type="radio" name="payment" value="bank"> <div><strong>Bank Transfer / NEFT</strong><br><span style="font-size:13px;color:var(--neutral-500)">Transfer to our bank account</span></div></label>
-          <label class="payment-option"><input type="radio" name="payment" value="upi"> <div><strong>UPI Payment</strong><br><span style="font-size:13px;color:var(--neutral-500)">Pay via UPI ID</span></div></label>
         </div>
-        <div style="display:flex;gap:var(--space-4)">
-          <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
-          <button class="btn btn-primary btn-lg" onclick="placeOrder()">Place Order</button>
+
+        <div class="form-group" style="margin-bottom: var(--space-5)">
+          <label class="form-label">Full Delivery Address *</label>
+          <textarea class="form-input" id="custAddress" rows="3" required placeholder="Door No., Street, Area, City, State, PIN Code" style="resize:vertical"></textarea>
+          <div class="field-error" id="errAddress">Please enter your delivery address</div>
+        </div>
+
+        <h3 style="margin-top: var(--space-6)"><i class="fa-solid fa-clock"></i> Delivery Slot</h3>
+        <div class="slot-grid" style="margin-bottom: var(--space-4)">
+          <div class="form-group">
+            <label class="form-label">Preferred Date *</label>
+            <input type="date" class="form-input slot-date-input" id="deliveryDate" required>
+            <div class="field-error" id="errDate">Please select a delivery date</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Time Slot *</label>
+            <select class="form-input slot-time-select" id="deliveryTime" required>
+              <option value="">Select time slot</option>
+              <option value="9:00 AM - 11:00 AM">9:00 AM - 11:00 AM</option>
+              <option value="11:00 AM - 1:00 PM">11:00 AM - 1:00 PM</option>
+              <option value="1:00 PM - 3:00 PM">1:00 PM - 3:00 PM</option>
+              <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
+              <option value="5:00 PM - 7:00 PM">5:00 PM - 7:00 PM</option>
+            </select>
+            <div class="field-error" id="errTime">Please select a time slot</div>
+          </div>
+        </div>
+
+        <!-- WhatsApp Order Button -->
+        <button class="wa-order-btn" id="placeOrderBtn" onclick="placeWhatsAppOrder()">
+          <i class="fa-brands fa-whatsapp"></i>
+          Place Order via WhatsApp
+        </button>
+
+        <div class="checkout-trust">
+          <div class="checkout-trust-item"><i class="fa-solid fa-lock"></i> Secure Checkout</div>
+          <div class="checkout-trust-item"><i class="fa-solid fa-truck-fast"></i> Fast Delivery</div>
+          <div class="checkout-trust-item"><i class="fa-solid fa-pills"></i> Genuine Medicines</div>
+          <div class="checkout-trust-item"><i class="fa-solid fa-certificate"></i> Licensed Distributor</div>
         </div>
       </div>
-      <!-- Step 3: Confirmation -->
-      <div class="checkout-form hidden" id="step3">
-        <div class="order-confirm">
-          <div class="check-circle"><i class="fa-solid fa-check"></i></div>
-          <h2>Order Placed Successfully!</h2>
-          <p class="order-id" id="orderId">Order ID: #DPXXXXXXX</p>
-          <p style="color:var(--neutral-500);margin-bottom:var(--space-8)">Thank you for your order. You will receive a confirmation shortly.</p>
-          <div style="display:flex;gap:var(--space-4);justify-content:center">
-            <a href="dashboard.html" class="btn btn-primary">View Orders</a>
-            <a href="products.html" class="btn btn-secondary">Continue Shopping</a>
+
+      <!-- Confirmation Screen (hidden initially) -->
+      <div class="checkout-form-card" id="confirmScreen" style="display:none">
+        <div class="wa-confirm">
+          <div class="wa-confirm-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h2>Order Sent to WhatsApp!</h2>
+          <p>Your order has been formatted and sent to our WhatsApp. We'll confirm your order and delivery time shortly.</p>
+          <p style="font-size:var(--text-sm);color:var(--neutral-400)">If WhatsApp didn't open automatically, <a href="#" id="retryWhatsApp" style="color:var(--primary-600);text-decoration:underline">click here to retry</a>.</p>
+          <div style="display:flex;gap:var(--space-4);justify-content:center;margin-top:var(--space-6)">
+            <a href="products.html" class="btn btn-primary btn-lg">Continue Shopping</a>
+            <a href="index.html" class="btn btn-secondary btn-lg">Go Home</a>
           </div>
         </div>
       </div>
     </div>
+
     <!-- Order Summary Sidebar -->
     <div class="cart-summary" id="orderSummary"></div>
   </div>
-
-  <!-- Recommended Products -->
-  <div class="rec-section" id="recommendedSection" style="display:none;">
-    <h3 class="rec-title">Recommended for You</h3>
-    <div class="rec-grid" id="recGrid"></div>
-  </div>
 </section>
 </main>
-<footer class="footer"><div class="container"><div class="footer-bottom"><span>� 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>© 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+
+<script src="js/config.js?v=18"></script>
+<script src="js/products.js?v=18"></script>
+<script src="js/app.js?v=18"></script>
+<script src="js/sticky-buttons.js?v=18"></script>
 <script>
-// AUTH GUARD � runs BEFORE any other scripts
-(function() {
-  var user = JSON.parse(localStorage.getItem('dp_user') || 'null');
-  if (!user) {
-    alert('Please login to continue to checkout');
-    window.location.href = 'login.html';
-    document.write('<h2 style="text-align:center;padding:60px">Redirecting to login...</h2>');
+/* ============================================
+   WhatsApp Checkout — Dhiya Medical Agency
+   ============================================ */
+
+const WHATSAPP_BUSINESS_NUMBER = '919629622844';
+
+// Set minimum delivery date to tomorrow
+document.addEventListener('DOMContentLoaded', () => {
+  if (DhiyaMedical.cart.length === 0) {
+    window.location.href = 'cart.html';
+    return;
   }
-})();
-</script>
-<script src="js/config.js?v=7"></script>
-<script src="js/api.js?v=7"></script>
-<script src="js/products.js?v=17"></script>
-<script src="js/app.js?v=17"></script>
-<script src="js/sticky-buttons.js?v=17"></script>
-<script>
-function renderSummary() {
-  const s = DhiyaMedical.getCartTotal();
-  const g = s * 0.12;
-  const sh = s > 5000 ? 0 : 99;
+
+  // Set min date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('deliveryDate').min = tomorrow.toISOString().split('T')[0];
+
+  renderOrderSummary();
+});
+
+function renderOrderSummary() {
+  const cart = DhiyaMedical.cart;
+  let grandTotal = 0;
+
+  // Build items HTML for sidebar
+  const itemsHTML = cart.map(item => {
+    const mrp = parseFloat(item.mrp || 0);
+    const ptr = parseFloat(item.ptr || mrp);
+    const sellingPrice = ptr || mrp;
+    const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    const lineTotal = sellingPrice * item.qty;
+    grandTotal += lineTotal;
+
+    return `
+      <div class="order-item-row">
+        <div class="order-item-left">
+          <div class="order-item-thumb">
+            ${item.img ? `<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">` : `<i class="fa-solid ${item.type === 'diaper' ? 'fa-baby' : 'fa-pills'}" style="font-size:18px;color:var(--neutral-300)"></i>`}
+          </div>
+          <div style="min-width:0">
+            <div class="order-item-name">${item.name}</div>
+            <div class="order-item-qty">Qty: ${item.qty}${discount > 0 ? ` · <span style="color:#e53e3e">${discount}% OFF</span>` : ''}</div>
+          </div>
+        </div>
+        <div class="order-item-price">₹${lineTotal.toFixed(2)}</div>
+      </div>`;
+  }).join('');
+
   document.getElementById('orderSummary').innerHTML = `
     <h3>Order Summary</h3>
-    <div style="max-height:300px;overflow-y:auto;margin-bottom:var(--space-4)">
-      ${DhiyaMedical.cart.map(i => `
-        <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid var(--neutral-100)">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:40px;height:40px;background:#f8f9fc;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--neutral-200)">
-              ${i.img ? `<img src="${i.img}" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none"><i class="fa-solid ${i.type === 'diaper' ? 'fa-baby' : 'fa-pills'}" style="font-size:20px;color:var(--neutral-300)"></i></span>` : `<span><i class="fa-solid ${i.type === 'diaper' ? 'fa-baby' : 'fa-pills'}" style="font-size:20px;color:var(--neutral-300)"></i></span>`}
-            </div>
-            <span>${i.name} &times; ${i.qty}</span>
-          </div>
-          <span style="font-weight:600">&#8377;${(i.mrp*i.qty).toFixed(2)}</span>
-        </div>
-      `).join('')}
-    </div>
-    <div class="summary-row"><span>Subtotal</span><span>&#8377;${s.toFixed(2)}</span></div>
-    <div class="summary-row"><span>GST (12%)</span><span>&#8377;${g.toFixed(2)}</span></div>
-    <div class="summary-row"><span>Shipping</span><span>${sh===0?'FREE':'&#8377;'+sh}</span></div>
-    <div class="summary-row total"><span>Total</span><span>&#8377;${(s+g+sh).toFixed(2)}</span></div>`;
+    <div class="order-items-preview">${itemsHTML}</div>
+    <div class="summary-row"><span>Items (${cart.reduce((s,i) => s + i.qty, 0)})</span><span>₹${grandTotal.toFixed(2)}</span></div>
+    <div class="summary-row total"><span>Grand Total</span><span>₹${grandTotal.toFixed(2)}</span></div>
+    <div style="text-align:center;margin-top:var(--space-4)">
+      <a href="cart.html" style="font-size:var(--text-sm);color:var(--primary-600);text-decoration:underline">← Edit Cart</a>
+    </div>`;
 }
-function goToStep(n) {
-  document.querySelectorAll('#step1,#step2,#step3').forEach(el => el.classList.add('hidden'));
-  document.getElementById('step'+n).classList.remove('hidden');
-  document.querySelectorAll('.step').forEach(st => {
-    const sn = parseInt(st.dataset.step);
-    st.classList.remove('active','done');
-    if (sn < n) st.classList.add('done');
-    if (sn === n) st.classList.add('active');
+
+function validateForm() {
+  let valid = true;
+
+  // Clear previous errors
+  document.querySelectorAll('.form-input.error').forEach(el => el.classList.remove('error'));
+  document.querySelectorAll('.field-error.show').forEach(el => el.classList.remove('show'));
+
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const date = document.getElementById('deliveryDate').value;
+  const time = document.getElementById('deliveryTime').value;
+
+  if (!name) {
+    document.getElementById('custName').classList.add('error');
+    document.getElementById('errName').classList.add('show');
+    valid = false;
+  }
+
+  // Validate phone: at least 10 digits
+  const phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.length < 10) {
+    document.getElementById('custPhone').classList.add('error');
+    document.getElementById('errPhone').classList.add('show');
+    valid = false;
+  }
+
+  if (!address || address.length < 10) {
+    document.getElementById('custAddress').classList.add('error');
+    document.getElementById('errAddress').classList.add('show');
+    valid = false;
+  }
+
+  if (!date) {
+    document.getElementById('deliveryDate').classList.add('error');
+    document.getElementById('errDate').classList.add('show');
+    valid = false;
+  }
+
+  if (!time) {
+    document.getElementById('deliveryTime').classList.add('error');
+    document.getElementById('errTime').classList.add('show');
+    valid = false;
+  }
+
+  return valid;
+}
+
+function formatDeliveryDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function buildWhatsAppMessage() {
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const date = document.getElementById('deliveryDate').value;
+  const time = document.getElementById('deliveryTime').value;
+  const cart = DhiyaMedical.cart;
+
+  let grandTotal = 0;
+  let itemLines = '';
+
+  cart.forEach(item => {
+    const mrp = parseFloat(item.mrp || 0);
+    const ptr = parseFloat(item.ptr || mrp);
+    const sellingPrice = ptr || mrp;
+    const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    const lineTotal = sellingPrice * item.qty;
+    grandTotal += lineTotal;
+
+    itemLines += `\n• ${item.name} x${item.qty}`;
+    itemLines += `\n  Retail Price: ₹${mrp.toFixed(2)}`;
+    if (discount > 0) {
+      itemLines += `\n  Discount: ${discount}%`;
+    }
+    itemLines += `\n  Final Price: ₹${sellingPrice.toFixed(2)}`;
+    if (item.qty > 1) {
+      itemLines += `\n  Line Total: ₹${lineTotal.toFixed(2)}`;
+    }
+    itemLines += '\n';
   });
+
+  const msg = `🛒 *New Order*
+
+*Customer:* ${name}
+*Mobile:* ${phone}
+
+📍 *Address:*
+${address}
+
+🕒 *Delivery Slot:*
+${formatDeliveryDate(date)} | ${time}
+
+📦 *Items:*${itemLines}
+💰 *Grand Total: ₹${grandTotal.toFixed(2)}*`;
+
+  return msg;
 }
-async function placeOrder() {
-  const btn = document.querySelector('#step2 .btn-primary');
-  btn.textContent = 'Placing Order...';
+
+function placeWhatsAppOrder() {
+  if (!validateForm()) {
+    showToast('Please fill in all required fields', 'error');
+    // Scroll to first error
+    const firstError = document.querySelector('.form-input.error');
+    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn = document.getElementById('placeOrderBtn');
   btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending to WhatsApp...';
 
-  const addr = {
-    name: document.getElementById('shipName').value,
-    phone: document.getElementById('shipPhone').value,
-    addr1: document.getElementById('shipAddr1').value,
-    addr2: document.getElementById('shipAddr2').value || '',
-    city: document.getElementById('shipCity').value,
-    state: document.getElementById('shipState').value,
-    pin: document.getElementById('shipPin').value,
-    gst: document.getElementById('shipGST').value || ''
+  const message = buildWhatsAppMessage();
+  const waURL = `https://wa.me/${WHATSAPP_BUSINESS_NUMBER}?text=${encodeURIComponent(message)}`;
+
+  // Store the URL for retry
+  document.getElementById('retryWhatsApp').href = waURL;
+  document.getElementById('retryWhatsApp').onclick = (e) => {
+    e.preventDefault();
+    window.open(waURL, '_blank');
   };
-  const payment = document.querySelector('input[name="payment"]:checked').value;
-  const subtotal = DhiyaMedical.getCartTotal();
-  const gst = subtotal * 0.12;
-  const shipping = subtotal > 5000 ? 0 : 99;
-  const total = subtotal + gst + shipping;
 
-  try {
-    const user = DhiyaMedical.user;
-    const response = await fetch(`${CONFIG.API_BASE_URL}/orders`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: user ? user.id : null,
-        items: DhiyaMedical.cart,
-        shippingAddress: addr,
-        paymentMethod: payment,
-        total: total
-      })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Order failed');
+  // Brief delay for UX, then open WhatsApp
+  setTimeout(() => {
+    window.open(waURL, '_blank');
 
+    // Clear cart
     DhiyaMedical.cart = [];
     DhiyaMedical.saveCart();
 
-    document.getElementById('orderId').textContent = 'Order ID: #DP' + data.orderId;
-    goToStep(3);
+    // Show confirmation
+    document.getElementById('orderForm').style.display = 'none';
+    document.getElementById('confirmScreen').style.display = 'block';
     document.getElementById('orderSummary').style.display = 'none';
-    showToast('Order placed successfully!', 'success');
-  } catch (error) {
-    const order = DhiyaMedical.placeOrder(addr, payment);
-    document.getElementById('orderId').textContent = 'Order ID: #' + order.id;
-    goToStep(3);
-    document.getElementById('orderSummary').style.display = 'none';
-    showToast('Order placed (saved locally)', 'warning');
-  } finally {
-    btn.textContent = 'Place Order';
+
     btn.disabled = false;
+    btn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp';
+  }, 800);
+}
+
+// Remove error styling on input
+document.addEventListener('input', (e) => {
+  if (e.target.classList.contains('error')) {
+    e.target.classList.remove('error');
+    const errEl = e.target.parentElement.querySelector('.field-error');
+    if (errEl) errEl.classList.remove('show');
   }
-}
-document.querySelectorAll('.payment-option').forEach(opt => {
-  opt.addEventListener('click', () => { document.querySelectorAll('.payment-option').forEach(o=>o.classList.remove('selected')); opt.classList.add('selected'); opt.querySelector('input').checked = true; });
 });
-
-async function loadRecommendations() {
-  try {
-    const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
-    const products = await res.json();
-    if (products && products.length > 0) {
-      const shuffled = products.sort(() => 0.5 - Math.random()).slice(0, 5);
-      const recGrid = document.getElementById('recGrid');
-      recGrid.innerHTML = shuffled.map(p => `
-        <a href="diaper-detail.html?id=${p.id}" class="rec-card">
-          <div class="rec-img-wrap">
-            ${p.image_main ? `<img src="${p.image_main}" alt="${p.name}">` : `<span style="font-size:40px;opacity:0.3">??</span>`}
-          </div>
-          <div class="rec-name">${p.name}</div>
-        </a>
-      `).join('');
-      document.getElementById('recommendedSection').style.display = 'block';
-    }
-  } catch(e) {}
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (DhiyaMedical.cart.length === 0) { window.location.href = 'cart.html'; return; }
-  renderSummary();
-  loadRecommendations();
+document.addEventListener('change', (e) => {
+  if (e.target.classList.contains('error')) {
+    e.target.classList.remove('error');
+    const errEl = e.target.parentElement.querySelector('.field-error');
+    if (errEl) errEl.classList.remove('show');
+  }
 });
 </script>
 </body>
