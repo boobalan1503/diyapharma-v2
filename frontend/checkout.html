@@ -368,9 +368,17 @@ function renderOrderSummary() {
   // Build items HTML for sidebar
   const itemsHTML = cart.map(item => {
     const mrp = parseFloat(item.mrp || 0);
-    const ptr = parseFloat(item.ptr || mrp);
-    const sellingPrice = ptr || mrp;
-    const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    let discount = 0;
+    let sellingPrice = mrp;
+    if (item.discount && parseFloat(item.discount) > 0) {
+      discount = parseFloat(item.discount);
+      sellingPrice = mrp - (mrp * discount / 100);
+    } else {
+      const ptr = parseFloat(item.ptr || mrp);
+      sellingPrice = ptr || mrp;
+      discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    }
+    sellingPrice = Math.round(sellingPrice * 100) / 100;
     const lineTotal = sellingPrice * item.qty;
     grandTotal += lineTotal;
 
@@ -466,37 +474,40 @@ function buildWhatsAppMessage() {
 
   cart.forEach(item => {
     const mrp = parseFloat(item.mrp || 0);
-    const ptr = parseFloat(item.ptr || mrp);
-    const sellingPrice = ptr || mrp;
-    const discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    // Use admin-set discount if available, otherwise calculate from PTR
+    let discount = 0;
+    let sellingPrice = mrp;
+    if (item.discount && parseFloat(item.discount) > 0) {
+      discount = parseFloat(item.discount);
+      sellingPrice = mrp - (mrp * discount / 100);
+    } else {
+      const ptr = parseFloat(item.ptr || mrp);
+      sellingPrice = ptr || mrp;
+      discount = mrp > 0 ? Math.round(((mrp - sellingPrice) / mrp) * 100) : 0;
+    }
+    sellingPrice = Math.round(sellingPrice * 100) / 100;
     const lineTotal = sellingPrice * item.qty;
     grandTotal += lineTotal;
 
-    itemLines += `\n• ${item.name} x${item.qty}`;
-    itemLines += `\n  Retail Price: ₹${mrp.toFixed(2)}`;
+    itemLines += '\n\u2022 ' + item.name + ' x' + item.qty;
+    itemLines += '\n  Retail Price: \u20B9' + mrp.toFixed(2);
     if (discount > 0) {
-      itemLines += `\n  Discount: ${discount}%`;
+      itemLines += '\n  Discount: ' + discount + '%';
     }
-    itemLines += `\n  Final Price: ₹${sellingPrice.toFixed(2)}`;
+    itemLines += '\n  Final Price: \u20B9' + sellingPrice.toFixed(2);
     if (item.qty > 1) {
-      itemLines += `\n  Line Total: ₹${lineTotal.toFixed(2)}`;
+      itemLines += '\n  Line Total: \u20B9' + lineTotal.toFixed(2);
     }
     itemLines += '\n';
   });
 
-  const msg = `🛒 *New Order*
-
-*Customer:* ${name}
-*Mobile:* ${phone}
-
-📍 *Address:*
-${address}
-
-🕒 *Delivery Slot:*
-${formatDeliveryDate(date)} | ${time}
-
-📦 *Items:*${itemLines}
-💰 *Grand Total: ₹${grandTotal.toFixed(2)}*`;
+  const msg = '\uD83D\uDED2 *New Order*\n\n'
+    + '*Customer:* ' + name + '\n'
+    + '*Mobile:* ' + phone + '\n\n'
+    + '\uD83D\uDCCD *Address:*\n' + address + '\n\n'
+    + '\uD83D\uDD52 *Delivery Slot:*\n' + formatDeliveryDate(date) + ' | ' + time + '\n\n'
+    + '\uD83D\uDCE6 *Items:*' + itemLines + '\n'
+    + '\uD83D\uDCB0 *Grand Total: \u20B9' + grandTotal.toFixed(2) + '*';
 
   return msg;
 }

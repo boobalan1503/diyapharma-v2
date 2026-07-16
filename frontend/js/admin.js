@@ -41,13 +41,7 @@ const mockOrders = Array.from({length: 15}).map((_, i) => {
   };
 });
 
-// Mock Messages (Contact Queries)
-const mockMessages = [
-  { id: 1, sender: 'Apollo Pharmacy', email: 'purchase@apollo.com', subject: 'Wholesale Partnership', body: 'We are interested in bulk ordering DiyaCET tablets. What is the MOQ and wholesale discount?', date: new Date(Date.now() - 86400000*2).toISOString(), status: 'Unread' },
-  { id: 2, sender: 'Vikram Singh', email: 'vikram.s@gmail.com', subject: 'Order Status Update', body: 'I placed order #1002 yesterday. When can I expect delivery in Chandigarh?', date: new Date(Date.now() - 86400000*1).toISOString(), status: 'Unread' },
-  { id: 3, sender: 'City Hospital', email: 'admin@cityhospital.in', subject: 'Product Information', body: 'Do you supply adult diapers in XXL sizes for hospital use? Please share the catalog.', date: new Date(Date.now() - 86400000*3).toISOString(), status: 'Replied' },
-  { id: 4, sender: 'Meera Sharma', email: 'meera99@yahoo.com', subject: 'General Inquiry', body: 'Are your face washes paraben-free?', date: new Date(Date.now() - 4000000).toISOString(), status: 'Unread' },
-];
+// Messages — only real submissions from localStorage (no mock data)
 
 let currentReplyingMessage = null;
 
@@ -111,7 +105,7 @@ function updateDashboardMetrics() {
       <div class="metric-icon" style="background:#FFEBEB; color:var(--danger)"><i class="fa-solid fa-envelope"></i></div>
       <div class="metric-info">
         <h4>Unread Messages</h4>
-        <div class="metric-value">${mockMessages.filter(m => m.status === 'Unread').length}</div>
+        <div class="metric-value">${getAllMessages().filter(m => m.status === 'Unread').length}</div>
       </div>
     </div>
   `;
@@ -172,10 +166,7 @@ function updateOrderStatus(id, newStatus) {
 // Merge mock messages with real localStorage submissions
 function getAllMessages() {
   const real = JSON.parse(localStorage.getItem('diya_messages') || '[]');
-  // Merge, avoiding duplicates by id
-  const allIds = new Set(real.map(m => m.id));
-  const merged = [...real, ...mockMessages.filter(m => !allIds.has(m.id))];
-  return merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+  return real.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 function saveMessages(arr) {
@@ -379,6 +370,7 @@ function saveAdminProduct() {
   const name = document.getElementById('ap_name').value.trim();
   const division = document.getElementById('ap_division').value;
   const mrp = parseFloat(document.getElementById('ap_mrp').value);
+  const discount = parseFloat(document.getElementById('ap_discount').value) || 0;
   const inStock = document.getElementById('ap_stock').checked;
   const desc = document.getElementById('ap_desc').value.trim();
   if (!name || !division || !mrp) {
@@ -387,7 +379,7 @@ function saveAdminProduct() {
   const products = getAdminProducts();
   const newProduct = {
     id: 'adm_' + Date.now(),
-    name, division, mrp, inStock, desc,
+    name, division, mrp, discount, inStock, desc,
     img: adminProductImageDataUrl,
     form: 'Custom', addedAt: new Date().toISOString()
   };
@@ -398,6 +390,7 @@ function saveAdminProduct() {
   document.getElementById('ap_name').value = '';
   document.getElementById('ap_division').value = '';
   document.getElementById('ap_mrp').value = '';
+  document.getElementById('ap_discount').value = '';
   document.getElementById('ap_desc').value = '';
   document.getElementById('ap_stock').checked = true;
   document.getElementById('apImgPreviewWrap').innerHTML = '<i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i><span style="font-size:13px;color:var(--neutral-400)">Click to upload image</span>';
@@ -485,6 +478,7 @@ function openEditProductModal(id, source) {
   document.getElementById('ep_name').value = product.name || '';
   document.getElementById('ep_division').value = product.division || '';
   document.getElementById('ep_mrp').value = product.mrp || '';
+  document.getElementById('ep_discount').value = product.discount || '';
   document.getElementById('ep_stock').checked = product.inStock !== false && product.stock !== false;
   document.getElementById('ep_desc').value = product.composition || product.desc || '';
   document.getElementById('ep_source').value = source;
@@ -519,6 +513,7 @@ function saveEditedProduct() {
   const name = document.getElementById('ep_name').value.trim();
   const division = document.getElementById('ep_division').value.trim();
   const mrp = parseFloat(document.getElementById('ep_mrp').value);
+  const discount = parseFloat(document.getElementById('ep_discount').value) || 0;
   const inStock = document.getElementById('ep_stock').checked;
   const desc = document.getElementById('ep_desc').value.trim();
   
@@ -530,18 +525,18 @@ function saveEditedProduct() {
     const products = getAdminProducts();
     const idx = products.findIndex(p => String(p.id) === String(id));
     if (idx >= 0) {
-      products[idx] = { ...products[idx], name, division, mrp, inStock, desc, img: epImageDataUrl || products[idx].img };
+      products[idx] = { ...products[idx], name, division, mrp, discount, inStock, desc, img: epImageDataUrl || products[idx].img };
       saveAdminProducts(products);
     }
   } else {
     // Store catalog overrides in localStorage
     const overrides = JSON.parse(localStorage.getItem('catalog_overrides') || '{}');
-    overrides[String(id)] = { name, division, mrp, inStock, desc, img: epImageDataUrl };
+    overrides[String(id)] = { name, division, mrp, discount, inStock, desc, img: epImageDataUrl };
     localStorage.setItem('catalog_overrides', JSON.stringify(overrides));
     // Also update in-memory ProductData
     if (typeof ProductData !== 'undefined') {
       const p = ProductData.find(p => String(p.id) === String(id));
-      if (p) { p.name = name; p.division = division; p.mrp = mrp; p.stock = inStock; if (epImageDataUrl) p.img = epImageDataUrl; }
+      if (p) { p.name = name; p.division = division; p.mrp = mrp; p.discount = discount; p.stock = inStock; if (epImageDataUrl) p.img = epImageDataUrl; }
     }
   }
   
