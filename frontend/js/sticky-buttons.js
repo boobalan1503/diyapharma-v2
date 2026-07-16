@@ -6,7 +6,7 @@
 (function() {
   'use strict';
 
-  const PHONE_NUMBER = '919629622844';
+  const PHONE_NUMBER = '918428622844';
   const WHATSAPP_MESSAGE = encodeURIComponent('Hi Dhiya Medical Agency! I would like to enquire about your products.');
 
   function createStickyButtons() {
