@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Dhiya Medical Agency</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="stylesheet" href="css/auth.css?v=7">
+  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<header class="header"><div class="container">
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
+  <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a><span class="btn btn-sm btn-primary" id="logoutBtn" onclick="DhiyaMedical.logout();window.location.href='login.html'">Logout</span></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></header>
+<nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="#" onclick="DhiyaMedical.logout();window.location.href='login.html'">Logout</a></nav>
+<main>
+<section class="container dash-section">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Dashboard</span></div>
+  <div class="dashboard-grid">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="dashAvatar">U</div>
+        <div class="sidebar-name" id="dashName">User</div>
+        <div class="sidebar-email" id="dashEmail">user@email.com</div>
+        <div class="badge badge-success" style="margin-top:8px" id="dashType">Retail</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="active" onclick="showPanel('orders',this)"><i class="fa-solid fa-box"></i> Orders</a>
+        <a href="#" onclick="showPanel('profile',this)"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="#" onclick="showPanel('addresses',this)"><i class="fa-solid fa-location-dot"></i> Addresses</a>
+        <a href="#" onclick="showPanel('settings',this)"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+    <div class="dash-content">
+      <!-- Orders Panel -->
+      <div id="panel-orders">
+        <h2>My Orders</h2>
+        <div class="dash-stats" id="dashStats"></div>
+        <div id="ordersContent"></div>
+      </div>
+      <!-- Profile Panel -->
+      <div id="panel-profile" class="hidden">
+        <h2>My Profile</h2>
+        <form onsubmit="event.preventDefault();showToast('Profile updated!','success')">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="profName"></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="profEmail"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" id="profPhone"></div>
+            <div class="form-group"><label class="form-label">Drug License</label><input type="text" class="form-input" id="profLicense"></div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:8px">Save Changes</button>
+        </form>
+      </div>
+      <!-- Addresses Panel -->
+      <div id="panel-addresses" class="hidden">
+        <h2>Saved Addresses</h2>
+        <p style="color:var(--neutral-500);margin-bottom:var(--space-6)">Manage your delivery addresses for faster checkout.</p>
+        <div id="addressList"></div>
+        <button class="btn btn-secondary" style="margin-top:var(--space-4)" onclick="showToast('Address form coming soon','info')">+ Add New Address</button>
+      </div>
+      <!-- Settings Panel -->
+      <div id="panel-settings" class="hidden">
+        <h2>Settings</h2>
+        <div class="form-group"><label class="form-label">Notifications</label>
+          <label class="filter-option"><input type="checkbox" checked> Email notifications for order updates</label>
+          <label class="filter-option"><input type="checkbox" checked> SMS notifications</label>
+          <label class="filter-option"><input type="checkbox"> WhatsApp notifications</label>
+        </div>
+        <div class="form-group" style="margin-top:var(--space-8)"><label class="form-label" style="color:var(--danger)">Danger Zone</label>
+          <button class="btn btn-sm" style="border:2px solid var(--danger);color:var(--danger)" onclick="if(confirm('Delete account?')){DhiyaMedical.logout();window.location.href='index.html'}">Delete Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer"><div class="container"><div class="footer-bottom"><span>&copy; 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+<script src="js/products.js?v=7"></script>
+<script src="js/app.js?v=7"></script>
+<script>
+function showPanel(name, link) {
+  document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
+  document.getElementById('panel-' + name).classList.remove('hidden');
+  if (link) { document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active')); link.classList.add('active'); }
+  // On mobile, scroll to the content panel so user sees it immediately
+  var content = document.querySelector('.dash-content');
+  if (content && window.innerWidth <= 768) {
+    content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  return false;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (!DhiyaMedical.user) { window.location.href = 'login.html'; return; }
+  const u = DhiyaMedical.user;
+  document.getElementById('dashAvatar').textContent = (u.name || u.email || 'U')[0].toUpperCase();
+  document.getElementById('dashName').textContent = u.name || 'User';
+  document.getElementById('dashEmail').textContent = u.email || '';
+  document.getElementById('dashType').textContent = (u.type || 'retail').charAt(0).toUpperCase() + (u.type || 'retail').slice(1);
+  document.getElementById('profName').value = u.name || '';
+  document.getElementById('profEmail').value = u.email || '';
+  document.getElementById('profPhone').value = u.phone || '';
+  document.getElementById('profLicense').value = u.license || '';
+  // Stats
+  const orders = DhiyaMedical.orders;
+  document.getElementById('dashStats').innerHTML = `
+    <div class="dash-stat"><div class="dash-stat-number">${orders.length}</div><div class="dash-stat-label">Total Orders</div></div>
+    <div class="dash-stat"><div class="dash-stat-number">&#8377;${orders.reduce((s,o)=>s+o.total,0).toFixed(0)}</div><div class="dash-stat-label">Total Spent</div></div>
+    <div class="dash-stat"><div class="dash-stat-number">${orders.filter(o=>o.status==='Processing').length}</div><div class="dash-stat-label">Pending</div></div>`;
+  // Orders
+  if (orders.length === 0) {
+    document.getElementById('ordersContent').innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--neutral-500)"><div style="font-size:48px;margin-bottom:16px"><i class="fa-solid fa-box-open"></i></div><h3>No orders yet</h3><p>Start shopping to see your orders here.</p><a href="products.html" class="btn btn-primary" style="margin-top:16px">Browse Products</a></div>';
+  } else {
+    document.getElementById('ordersContent').innerHTML = `<table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>${orders.map(o => `<tr><td style="font-weight:600">#${o.id}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.items.length} items</td><td style="font-weight:700">₹${(o.total+o.gst+(o.shipping||0)).toFixed(2)}</td><td><span class="status-badge status-processing">${o.status}</span></td></tr>`).join('')}</tbody></table>`;
+  }
+  // Addresses
+  const addr = u.addresses || [];
+  document.getElementById('addressList').innerHTML = addr.length === 0 ? '<p style="color:var(--neutral-400)">No saved addresses yet.</p>' : addr.map(a => `<div class="card" style="padding:16px;margin-bottom:12px"><strong>${a.name}</strong><br>${a.addr1}, ${a.city}, ${a.state} - ${a.pin}</div>`).join('');
+});
+</script>
+</body>
+</html>

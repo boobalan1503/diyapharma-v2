@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Dhiya Medical Agency — Tablets, Surgicals & Diapers</title>
+  <meta name="description" content="Browse Dhiya Medical Agency products: Tablets, Surgical items, and Adult Diapers. Quality pharmaceutical products at competitive pricing.">
+  <link rel="stylesheet" href="css/style.css?v=16">
+  <link rel="stylesheet" href="css/products.css?v=16">
+  <link rel="stylesheet" href="css/quote.css?v=16">
+  <link rel="stylesheet" href="css/responsive.css?v=17">
+  <link rel="stylesheet" href="css/sticky-buttons.css?v=17">
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+  <style>
+    /* ===== 3-Tab Category System ===== */
+    .category-tabs-bar {
+      background: #fff;
+      border-bottom: 2px solid var(--neutral-100);
+      padding: var(--space-4) 0;
+      position: sticky;
+      top: var(--header-height);
+      z-index: 50;
+    }
+    .category-tabs {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .cat-tab {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 32px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid var(--neutral-200);
+      color: var(--neutral-600);
+      background: var(--white);
+      transition: all var(--transition-base);
+    }
+    .cat-tab i { font-size: 18px; }
+    .cat-tab:hover {
+      border-color: var(--primary-700);
+      color: var(--primary-700);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(3,3,88,0.12);
+    }
+    .cat-tab.active {
+      background: linear-gradient(135deg, #030358, #04047a);
+      color: #fff;
+      border-color: #030358;
+      box-shadow: 0 6px 20px rgba(3,3,88,0.30);
+      transform: translateY(-2px);
+    }
+    .cat-tab.active i { color: #f8a217; }
+    .cat-tab-count {
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .cat-tab:not(.active) .cat-tab-count {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+    /* Diapers CTA card */
+    .diaper-redirect-card {
+      background: linear-gradient(135deg, #010120, #030358);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-10);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      gap: var(--space-8);
+      box-shadow: 0 8px 32px rgba(3,3,88,0.25);
+    }
+    .diaper-redirect-card h3 { color: #fff; margin-bottom: 8px; font-size: var(--text-2xl); }
+    .diaper-redirect-card p { color: rgba(255,255,255,0.8); font-size: var(--text-base); }
+    .diaper-redirect-img {
+      font-size: 80px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .diaper-grid-preview {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+      margin-top: var(--space-8);
+    }
+    @media (max-width:768px) {
+      .cat-tab { padding: 10px 18px; font-size: 11px; gap: 6px; }
+      .cat-tab i { font-size: 14px; }
+      .diaper-redirect-card { flex-direction: column; text-align: center; padding: var(--space-6); }
+      .diaper-grid-preview { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width:480px) {
+      .category-tabs { gap: var(--space-2); }
+      .cat-tab { padding: 8px 12px; }
+      .diaper-grid-preview { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header"><div class="container">
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Products</a>
+    <a href="diapers.html">Diapers</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a>
+    <a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a>
+    <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-sm btn-primary">Get Quote</a>
+  </div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="products.html" class="active">Products</a>
+  <a href="diapers.html">Diapers</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="login.html">Account</a>
+  <a href="cart.html">Cart</a>
+</nav>
+
+<main>
+<!-- Hero Banner -->
+<section class="products-hero">
+  <div class="container">
+    <div class="breadcrumb" style="color:rgba(255,255,255,.6)">
+      <a href="index.html" style="color:rgba(255,255,255,.8)">Home</a>
+      <span>/</span>
+      <span style="color:#fff" id="breadcrumbCat">Products</span>
+    </div>
+    <h1 style="font-size:var(--text-3xl);color:#fff" id="pageTitle">Product Catalogue</h1>
+    <p style="color:rgba(255,255,255,0.8);margin-top:8px" id="pageSubtitle">Quality formulations across all therapeutic divisions</p>
+  </div>
+</section>
+
+<!-- ===== 5 CATEGORY TABS ===== -->
+<section class="category-tabs-bar">
+  <div class="container">
+    <div class="category-tabs" style="flex-wrap:wrap;gap:8px">
+      <button class="cat-tab active" id="tabTablets" onclick="switchCategory('tablets')">
+        <i class="fa-solid fa-pills"></i>
+        Tablets &amp; Medicines
+        <span class="cat-tab-count" id="countTablets">52</span>
+      </button>
+      <button class="cat-tab" id="tabSurgicals" onclick="switchCategory('surgicals')">
+        <i class="fa-solid fa-syringe"></i>
+        Surgicals
+        <span class="cat-tab-count" id="countSurgicals">0</span>
+      </button>
+      <button class="cat-tab" id="tabDiapers" onclick="switchCategory('diapers')">
+        <i class="fa-solid fa-baby"></i>
+        Diapers
+        <span class="cat-tab-count" id="countDiapers">–</span>
+      </button>
+      <button class="cat-tab" id="tabOtc" onclick="switchCategory('otc')">
+        <i class="fa-solid fa-box-open"></i>
+        OTC Products
+        <span class="cat-tab-count" id="countOtc">0</span>
+      </button>
+      <button class="cat-tab" id="tabCovers" onclick="switchCategory('covers')">
+        <i class="fa-solid fa-prescription-bottle-medical"></i>
+        Medicine Covers
+        <span class="cat-tab-count" id="countCovers">0</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABLETS / MEDICINES PANEL ===== -->
+<div id="panelTablets">
+  <section class="container" style="padding:var(--space-5) var(--space-6) 0">
+    <!-- Search -->
+    <div class="search-bar">
+      <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <input type="text" id="searchInput" placeholder="Search by product name or composition...">
+    </div>
+    <!-- Toolbar -->
+    <div class="products-toolbar">
+      <div class="toolbar-left">
+        <div class="filter-dropdowns">
+          <select class="filter-select" id="filterFormSelect">
+            <option value="">All Forms</option>
+          </select>
+          <select class="filter-select" id="filterTherapeuticSelect">
+            <option value="">All Therapeutic</option>
+          </select>
+        </div>
+        <button class="btn btn-sm btn-secondary" id="clearFilters"><i class="fa-solid fa-xmark"></i> Clear</button>
+        <span class="products-count">Showing <strong id="resultCount">0</strong> products</span>
+      </div>
+      <div class="toolbar-right">
+        <div class="wholesale-toggle">
+          <span>Wholesale</span>
+          <div class="toggle-switch" id="wholesaleToggle"></div>
+        </div>
+        <div class="products-sort">
+          <label>Sort:</label>
+          <select class="sort-select" id="sortSelect">
+            <option value="name-asc">A → Z</option>
+            <option value="name-desc">Z → A</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="newest">Newest First</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="productGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+</div>
+
+<!-- ===== SURGICALS PANEL ===== -->
+<div id="panelSurgicals" style="display:none">
+  <section class="container" style="padding:var(--space-10) var(--space-6) var(--space-16)">
+    <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200)">
+      <i class="fa-solid fa-syringe" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+      <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">Surgical Products</h3>
+      <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Our surgical catalogue is being updated. Contact us directly for surgical product availability, pricing, and bulk orders.</p>
+      <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for Surgicals</a>
+    </div>
+  </section>
+</div>
+
+<!-- ===== DIAPERS PANEL ===== -->
+<div id="panelDiapers" style="display:none">
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="diaperGrid">
+      <div style="text-align:center;padding:40px;color:var(--neutral-400);grid-column:1/-1">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;margin-bottom:12px;display:block"></i>
+        Loading diapers...
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== OTC PRODUCTS PANEL ===== -->
+<div id="panelOtc" style="display:none">
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="otcGrid">
+      <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200);grid-column:1/-1" id="otcEmptyState">
+        <i class="fa-solid fa-box-open" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+        <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">OTC Products</h3>
+        <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Over-the-counter healthcare products. Admin can add products under the <strong>OTC PRODUCTS</strong> category to display them here.</p>
+        <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for OTC Products</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MEDICINE COVERS PANEL ===== -->
+<div id="panelCovers" style="display:none">
+  <section class="container" style="padding:var(--space-4) var(--space-6) var(--space-16)">
+    <div class="product-grid" id="coversGrid">
+      <div style="text-align:center;padding:var(--space-20) var(--space-8);background:var(--neutral-50);border-radius:var(--radius-xl);border:2px dashed var(--neutral-200);grid-column:1/-1" id="coversEmptyState">
+        <i class="fa-solid fa-prescription-bottle-medical" style="font-size:60px;color:var(--primary-300);margin-bottom:var(--space-6);display:block"></i>
+        <h3 style="color:var(--primary-700);margin-bottom:var(--space-3)">Medicine Covers</h3>
+        <p style="color:var(--neutral-500);max-width:480px;margin:0 auto var(--space-6)">Packaging and cover solutions for medicines. Admin can add products under the <strong>MEDICINE COVERS</strong> category to display them here.</p>
+        <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Contact for Medicine Covers</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
+<footer class="footer"><div class="container"><div class="footer-grid">
+  <div class="footer-brand">
+    <a href="index.html" class="logo" style="margin-bottom:var(--space-3)"><img src="images/logo-white.svg" alt="Dhiya Medical Agency" style="height:44px"></a>
+    <p>Your trusted pharmaceutical partner delivering quality healthcare solutions.</p>
+  </div>
+  <div class="footer-links"><h4>Quick Links</h4><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+  <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Reviews</a></div>
+  <div class="footer-contact footer-contact-col"><h4>Contact</h4><p><i class="fa-solid fa-phone"></i> 9629622844 / 8428622844</p><p><i class="fa-solid fa-phone-volume"></i> 04566 284 223</p><p><i class="fa-solid fa-envelope"></i> dhiyamedicalagency@gmail.com</p><p><i class="fa-solid fa-clock"></i> Mon-Sat: 9AM to 6PM</p></div>
+</div><div class="footer-bottom"><span>© 2026 Dhiya Medical Agency. All rights reserved.</span><span>Empowering Health, Every Day</span></div></div></footer>
+</main>
+
+<!-- ===== QUOTATION MODAL ===== -->
+<div class="quote-modal-overlay" id="quoteModal">
+  <div class="quote-modal">
+    <div class="quote-modal-header">
+      <h3>Request a Quotation</h3>
+      <button class="quote-close" onclick="closeQuoteModal()">&times;</button>
+    </div>
+    <div class="quote-body" id="quoteSelectionView">
+      <div class="quote-selection-header" style="flex-direction:column; align-items:stretch; gap:16px;">
+        <div style="display:flex; border-bottom:1px solid var(--neutral-200); padding-bottom:8px; gap:16px;" id="quoteCategoryTabs">
+          <button class="btn btn-sm btn-primary" id="tabMedicines" onclick="switchQuoteCategory('medicines')" style="flex:1">💊 Medicines</button>
+          <button class="btn btn-sm btn-secondary" id="tabDiapers" onclick="switchQuoteCategory('diapers')" style="flex:1">🩲 Diapers</button>
+        </div>
+        <div style="display:flex; gap:8px; width:100%; flex-wrap:wrap; align-items:center;">
+          <input type="text" class="quote-search" id="quoteSearch" placeholder="Search products..." oninput="filterQuoteProducts(this.value)" style="flex:1; min-width:200px;">
+          <div style="display:flex; gap:8px; width:100%;">
+            <button class="btn btn-sm btn-primary" onclick="selectAllProducts()" style="flex:1;">Select All</button>
+            <button class="btn btn-sm btn-secondary" onclick="clearAllProducts()" style="flex:1;">Clear All</button>
+          </div>
+        </div>
+      </div>
+      <div class="quote-product-list" id="quoteProductList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+    
+    <div class="quote-body hidden" id="quoteOptionsView" style="text-align:center; padding:var(--space-6) var(--space-4);">
+      <h3 style="margin-bottom:var(--space-4)">How would you like your quotation?</h3>
+      <p style="color:var(--neutral-600); margin-bottom:var(--space-6)">You have selected both Medicines and Diapers. You can generate a combined invoice or separate them.</p>
+      <div style="display:flex; flex-direction:column; gap:var(--space-3); max-width:300px; margin:0 auto;">
+        <button class="btn btn-primary" onclick="proceedToInvoice('combined')">📄 Generate Combined Invoice</button>
+        <button class="btn btn-accent" onclick="proceedToInvoice('separate')">📄📄 Generate Separate Invoices</button>
+      </div>
+    </div>
+    
+    <div class="quote-body hidden" id="quoteInvoiceView">
+      <div class="invoice-view" id="invoiceContent">
+        <div class="invoice-header">
+          <div class="invoice-brand">
+            <div class="invoice-logo" style="display:flex;align-items:center;gap:10px">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" width="50" height="50">
+                <rect x="5" y="5" width="7" height="80" fill="#030358" rx="2"/>
+                <rect x="5" y="5" width="48" height="8" fill="#030358" rx="2"/>
+                <rect x="5" y="77" width="48" height="8" fill="#030358" rx="2"/>
+                <path d="M22 13 Q78 13 78 45 Q78 77 22 77 L22 63 Q58 63 58 45 Q58 27 22 27 Z" fill="#f8a217"/>
+                <rect x="12" y="13" width="10" height="64" fill="#030358"/>
+                <rect x="14" y="36" width="18" height="18" fill="#f8a217" rx="2"/>
+                <rect x="19" y="28" width="8" height="34" fill="#f8a217" rx="2"/>
+              </svg>
+              <div>
+                <div style="font-size:16px;font-weight:800;color:#030358;letter-spacing:0.5px;line-height:1.1">DHIYA MEDICAL AGENCY</div>
+                <div style="background:#f8a217;padding:2px 8px;border-radius:3px;margin-top:3px;display:inline-block">
+                  <span style="font-size:10px;font-weight:700;color:#030358;letter-spacing:1px">Empowering Health, Every Day</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="invoice-user-details" id="invoiceUserDetails">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        
+        <h4>Estimated Quotation</h4>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Composition</th>
+              <th>Packing</th>
+              <th style="text-align:center">Qty</th>
+              <th style="text-align:right">Unit Price</th>
+              <th style="text-align:right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        
+        <div class="invoice-totals">
+          <div class="total-row"><span>Subtotal</span><span id="quoteSubtotal">₹0.00</span></div>
+          <div class="total-row"><span>GST (12%)</span><span id="quoteTax">₹0.00</span></div>
+          <div class="total-row grand-total"><span>Grand Total</span><span id="quoteGrandTotal">₹0.00</span></div>
+        </div>
+        <div style="clear:both"></div>
+      </div>
+    </div>
+
+    <div class="quote-footer">
+      <div id="selectionActions">
+        <span style="font-size:14px;color:var(--neutral-600);margin-right:var(--space-4)" id="selectedCount">0 products selected</span>
+        <button class="btn btn-secondary" onclick="closeQuoteModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnGenerateQuote" disabled onclick="generateQuotation()">Generate Quotation</button>
+      </div>
+      <div id="invoiceActions" class="hidden">
+        <button class="btn btn-secondary" onclick="backToSelection()">← Back to Selection</button>
+        <button class="btn btn-accent" onclick="viewAndDownloadPDF()">📄 View / Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="js/config.js?v=15"></script>
+<script src="js/api.js?v=15"></script>
+<script src="js/products.js?v=15"></script>
+<script src="js/app.js?v=15"></script>
+<script src="js/ui.js?v=15"></script>
+<script src="js/quote.js?v=17"></script>
+<script src="js/sticky-buttons.js?v=17"></script>
+<script>
+/* ============================================================
+   Dhiya Medical Agency — Products Page with 5-Tab Category System
+   Tabs: Tablets/Medicines | Surgicals | Diapers | OTC | Medicine Covers
+   ============================================================ */
+
+const PER_PAGE = 16;
+let currentPage = 1;
+let showWholesale = false;
+let activeFilters = {};
+let currentCategory = 'tablets';
+
+/* ---- Category switcher ---- */
+const ALL_TABS = ['Tablets','Surgicals','Diapers','Otc','Covers'];
+function switchCategory(cat) {
+  currentCategory = cat;
+  // Update tab UI - hide all panels and remove active from all tabs
+  ALL_TABS.forEach(c => {
+    const tabEl = document.getElementById('tab' + c);
+    const panelEl = document.getElementById('panel' + c);
+    if (tabEl) tabEl.classList.remove('active');
+    if (panelEl) panelEl.style.display = 'none';
+  });
+  
+  const capCat = cat.charAt(0).toUpperCase() + cat.slice(1);
+  const tabEl = document.getElementById('tab' + capCat);
+  const panelEl = document.getElementById('panel' + capCat);
+  if (tabEl) tabEl.classList.add('active');
+  if (panelEl) panelEl.style.display = 'block';
+
+  // Update breadcrumb + title
+  const titles = { 
+    tablets: 'Tablets & Medicines', 
+    surgicals: 'Surgical Products', 
+    diapers: 'Adult Diapers',
+    otc: 'OTC Products',
+    covers: 'Medicine Covers'
+  };
+  const subtitles = {
+    tablets: 'Quality formulations across all therapeutic divisions',
+    surgicals: 'Surgical and medical supplies',
+    diapers: 'Premium adult diaper collection',
+    otc: 'Over-the-counter healthcare products',
+    covers: 'Medicine packaging and cover solutions'
+  };
+  document.getElementById('breadcrumbCat').textContent = titles[cat] || cat;
+  document.getElementById('pageTitle').textContent = titles[cat] || cat;
+  document.getElementById('pageSubtitle').textContent = subtitles[cat] || '';
+
+  // Load content per category
+  if (cat === 'diapers') loadDiaperPreview();
+  if (cat === 'otc') loadAdminCategoryProducts('OTC PRODUCTS', 'otcGrid', 'otcEmptyState', 'countOtc');
+  if (cat === 'covers') loadAdminCategoryProducts('MEDICINE COVERS', 'coversGrid', 'coversEmptyState', 'countCovers');
+  // Scroll to the products area (tabs bar) so user sees products
+  const tabsBar = document.querySelector('.category-tabs-bar');
+  if (tabsBar) {
+    setTimeout(() => {
+      tabsBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+}
+
+/* ---- Load admin-added products for a given category ---- */
+function loadAdminCategoryProducts(categoryName, gridId, emptyId, countId) {
+  const grid = document.getElementById(gridId);
+  const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+  const catProds = adminProds.filter(p => (p.division || '').toUpperCase() === categoryName.toUpperCase());
+  
+  const countEl = document.getElementById(countId);
+  if (countEl) countEl.textContent = catProds.length || 0;
+
+  if (catProds.length === 0) {
+    // show the empty state placeholder
+    const emptyEl = document.getElementById(emptyId);
+    if (emptyEl) emptyEl.style.display = 'block';
+    return;
+  }
+  // Hide empty state, show products
+  const emptyEl = document.getElementById(emptyId);
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  const formattedProds = catProds.map(p => ({
+    ...p,
+    stock: p.inStock !== false,
+    isNew: true,
+    composition: p.desc || '',
+    therapeutic: p.division,
+    packing: '',
+    packType: '',
+    ptr: p.mrp * 0.76,
+    pts: p.mrp * 0.68
+  }));
+  grid.innerHTML = formattedProds.map(p => generateProductCard(p, showWholesale)).join('');
+}
+
+
+/* ---- Products (Tablets/Medicines) ---- */
+function populateDropdowns() {
+  const formSelect = document.getElementById('filterFormSelect');
+  Forms.forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f; opt.textContent = f;
+    formSelect.appendChild(opt);
+  });
+  formSelect.addEventListener('change', () => {
+    activeFilters.form = formSelect.value || undefined;
+    if (!formSelect.value) delete activeFilters.form;
+    currentPage = 1; renderProducts();
+  });
+
+  const therSelect = document.getElementById('filterTherapeuticSelect');
+  Therapeutics.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    therSelect.appendChild(opt);
+  });
+  therSelect.addEventListener('change', () => {
+    activeFilters.therapeutic = therSelect.value || undefined;
+    if (!therSelect.value) delete activeFilters.therapeutic;
+    currentPage = 1; renderProducts();
+  });
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  const results = filterProducts({ ...activeFilters });
+  document.getElementById('resultCount').textContent = results.length;
+  const totalPages = Math.ceil(results.length / PER_PAGE);
+  currentPage = Math.min(currentPage, totalPages || 1);
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageItems = results.slice(start, start + PER_PAGE);
+  if (pageItems.length === 0) {
+    grid.innerHTML = '<div class="no-results" style="grid-column:1/-1"><h3>No products found</h3><p>Try adjusting your filters or search terms.</p></div>';
+  } else {
+    grid.innerHTML = pageItems.map(p => generateProductCard(p, showWholesale)).join('');
+  }
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const c = document.getElementById('pagination');
+  if (totalPages <= 1) { c.innerHTML = ''; return; }
+  let html = `<button class="page-btn ${currentPage===1?'disabled':''}" onclick="goPage(${currentPage-1})">&#10094;</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 2) {
+      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    } else if (Math.abs(i - currentPage) === 3) {
+      html += `<span style="padding:0 8px;color:var(--neutral-400)">…</span>`;
+    }
+  }
+  html += `<button class="page-btn ${currentPage===totalPages?'disabled':''}" onclick="goPage(${currentPage+1})">&#10095;</button>`;
+  c.innerHTML = html;
+}
+
+function goPage(p) { currentPage = p; renderProducts(); window.scrollTo({top:200,behavior:'smooth'}); }
+
+/* ---- Diaper preview (loads from API) ---- */
+let diaperPreviewLoaded = false;
+async function loadDiaperPreview() {
+  if (diaperPreviewLoaded) return;
+  diaperPreviewLoaded = true;
+  const grid = document.getElementById('diaperGrid');
+  try {
+    const res = await fetch(`${CONFIG.API_BASE_URL}/diaper-products`);
+    const diapers = await res.json();
+    if (!diapers || diapers.length === 0) throw new Error('empty');
+    grid.innerHTML = diapers.map(d => {
+      const sizes = (typeof d.sizes === 'string' ? JSON.parse(d.sizes) : d.sizes) || [];
+      const first = sizes[0] || {};
+      const mrp = first.mrp || 0;
+      const sale = first.sale_price || 0;
+      const discount = mrp > 0 ? Math.round(((mrp - sale) / mrp) * 100) : 0;
+      const sizeChips = sizes.slice(0, 3).map(s => `<span style="padding:2px 8px;border-radius:4px;background:#eeeefc;font-size:10px;font-weight:600;color:#030358;border:1px solid #d8d8f5">${s.size}</span>`).join('');
+      return `
+        <div class="card product-card" onclick="window.location='diaper-detail.html?id=${d.id}'" style="cursor:pointer">
+          <div class="card-img-wrap" style="background:var(--neutral-50);padding:20px;display:flex;align-items:center;justify-content:center;height:180px">
+            ${d.image_main ? `<img src="${d.image_main}" alt="${d.name}" style="max-height:100%;object-fit:contain">` : '<span style="font-size:60px">🩲</span>'}
+          </div>
+          <div class="card-body">
+            <div class="card-form">${d.brand || 'Adult Diaper'}</div>
+            <h4 class="card-title">${d.name}</h4>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">${sizeChips}</div>
+            <div class="card-pricing">
+              <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">₹${mrp}</span></div>
+              ${discount > 0 ? `<div class="price-item"><span style="background:#f8a217;color:#030358;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700">${discount}% OFF</span></div>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    document.getElementById('countDiapers').textContent = diapers.length;
+  } catch(e) {
+    // Fallback static diapers
+    const staticDiapers = [
+      { id:1, name:'Friends Premium Adult Diaper', brand:'Friends', img:'images/diapers/friends_premium-removebg-preview.png', sizes:['M','L'], mrp:999, sale:799 },
+      { id:2, name:'Friends Easy Adult Diaper', brand:'Friends', img:'images/diapers/friends easy adult diaper.jpeg', sizes:['L','XL'], mrp:849, sale:699 },
+      { id:3, name:'Dignity Premium Adult Diaper', brand:'Dignity', img:'images/diapers/diginity premium diape pant type.jpg', sizes:['M','L'], mrp:1099, sale:899 },
+      { id:4, name:'Dignity Plus Pull-Up Pant', brand:'Dignity', img:'images/diapers/diginity front view.png', sizes:['M','L'], mrp:899, sale:749 },
+      { id:5, name:'KareIn Adult Diaper Pants', brand:'KareIn', img:'images/diapers/karein_diaper-removebg-preview.png', sizes:['M','L'], mrp:399, sale:330 },
+      { id:6, name:'KareIn Premium Underpads', brand:'KareIn', img:'images/diapers/kareln underpads.jpeg', sizes:['60x90cm'], mrp:349, sale:290 },
+    ];
+    grid.innerHTML = staticDiapers.map(d => {
+        const discount = Math.round(((d.mrp - d.sale) / d.mrp) * 100);
+        const sizeChips = d.sizes.map(s => `<span style="padding:2px 8px;border-radius:4px;background:#eeeefc;font-size:10px;font-weight:600;color:#030358;border:1px solid #d8d8f5">${s}</span>`).join('');
+        return `
+        <div class="card product-card" onclick="window.location='diaper-detail.html?id=${d.id}'" style="cursor:pointer">
+          <div class="card-img-wrap" style="background:var(--neutral-50);padding:20px;display:flex;align-items:center;justify-content:center;height:180px">
+            <img src="${d.img}" alt="${d.name}" onerror="this.style.display='none'" style="max-height:100%;object-fit:contain">
+          </div>
+          <div class="card-body">
+            <div class="card-form">${d.brand}</div>
+            <h4 class="card-title">${d.name}</h4>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">${sizeChips}</div>
+            <div class="card-pricing">
+              <div class="price-item"><span class="price-label">MRP: </span><span class="price-value mrp">₹${d.mrp}</span></div>
+              ${discount > 0 ? `<div class="price-item"><span style="background:#f8a217;color:#030358;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700">${discount}% OFF</span></div>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    document.getElementById('countDiapers').textContent = staticDiapers.length;
+  }
+}
+
+/* ---- Init ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  populateDropdowns();
+
+  // Update tablets count
+  document.getElementById('countTablets').textContent = ProductData.length;
+
+  // Search
+  const search = document.getElementById('searchInput');
+  let searchTimer;
+  search.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      activeFilters.search = search.value;
+      currentPage = 1; renderProducts();
+    }, 300);
+  });
+
+  // Sort
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    activeFilters.sort = e.target.value; renderProducts();
+  });
+
+  // Wholesale
+  document.getElementById('wholesaleToggle').addEventListener('click', function() {
+    this.classList.toggle('active'); showWholesale = this.classList.contains('active'); renderProducts();
+  });
+
+  // Clear
+  document.getElementById('clearFilters').addEventListener('click', () => {
+    activeFilters = {};
+    search.value = '';
+    document.getElementById('filterFormSelect').value = '';
+    document.getElementById('filterTherapeuticSelect').value = '';
+    currentPage = 1; renderProducts();
+  });
+
+  // Check URL param for category
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  if (cat === 'diapers') switchCategory('diapers');
+  else if (cat === 'surgicals') switchCategory('surgicals');
+  else if (cat === 'otc') switchCategory('otc');
+  else if (cat === 'covers') switchCategory('covers');
+
+  // Pre-load tab counts for admin products and diapers from API
+  (function preloadCounts() {
+    const adminProds = JSON.parse(localStorage.getItem('admin_products') || '[]');
+    const otcCount    = adminProds.filter(p => (p.division || '').toUpperCase() === 'OTC PRODUCTS').length;
+    const coversCount = adminProds.filter(p => (p.division || '').toUpperCase() === 'MEDICINE COVERS').length;
+    const diaperAdminCount = adminProds.filter(p => (p.division || '').toUpperCase() === 'DIAPERS').length;
+
+    // OTC & Covers: always show count
+    document.getElementById('countOtc').textContent    = otcCount;
+    document.getElementById('countCovers').textContent = coversCount;
+
+    // Diapers: set to loading indicator
+    const diaperCountEl = document.getElementById('countDiapers');
+    diaperCountEl.textContent = diaperAdminCount > 0 ? diaperAdminCount : '...';
+
+    // Fetch live count from API — use CONFIG if ready, else build URL from window.location
+    const apiBase = (typeof CONFIG !== 'undefined' && CONFIG.API_BASE_URL)
+      ? CONFIG.API_BASE_URL
+      : 'https://diyapharma-v2.onrender.com/api';
+
+    fetch(`${apiBase}/diaper-products`)
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(d => {
+        const apiCount = Array.isArray(d) ? d.length : 0;
+        diaperCountEl.textContent = apiCount + diaperAdminCount;
+      })
+      .catch(() => {
+        // Fallback: use static count (6 known diapers) + admin
+        diaperCountEl.textContent = 6 + diaperAdminCount;
+      });
+  })();
+
+  renderProducts();
+
+  if (DhiyaMedical && DhiyaMedical.user) {
+    const b = document.getElementById('navAuth');
+    if (b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; }
+  }
+});
+</script>
+</body>
+</html>
+

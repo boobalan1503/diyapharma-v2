@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Register | Dhiya Medical Agency</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="stylesheet" href="css/auth.css?v=7">
+  <link rel="stylesheet" href="css/responsive.css?v=7">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<body>
+<header class="header"><div class="container">
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
+  <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></header>
+<nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+<main>
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-icon" style="background:linear-gradient(135deg,var(--primary-600),var(--primary-400));color:#fff;display:flex;align-items:center;justify-content:center">D</div>
+      <h3>Welcome to Dhiya Medical Agency</h3>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchTab('login')">Login</div>
+      <div class="auth-tab" onclick="switchTab('register')">Register</div>
+    </div>
+    <!-- Login Form -->
+    <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="loginEmail" placeholder="your@email.com" required></div>
+      <div class="form-group"><label class="form-label">Password</label><a href="#" class="forgot-link" onclick="showForgotPassword(event)">Forgot Password?</a><input type="password" class="form-input" id="loginPassword" placeholder="Enter password" required minlength="6"></div>
+      <button type="submit" class="btn btn-primary btn-lg w-full">Login</button>
+      <div class="auth-divider">or</div>
+      <button type="button" class="social-btn" id="googleLoginBtn" onclick="handleGoogleSignIn()">
+        <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px;vertical-align:middle;flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+    </form>
+    <!-- Forgot Password Form -->
+    <form class="auth-form" id="forgotForm" onsubmit="handleForgotPassword(event)">
+      <div style="text-align:center;margin-bottom:20px">
+        <span style="font-size:40px;color:var(--primary-600)"><i class="fa-solid fa-envelope"></i></span>
+        <h3 style="margin-top:12px;font-size:18px">Reset Your Password</h3>
+        <p style="color:#666;font-size:14px;margin-top:8px">Enter your registered email address. We will send you a password reset link.</p>
+      </div>
+      <div class="form-group"><label class="form-label">Registered Email</label><input type="email" class="form-input" id="forgotEmail" placeholder="your@email.com" required></div>
+      <button type="submit" class="btn btn-primary btn-lg w-full">Send Reset Link</button>
+      <div style="text-align:center;margin-top:16px"><a href="#" style="color:var(--primary-600);font-size:14px;font-weight:500" onclick="backToLogin(event)"><i class="fa-solid fa-chevron-left"></i> Back to Login</a></div>
+    </form>
+    <!-- Register Form -->
+    <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+      <div class="account-type-selector">
+        <div class="type-option selected" onclick="selectType(this,'retail')"><span class="type-icon"><i class="fa-solid fa-store"></i></span>Retail</div>
+        <div class="type-option" onclick="selectType(this,'wholesale')"><span class="type-icon"><i class="fa-solid fa-truck"></i></span>Wholesale</div>
+        <div class="type-option" onclick="selectType(this,'admin')"><span class="type-icon"><i class="fa-solid fa-gear"></i></span>Admin</div>
+      </div>
+      <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-input" id="regName" placeholder="John Doe" required></div>
+      <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input" id="regEmail" placeholder="your@email.com" required></div>
+      <div class="form-group"><label class="form-label">Phone *</label><input type="tel" class="form-input" id="regPhone" placeholder="+91 XXXXX XXXXX" required></div>
+      <div class="form-group"><label class="form-label">Password *</label><input type="password" class="form-input" id="regPassword" placeholder="Min 6 characters" required minlength="6"></div>
+      
+      <!-- Dynamic Fields -->
+      <div class="form-group" id="licenseGroup"><label class="form-label">Drug License Number</label><input type="text" class="form-input" id="regLicense" placeholder="DL-XXX-XXXXX"></div>
+      <div class="form-group" id="adminSecretGroup" style="display:none;">
+        <label class="form-label" style="color:var(--danger)">Admin Security Key *</label>
+        <input type="password" class="form-input" id="regAdminKey" placeholder="Enter secret auth code" style="border-color:var(--danger)">
+        <small style="color:var(--neutral-500);font-size:12px;">Only authorized personnel can create Admin accounts.</small>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg w-full">Create Account</button>
+      <div class="auth-divider">or</div>
+      <button type="button" class="social-btn" id="googleRegBtn" onclick="handleGoogleSignIn()">
+        <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px;vertical-align:middle;flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Sign Up with Google
+      </button>
+    </form>
+  </div>
+</section>
+</main>
+<script src="js/config.js?v=7"></script>
+<script src="js/api.js?v=7"></script>
+<script src="js/products.js?v=7"></script>
+<script src="js/app.js?v=7"></script>
+<script>
+// ── Google Sign-In ──────────────────────────────────────────────────────────
+function handleGoogleSignIn() {
+  if (!window.google || !window.google.accounts) {
+    showToast('Google services are loading, please try again.', 'warning');
+    return;
+  }
+  const clientId = (typeof CONFIG !== 'undefined') ? CONFIG.GOOGLE_CLIENT_ID : '';
+  if (!clientId || clientId.includes('YOUR_GOOGLE')) {
+    showToast('Google Sign-In not configured yet. Please contact admin.', 'warning');
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: clientId,
+    callback: onGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+  });
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fallback to popup
+      google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: 'email profile openid',
+        callback: (tokenResponse) => {
+          if (tokenResponse.error) { showToast('Google sign-in failed: ' + tokenResponse.error, 'error'); return; }
+          fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+          })
+          .then(r => r.json())
+          .then(profile => signInWithGoogleProfile(profile))
+          .catch(() => showToast('Could not fetch Google profile.', 'error'));
+        }
+      }).requestAccessToken({ prompt: 'select_account' });
+    }
+  });
+}
+
+function onGoogleCredential(response) {
+  // Decode the JWT credential (base64 payload, no signature check needed client-side)
+  try {
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    signInWithGoogleProfile({ name: payload.name, email: payload.email, picture: payload.picture, sub: payload.sub });
+  } catch(e) {
+    showToast('Google sign-in error. Please try again.', 'error');
+  }
+}
+
+function signInWithGoogleProfile(profile) {
+  const user = {
+    id: 'google_' + (profile.sub || Date.now()),
+    name: profile.name || profile.email,
+    email: profile.email,
+    type: 'retail',
+    avatar: profile.picture || '',
+    loginMethod: 'google',
+    loginAt: new Date().toISOString()
+  };
+  DhiyaMedical.user = user;
+  DhiyaMedical.saveUser();
+  showToast('Welcome, ' + user.name + '!', 'success');
+  setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+}
+
+let accountType = 'retail';
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => { t.classList.toggle('active', (tab==='login'?i===0:i===1)); });
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('registerForm').classList.toggle('active', tab==='register');
+}
+function selectType(el, type) {
+  accountType = type;
+  document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  
+  // Show/Hide dynamic fields
+  document.getElementById('licenseGroup').style.display = (type === 'wholesale' || type === 'retail') ? 'block' : 'none';
+  
+  const adminGroup = document.getElementById('adminSecretGroup');
+  const adminKeyInput = document.getElementById('regAdminKey');
+  if (type === 'admin') {
+    adminGroup.style.display = 'block';
+    adminKeyInput.required = true;
+  } else {
+    adminGroup.style.display = 'none';
+    adminKeyInput.required = false;
+  }
+}
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  const ogText = btn.textContent;
+  
+  if (email && password.length >= 6) {
+    try {
+      btn.textContent = 'Logging in...';
+      btn.disabled = true;
+      
+      const data = await API.login(email, password);
+      
+      // Store user in app state
+      DhiyaMedical.user = data.user;
+      localStorage.setItem('dp_user', JSON.stringify(data.user));
+      
+      showToast('Login successful! Welcome back.', 'success');
+      
+      // Dynamic Routing: Admins to Dashboard, Users to Homepage
+      setTimeout(() => {
+        if (data.user.type === 'admin') {
+          sessionStorage.setItem('diya_admin_auth', 'true');
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          window.location.href = 'index.html'; // Homepage!
+        }
+      }, 1000);
+    } catch (error) {
+      showToast(error.message, 'error', 5000);
+      btn.textContent = ogText;
+      btn.disabled = false;
+    }
+  }
+}
+async function handleRegister(e) {
+  e.preventDefault();
+  const password = document.getElementById('regPassword').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  const ogText = btn.textContent;
+
+  // Security Check for Admin Registration
+  if (accountType === 'admin') {
+    const secretKey = document.getElementById('regAdminKey').value;
+    if (secretKey !== 'DIYA-ADMIN-2026') {
+      showToast('Invalid Admin Security Key. Registration blocked.', 'error');
+      return;
+    }
+  }
+
+  const data = {
+    name: document.getElementById('regName').value,
+    email: document.getElementById('regEmail').value,
+    phone: document.getElementById('regPhone').value,
+    password: password,
+    type: accountType,
+    license: document.getElementById('regLicense').value
+  };
+
+  try {
+    btn.textContent = 'Creating...';
+    btn.disabled = true;
+    
+    const response = await API.register(data);
+    
+    // Store user in app state
+    DhiyaMedical.user = response.user;
+    localStorage.setItem('dp_user', JSON.stringify(response.user));
+
+    showToast('Account created successfully!', 'success');
+    
+    // Route after registration
+    setTimeout(() => {
+      if (response.user.type === 'admin') {
+        sessionStorage.setItem('diya_admin_auth', 'true');
+        window.location.href = 'admin-dashboard.html';
+      } else {
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+  } catch (error) {
+    showToast(error.message || 'Registration failed.', 'error');
+    btn.textContent = ogText;
+    btn.disabled = false;
+  }
+}
+function showForgotPassword(e) {
+  e.preventDefault();
+  document.getElementById('loginForm').classList.remove('active');
+  document.getElementById('registerForm').classList.remove('active');
+  document.getElementById('forgotForm').classList.add('active');
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+}
+function backToLogin(e) {
+  e.preventDefault();
+  document.getElementById('forgotForm').classList.remove('active');
+  document.getElementById('loginForm').classList.add('active');
+  document.querySelectorAll('.auth-tab').forEach((t,i) => { if(i===0) t.classList.add('active'); });
+}
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgotEmail').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  const ogText = btn.textContent;
+
+  try {
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const response = await fetch(`${CONFIG.API_BASE_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Failed to send reset link');
+
+    showToast('Password reset link sent to your email! Check your inbox.', 'success', 10000);
+    setTimeout(() => backToLogin(new Event('click')), 3000);
+  } catch (error) {
+    showToast(error.message || 'Failed to send reset link.', 'error', 10000);
+  } finally {
+    btn.textContent = ogText;
+    btn.disabled = false;
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (DhiyaMedical.user) window.location.href = 'dashboard.html';
+});
+</script>
+</body>
+</html>

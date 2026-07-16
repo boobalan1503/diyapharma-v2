@@ -1,0 +1,313 @@
+/* ============================================
+   DIYA PHARMA — Quotation System Styles
+   ============================================ */
+
+.quote-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+}
+
+.quote-modal-overlay.active { display: flex; }
+
+/* ── Modal uses CSS Grid: header / body / footer ── */
+.quote-modal {
+    background: #fff;
+    width: 94%;
+    max-width: 950px;
+    height: 88vh;
+    border-radius: var(--radius-xl);
+    display: grid;
+    grid-template-rows: auto 1fr auto;  /* header | scrollable body | footer */
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.quote-modal-header {
+    padding: var(--space-4) var(--space-6);
+    background: var(--primary-900);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quote-modal-header h3 { margin: 0; color: #fff; }
+
+.quote-close {
+    font-size: 28px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #fff;
+    opacity: 0.8;
+}
+.quote-close:hover { opacity: 1; }
+
+/* ── Body wrapper: the 1fr grid row, scrollable ── */
+.quote-modal-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+    height: 100%;
+    position: relative;
+}
+
+/* Each view panel inside the wrapper */
+.quote-body {
+    padding: var(--space-6);
+    /* No min-height here — let the scroll container control height */
+}
+
+.quote-body.hidden { display: none !important; }
+
+/* ── Sticky search/tabs header inside scrollable body ── */
+.quote-selection-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    padding: var(--space-4) 0 var(--space-3);
+    margin: calc(-1 * var(--space-6)) 0 var(--space-4);
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.quote-search {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--neutral-100);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.quote-product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-3);
+}
+
+.quote-product-item {
+    padding: 12px;
+    border: 1px solid var(--neutral-100);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quote-product-item:hover {
+    border-color: var(--primary-200);
+    background: var(--primary-50);
+}
+
+.quote-product-item.selected {
+    background: var(--primary-50);
+    border-color: var(--primary-500);
+}
+
+.quote-product-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--primary-600);
+}
+
+.quote-product-info { flex: 1; min-width: 0; }
+.quote-product-info h4 { margin: 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.quote-product-info p { margin: 0; font-size: 11px; color: var(--neutral-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Quantity Controls */
+.quote-qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--neutral-200);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-700);
+    transition: all 0.15s;
+}
+
+.qty-btn:hover {
+    background: var(--primary-600);
+    color: #fff;
+    border-color: var(--primary-600);
+}
+
+.qty-display {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--primary-900);
+}
+
+/* Invoice Step */
+.invoice-view { padding: var(--space-4); }
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+    border-bottom: 2px solid var(--neutral-100);
+    padding-bottom: var(--space-4);
+}
+
+.invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--primary-900);
+}
+
+.invoice-user-details h4 { margin-bottom: var(--space-2); color: var(--primary-900); font-size: 14px; }
+.invoice-user-details p { margin: 2px 0; font-size: 13px; color: var(--neutral-600); }
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--space-6);
+}
+
+.invoice-table th {
+    text-align: left;
+    padding: 10px 8px;
+    background: var(--neutral-50);
+    border-bottom: 2px solid var(--neutral-200);
+    font-size: 12px;
+    color: var(--neutral-700);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.invoice-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--neutral-100);
+    font-size: 13px;
+}
+
+.invoice-totals {
+    float: right;
+    width: 260px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.total-row.grand-total {
+    border-top: 2px solid var(--primary-500);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--primary-900);
+    margin-top: 8px;
+    padding-top: 10px;
+}
+
+/* ── Footer: always pinned at bottom (3rd grid row) ── */
+.quote-footer {
+    padding: 12px var(--space-6);
+    border-top: 2px solid var(--neutral-200);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--neutral-50);
+    min-height: 60px;
+}
+
+#selectionActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#invoiceActions {
+    display: none;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#invoiceActions.visible { display: flex !important; }
+
+/* Generate Quotation button visual state */
+#btnGenerateQuote:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+#btnGenerateQuote:not(:disabled) {
+    opacity: 1;
+    animation: pulse-btn 1.5s ease-in-out infinite;
+}
+@keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 4px 16px rgba(3,3,88,0.30); }
+    50% { box-shadow: 0 6px 24px rgba(3,3,88,0.55); }
+}
+
+/* About section video fix */
+.about-image video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .quote-modal {
+        width: 100%;
+        height: 100dvh;  /* uses dynamic viewport height on mobile */
+        border-radius: 0;
+    }
+    .quote-product-list {
+        grid-template-columns: 1fr;
+    }
+    .quote-search { width: 100%; }
+    .invoice-header {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+    .invoice-totals { float: none; width: 100%; }
+    .invoice-table th, .invoice-table td { padding: 6px 4px; font-size: 11px; }
+    .quote-footer {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px var(--space-4);
+    }
+    #selectionActions, #invoiceActions { flex-wrap: wrap; justify-content: center; }
+}

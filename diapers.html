@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adult Diapers Collection | Dhiya Medical Agency</title>
+  <meta name="description" content="Shop premium adult diapers from top brands - Dignity, Friends, Lifree, KareIn, Seni. Pant style, tape style, and underpads.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=16">
+  <link rel="stylesheet" href="css/diapers.css?v=16">
+  <link rel="stylesheet" href="css/responsive.css?v=17">
+  <link rel="stylesheet" href="css/sticky-buttons.css?v=17">
+
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<header class="header"><div class="container">
+  <a href="index.html" class="logo"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a>
+  <nav class="nav-links"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html" class="active">Diapers</a><a href="about.html">About Us</a><a href="contact.html">Contact</a></nav>
+  <div class="nav-actions"><a href="cart.html" class="nav-cart"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge cart-count" style="display:none">0</span></a><a href="login.html" class="btn btn-sm btn-secondary" id="navAuth">Login</a></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></header>
+<nav class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="products.html">Products</a><a href="diapers.html" class="active">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="login.html">Account</a><a href="cart.html">Cart</a></nav>
+
+<main>
+<!-- Hero Banner -->
+<section class="diaper-hero" id="diaperHero">
+  <div class="container">
+    <div class="diaper-hero-content">
+      <div class="section-label" style="color:rgba(255,255,255,0.8)">Adult Care Collection</div>
+      <h1>Premium Adult Diapers</h1>
+      <p>Top-quality diapers from India's most trusted brands. Comfort, absorbency, and dignity - all in one.</p>
+      <div class="diaper-brands-strip">
+        <span class="bubble-tag" style="animation-delay: 0s">Dignity</span>
+        <span class="bubble-tag" style="animation-delay: 0.2s">Friends</span>
+        <span class="bubble-tag" style="animation-delay: 0.4s">Lifree</span>
+        <span class="bubble-tag" style="animation-delay: 0.6s">KareIn</span>
+        <span class="bubble-tag" style="animation-delay: 0.8s">Seni</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Tabs -->
+<section class="diaper-tabs-section">
+  <div class="container">
+    <div class="diaper-tabs" id="categoryTabs">
+      <button class="diaper-tab active" data-category="all">All Products</button>
+    </div>
+  </div>
+</section>
+
+<!-- Products by Category -->
+<section class="container diaper-products-section">
+  <div id="diaperContent">
+    <div class="diaper-loading">
+      <div class="spinner"></div>
+      <p>Loading products...</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-grid">
+  <div class="footer-brand"><a href="index.html" class="logo" style="color:#fff"><img src="images/logo.svg" alt="Dhiya Medical Agency"></a><p>Your trusted pharmaceutical partner.</p></div>
+  <div class="footer-links"><h4>Quick Links</h4><a href="products.html">Products</a><a href="diapers.html">Diapers</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+  <div class="footer-links"><h4>Company</h4><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+  <div class="footer-contact"><h4>Contact</h4><p><i class="fa-solid fa-phone"></i> 9629622844 / 8428622844</p><p><i class="fa-solid fa-phone-volume"></i> 04566 284 223</p><p><i class="fa-solid fa-envelope"></i> dhiyamedicalagency@gmail.com</p></div>
+</div><div class="footer-bottom"><span>&copy; 2026 Dhiya Medical Agency. All rights reserved.</span></div></div></footer>
+
+<script src="js/config.js?v=17"></script>
+<script src="js/products.js?v=17"></script>
+<script src="js/app.js?v=17"></script>
+<script src="js/ui.js?v=17"></script>
+<script src="js/sticky-buttons.js?v=17"></script>
+<script>
+let allDiapers = [];
+let categories = [];
+let activeCategory = 'all';
+let activeBrand = 'all';
+
+async function loadDiaperData() {
+  try {
+    const [catRes, prodRes] = await Promise.all([
+      fetch(`${CONFIG.API_BASE_URL}/diaper-categories`),
+      fetch(`${CONFIG.API_BASE_URL}/diaper-products`)
+    ]);
+    categories = await catRes.json();
+    allDiapers = await prodRes.json();
+
+    // Build category tabs
+    const tabsEl = document.getElementById('categoryTabs');
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'diaper-tab';
+      btn.dataset.category = cat.id;
+      btn.textContent = cat.name;
+      btn.onclick = () => {
+        activeCategory = cat.id;
+        document.querySelectorAll('.diaper-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        collapseHero();
+        renderDiapers();
+      };
+      tabsEl.appendChild(btn);
+    });
+
+    // Brand tabs from data
+    const brands = [...new Set(allDiapers.map(d => d.brand))];
+    brands.forEach(brand => {
+      const btn = document.createElement('button');
+      btn.className = 'diaper-tab diaper-tab-brand';
+      btn.dataset.brand = brand;
+      btn.textContent = brand;
+      btn.onclick = () => filterByBrand(brand);
+      tabsEl.appendChild(btn);
+    });
+
+    // "All" tab handler
+    tabsEl.querySelector('[data-category="all"]').onclick = () => {
+      activeCategory = 'all';
+      activeBrand = 'all';
+      document.querySelectorAll('.diaper-tab').forEach(t => t.classList.remove('active'));
+      tabsEl.querySelector('[data-category="all"]').classList.add('active');
+      restoreHero();
+      renderDiapers();
+    };
+
+    renderDiapers();
+  } catch (error) {
+    // API failed � use static fallback data
+    categories = [{id:1, name:'Adult Diapers'}, {id:2, name:'Baby Diapers'}, {id:3, name:'Pull-ups'}];
+    allDiapers = [
+      {id:1,name:'Friends Premium Adult Diaper',brand:'Friends',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:999,sale_price:799,pack_qty:10},{size:'L',mrp:1099,sale_price:899,pack_qty:10}],rating:4.8,is_new:true,image_main:'images/diapers/friends_premium-removebg-preview.png'},
+      {id:2,name:'Friends Easy Adult Diaper',brand:'Friends',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'L',mrp:849,sale_price:699,pack_qty:10},{size:'XL',mrp:949,sale_price:799,pack_qty:10}],rating:4.5,is_new:false,image_main:'images/diapers/friends easy adult diaper.jpeg'},
+      {id:3,name:'Dignity Premium Adult Diaper',brand:'Dignity',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:1099,sale_price:899,pack_qty:10},{size:'L',mrp:1199,sale_price:999,pack_qty:10}],rating:4.7,is_new:false,image_main:'images/diapers/diginity premium diape pant type.jpg'},
+      {id:4,name:'Dignity Plus Pull-Up Pant',brand:'Dignity',category_id:3,diaper_categories:{name:'Pull-ups',slug:'pullups'},sizes:[{size:'M',mrp:899,sale_price:749,pack_qty:10},{size:'L',mrp:999,sale_price:849,pack_qty:10}],rating:4.6,is_new:true,image_main:'images/diapers/diginity front view.png'},
+      {id:5,name:'KareIn Adult Diaper Pants',brand:'KareIn',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'M',mrp:399,sale_price:330,pack_qty:10},{size:'L',mrp:449,sale_price:370,pack_qty:10}],rating:4.5,is_new:false,image_main:'images/diapers/karein_diaper-removebg-preview.png'},
+      {id:6,name:'KareIn Premium Underpads',brand:'KareIn',category_id:1,diaper_categories:{name:'Adult Diapers',slug:'adult'},sizes:[{size:'60x90cm',mrp:349,sale_price:290,pack_qty:10}],rating:4.4,is_new:true,image_main:'images/diapers/kareln underpads.jpeg'},
+    ];
+    const tabsEl = document.getElementById('categoryTabs');
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'diaper-tab'; btn.dataset.category = cat.id; btn.textContent = cat.name;
+      btn.onclick = () => { activeCategory = cat.id; document.querySelectorAll('.diaper-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); collapseHero(); renderDiapers(); };
+      tabsEl.appendChild(btn);
+    });
+    
+    // "All" tab handler for fallback
+    const allTab = tabsEl.querySelector('[data-category="all"]');
+    if (allTab) {
+      allTab.onclick = () => {
+        activeCategory = 'all';
+        activeBrand = 'all';
+        document.querySelectorAll('.diaper-tab').forEach(t => t.classList.remove('active'));
+        allTab.classList.add('active');
+        restoreHero();
+        renderDiapers();
+      };
+    }
+    
+    renderDiapers();
+  }
+}
+
+function collapseHero() {
+  const hero = document.getElementById('diaperHero');
+  if (hero && !hero.classList.contains('collapsed')) {
+    hero.classList.add('collapsed');
+  }
+}
+
+function restoreHero() {
+  const hero = document.getElementById('diaperHero');
+  if (hero) hero.classList.remove('collapsed');
+}
+
+function filterByBrand(brand) {
+  activeBrand = brand;
+  activeCategory = 'all';
+
+  // Update sticky category tabs to active
+  document.querySelectorAll('.diaper-tab').forEach(t => t.classList.remove('active'));
+  
+  // Highlight the clicked brand tab in the sticky bar
+  document.querySelectorAll('.diaper-tab-brand').forEach(t => {
+    if (t.dataset.brand === brand) {
+      t.classList.add('active');
+    }
+  });
+  if (brand === 'all') {
+    document.querySelector('[data-category="all"]').classList.add('active');
+  }
+
+  collapseHero();
+  renderDiapers();
+}
+
+function renderDiapers() {
+  const content = document.getElementById('diaperContent');
+  let filtered = activeCategory === 'all' ? allDiapers : allDiapers.filter(d => d.category_id == activeCategory);
+  // Apply brand filter
+  if (activeBrand !== 'all') {
+    filtered = filtered.filter(d => d.brand === activeBrand);
+  }
+
+  if (filtered.length === 0) {
+    content.innerHTML = '<div class="diaper-loading"><p>No products found.</p></div>';
+    return;
+  }
+
+  // Group by category
+  const grouped = {};
+  filtered.forEach(d => {
+    const catName = d.diaper_categories?.name || 'Other';
+    if (!grouped[catName]) grouped[catName] = [];
+    grouped[catName].push(d);
+  });
+
+  let html = '';
+  for (const [catName, products] of Object.entries(grouped)) {
+    html += `
+      <div class="diaper-category-section">
+        <h2 class="diaper-category-title">${catName}</h2>
+        <div class="diaper-grid">
+          ${products.map(p => renderDiaperCard(p)).join('')}
+        </div>
+      </div>
+    `;
+  }
+  content.innerHTML = html;
+}
+
+function renderDiaperCard(product) {
+  let sizes = product.sizes || [];
+  if (typeof sizes === 'string') sizes = JSON.parse(sizes);
+  const firstSize = sizes[0] || {};
+  const mrp = firstSize.mrp || 0;
+  const salePrice = firstSize.sale_price || 0;
+  const discount = mrp > 0 ? Math.round(((mrp - salePrice) / mrp) * 100) : 0;
+  const rating = product.rating || 4.5;
+  const stars = Array(Math.floor(rating)).fill('<i class="fa-solid fa-star" style="color:#f8a217"></i>').join('') + (rating % 1 >= 0.5 ? '<i class="fa-solid fa-star-half-stroke" style="color:#f8a217"></i>' : '');
+  const img = product.image_main || '';
+
+  return `
+    <a href="diaper-detail.html?id=${product.id}" class="diaper-card">
+      <div class="diaper-card-img">
+        ${img ? `<img src="${img}" alt="${product.name}" loading="lazy">` : `<div class="diaper-placeholder"><i class="fa-solid fa-box-open" style="font-size:3rem;color:#ccc"></i></div>`}
+        ${product.is_new ? '<span class="diaper-badge-new">NEW</span>' : ''}
+        ${discount > 0 ? `<span class="diaper-badge-discount">-${discount}%</span>` : ''}
+      </div>
+      <div class="diaper-card-body">
+        <span class="diaper-brand-label">${product.brand}</span>
+        <h3 class="diaper-card-title">${product.name}</h3>
+        <div class="diaper-rating">
+          <span class="diaper-stars">${stars}</span>
+          <span class="diaper-rating-num">${rating}</span>
+        </div>
+        <div class="diaper-sizes-preview">
+          ${sizes.map(s => `<span class="size-dot">${s.size}</span>`).join('')}
+        </div>
+        <div class="diaper-pricing">
+          ${mrp > salePrice ? `<span class="diaper-mrp">&#8377;${mrp}</span>` : ''}
+          <span class="diaper-sale">&#8377;${salePrice}</span>
+          <span class="diaper-pack">/ ${firstSize.pack_qty || 10}pcs</span>
+        </div>
+        <button class="diaper-shop-btn">View Details <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </a>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadDiaperData();
+  if (DhiyaMedical.user) { const b = document.getElementById('navAuth'); if(b) { b.textContent = 'Dashboard'; b.href = 'dashboard.html'; } }
+});
+</script>
+</body>
+</html>

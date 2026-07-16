@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin CMS | Dhiya Medical Agency</title>
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/admin.css?v=10">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030358'/%3E%3Ctext y='24' x='5' font-size='22' font-family='Arial' font-weight='900' fill='%23f8a217'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body class="admin-layout">
+
+  <!-- Mobile sidebar overlay -->
+  <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="logo-icon">D</div>
+      <span>Admin CMS</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="#" class="active" onclick="adminShowPanel('dashboard', this)"><span class="admin-nav-icon"><i class="fa-solid fa-gauge-high"></i></span> Dashboard</a>
+      <a href="#" onclick="adminShowPanel('orders', this)"><span class="admin-nav-icon"><i class="fa-solid fa-box"></i></span> Orders</a>
+      <a href="#" onclick="adminShowPanel('products', this)"><span class="admin-nav-icon"><i class="fa-solid fa-pills"></i></span> Products &amp; Media</a>
+      <a href="#" onclick="adminShowPanel('messages', this)"><span class="admin-nav-icon"><i class="fa-solid fa-envelope"></i></span> Messages</a>
+      <a href="#" onclick="adminShowPanel('settings', this)"><span class="admin-nav-icon"><i class="fa-solid fa-gear"></i></span> Site Settings</a>
+    </nav>
+    <div style="padding: 24px; border-top: 1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:12px;">
+      <a href="index.html" style="color:var(--primary-300); text-decoration:none; display:flex; gap:8px; align-items:center; font-size:14px; transition:color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--primary-300)'">
+        <span style="font-size:16px;"><i class="fa-solid fa-arrow-up-right-from-square"></i></span> View Web Page
+      </a>
+      <a href="#" onclick="adminLogout()" style="color:var(--danger); text-decoration:none; display:flex; gap:8px; align-items:center; font-size:14px; transition:color 0.2s;" onmouseover="this.style.color='#ff8a8a'" onmouseout="this.style.color='var(--danger)'">
+        <span style="font-size:16px;"><i class="fa-solid fa-right-from-bracket"></i></span> Log Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <button class="admin-menu-toggle" id="adminMenuToggle" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="admin-header-title" id="pageTitle">Dashboard Overview</div>
+      <div class="admin-user">
+        <span style="font-weight:500; color:var(--neutral-700)">Admin User</span>
+        <div class="admin-avatar">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      
+      <!-- Panel: Dashboard -->
+      <div id="panel-dashboard">
+        <div class="admin-metrics" id="adminMetrics">
+          <!-- Metrics populated by JS -->
+        </div>
+        
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Recent Orders</div>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="recentOrdersTable">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel: Orders -->
+      <div id="panel-orders" style="display:none;">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">All Orders</div>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allOrdersTable">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel: Products & Media -->
+      <div id="panel-products" style="display:none;">
+
+        <!-- Add New Product Card -->
+        <div class="admin-card" style="margin-bottom:24px;">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="fa-solid fa-plus" style="color:var(--primary-600);margin-right:8px"></i>Add New Product</div>
+            <button class="btn btn-primary" style="font-size:13px;padding:8px 16px" onclick="toggleAddProductForm()"><i class="fa-solid fa-chevron-down" id="addFormChevron"></i> New Product</button>
+          </div>
+          <div id="addProductForm" style="display:none; padding:24px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+              <div>
+                <label class="form-label">Product Name *</label>
+                <input type="text" class="form-input" id="ap_name" placeholder="e.g. Amoxicillin 500mg" style="margin-bottom:16px">
+                <label class="form-label">Division / Category *</label>
+                <select class="form-input" id="ap_division" style="margin-bottom:16px">
+                  <option value="">Select Division</option>
+                  <optgroup label="── Main Categories ──">
+                    <option>MEDICINES</option>
+                    <option>SURGICALS</option>
+                    <option>DIAPERS</option>
+                    <option>OTC PRODUCTS</option>
+                    <option>MEDICINE COVERS</option>
+                  </optgroup>
+                  <optgroup label="── Sub Divisions ──">
+                    <option>TABLETS</option>
+                    <option>AUSPIN</option><option>CURE</option><option>GRACE</option>
+                    <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
+                    <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
+                    <option>MEDANOR</option><option>VENTILA</option>
+                  </optgroup>
+                </select>
+                <label class="form-label">MRP (₹) *</label>
+                <input type="number" class="form-input" id="ap_mrp" placeholder="e.g. 250" style="margin-bottom:16px">
+                <label class="form-label">Discount (%)</label>
+                <input type="number" class="form-input" id="ap_discount" placeholder="e.g. 10" min="0" max="100" step="0.5" style="margin-bottom:16px">
+                <label class="form-label">Stock Available</label>
+                <input type="checkbox" id="ap_stock" checked style="margin-bottom:16px;width:18px;height:18px;cursor:pointer"> &nbsp;<label for="ap_stock" style="font-size:14px">In Stock</label>
+                <br><br>
+                <label class="form-label">Description</label>
+                <textarea class="form-input" id="ap_desc" rows="3" placeholder="Short product description..." style="resize:vertical"></textarea>
+              </div>
+              <div>
+                <label class="form-label">Product Image</label>
+                <div class="upload-zone" id="apImageZone" style="margin-bottom:16px;min-height:160px;" onclick="document.getElementById('ap_image').click()">
+                  <input type="file" id="ap_image" accept="image/*" style="display:none" onchange="previewAdminProductImage(this)">
+                  <div id="apImgPreviewWrap" style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                    <i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i>
+                    <span style="font-size:13px;color:var(--neutral-400)">Click to upload image</span>
+                  </div>
+                </div>
+                <div style="background:var(--neutral-50);border:1px dashed var(--neutral-300);border-radius:8px;padding:12px;font-size:12px;color:var(--neutral-500)">
+                  <i class="fa-solid fa-circle-info" style="color:var(--primary-400)"></i>
+                  &nbsp;Products added here will appear on the <strong>Products page</strong> immediately for all visitors.
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:20px;justify-content:flex-end">
+              <button class="btn btn-secondary" onclick="toggleAddProductForm()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveAdminProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">All Products</div>
+            <input type="text" id="productSearch" placeholder="Search products..." class="form-input" style="width:250px" oninput="filterAdminProducts(this.value)">
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name / Division</th>
+                <th>MRP</th>
+                <th>Stock</th>
+                <th>Source</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTable">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel: Messages -->
+      <div id="panel-messages" style="display:none;">
+        <div class="admin-metrics" id="messageMetrics">
+          <!-- Metrics populated by JS -->
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Customer Inquiries</div>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Sender</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="messagesTable">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel: Settings -->
+      <div id="panel-settings" style="display:none;">
+        <div class="admin-card">
+          <div class="admin-card-header"><div class="admin-card-title">Site Branding</div></div>
+          <div style="padding: 24px; display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <!-- Logo Upload -->
+            <div>
+              <label class="form-label">Main Website Logo</label>
+              <div class="upload-zone" id="zone-logo" style="margin-bottom:12px;">
+                <input type="file" class="upload-input" accept="image/*" onchange="handleSettingsUpload(this, 'preview-logo')">
+                <div class="upload-icon"><i class="fa-solid fa-image"></i></div>
+                <div class="upload-text">Drag &amp; drop logo here</div>
+                <div class="upload-hint">PNG or SVG (max 2MB)</div>
+              </div>
+              <div style="border:1px dashed var(--neutral-200); border-radius:8px; padding:8px; text-align:center; height:100px; display:flex; align-items:center; justify-content:center; background:var(--neutral-50)">
+                <img id="preview-logo" src="" style="max-height:80px; max-width:100%; display:none; border-radius:4px;">
+                <span id="preview-logo-placeholder" style="color:var(--neutral-400); font-size:12px;">No Logo Uploaded</span>
+              </div>
+            </div>
+
+            <!-- Hero Banner Upload -->
+            <div>
+              <label class="form-label">Homepage Hero Banner</label>
+              <div class="upload-zone" id="zone-banner" style="margin-bottom:12px;">
+                <input type="file" class="upload-input" accept="image/*" onchange="handleSettingsUpload(this, 'preview-banner')">
+                <div class="upload-icon"><i class="fa-solid fa-panorama"></i></div>
+                <div class="upload-text">Drag &amp; drop banner here</div>
+                <div class="upload-hint">JPG or PNG (max 5MB)</div>
+              </div>
+              <div style="border:1px dashed var(--neutral-200); border-radius:8px; padding:8px; text-align:center; height:100px; display:flex; align-items:center; justify-content:center; background:var(--neutral-50)">
+                <img id="preview-banner" src="" style="max-height:80px; max-width:100%; display:none; border-radius:4px;">
+                <span id="preview-banner-placeholder" style="color:var(--neutral-400); font-size:12px;">No Banner Uploaded</span>
+              </div>
+            </div>
+
+            <!-- Favicon Upload -->
+            <div>
+              <label class="form-label">Browser Tab Icon (Favicon)</label>
+              <div class="upload-zone" id="zone-favicon" style="margin-bottom:12px;">
+                <input type="file" class="upload-input" accept="image/*" onchange="handleSettingsUpload(this, 'preview-favicon')">
+                <div class="upload-icon"><i class="fa-regular fa-star"></i></div>
+                <div class="upload-text">Drag &amp; drop icon here</div>
+                <div class="upload-hint">Square PNG or ICO (max 500KB)</div>
+              </div>
+              <div style="border:1px dashed var(--neutral-200); border-radius:8px; padding:8px; text-align:center; height:100px; display:flex; align-items:center; justify-content:center; background:var(--neutral-50)">
+                <img id="preview-favicon" src="" style="max-height:60px; max-width:60px; display:none; border-radius:8px;">
+                <span id="preview-favicon-placeholder" style="color:var(--neutral-400); font-size:12px;">No Favicon Uploaded</span>
+              </div>
+            </div>
+
+            <!-- Admin Profile Photo -->
+            <div>
+              <label class="form-label">Admin Profile Photo</label>
+              <div class="upload-zone" id="zone-profile" style="margin-bottom:12px;">
+                <input type="file" class="upload-input" accept="image/*" onchange="handleSettingsUpload(this, 'preview-profile')">
+                <div class="upload-icon"><i class="fa-solid fa-user-circle"></i></div>
+                <div class="upload-text">Drag &amp; drop photo here</div>
+                <div class="upload-hint">Square JPG or PNG (max 1MB)</div>
+              </div>
+              <div style="border:1px dashed var(--neutral-200); border-radius:8px; padding:8px; text-align:center; height:100px; display:flex; align-items:center; justify-content:center; background:var(--neutral-50)">
+                <img id="preview-profile" src="" style="max-height:80px; max-width:80px; display:none; border-radius:50%; object-fit:cover;">
+                <span id="preview-profile-placeholder" style="color:var(--neutral-400); font-size:12px;">No Photo Uploaded</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Product Edit Modal (For Image Upload) -->
+  <div class="admin-modal-overlay" id="productModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 style="font-family:var(--font-heading)" id="modalProdTitle">Edit Product Image</h3>
+        <button class="close-modal" onclick="closeProductModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div style="display:flex; gap:20px; align-items:flex-start;">
+          <div style="flex:1">
+            <label class="form-label">Upload New Image (Like Facebook)</label>
+            <div class="upload-zone" id="dropZone">
+              <input type="file" class="upload-input" id="imageInput" accept="image/*" onchange="handleImageSelection(this)">
+              <div class="upload-icon" id="uploadIcon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              <div class="upload-text" id="uploadText">Drag image here or click to browse</div>
+              <div class="upload-hint">JPEG, PNG, WEBP allowed</div>
+            </div>
+          </div>
+          <div style="width: 150px; text-align:center;">
+            <label class="form-label">Current Image</label>
+            <div class="prod-img-preview" style="width:100%; height:150px;" id="modalProdImg">
+              <!-- Image injected via JS -->
+            </div>
+          </div>
+        </div>
+        <div id="uploadProgress" style="display:none; margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px; font-weight:600;">
+            <span>Uploading...</span><span id="uploadPercent">0%</span>
+          </div>
+          <div style="width:100%; height:8px; background:var(--neutral-100); border-radius:4px; overflow:hidden;">
+            <div id="uploadBar" style="height:100%; width:0%; background:var(--primary-500); transition:width 0.2s;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnUploadImage" onclick="uploadImageToBackend()">Upload &amp; Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal (Full Fields) -->
+  <div class="admin-modal-overlay" id="editProductModal">
+    <div class="admin-modal" style="max-width:700px;">
+      <div class="admin-modal-header">
+        <h3 style="font-family:var(--font-heading)">Edit Product</h3>
+        <button class="close-modal" onclick="closeEditProductModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <input type="hidden" id="ep_id">
+        <input type="hidden" id="ep_source">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <label class="form-label">Product Name *</label>
+            <input type="text" class="form-input" id="ep_name" placeholder="Product name" style="margin-bottom:14px">
+            <label class="form-label">Division / Category *</label>
+            <select class="form-input" id="ep_division" style="margin-bottom:14px">
+              <option value="">Select Division</option>
+              <optgroup label="── Main Categories ──">
+                <option>MEDICINES</option><option>SURGICALS</option><option>DIAPERS</option>
+                <option>OTC PRODUCTS</option><option>MEDICINE COVERS</option>
+              </optgroup>
+              <optgroup label="── Sub Divisions ──">
+                <option>TABLETS</option><option>AUSPIN</option><option>CURE</option><option>GRACE</option>
+                <option>MIND</option><option>PRIMA</option><option>OPTHO</option>
+                <option>NURALZ</option><option>EVERMED</option><option>GENVIMAX</option>
+                <option>MEDANOR</option><option>VENTILA</option>
+              </optgroup>
+            </select>
+            <label class="form-label">MRP (₹) *</label>
+            <input type="number" class="form-input" id="ep_mrp" placeholder="e.g. 250" style="margin-bottom:14px">
+            <label class="form-label">Discount (%)</label>
+            <input type="number" class="form-input" id="ep_discount" placeholder="e.g. 10" min="0" max="100" step="0.5" style="margin-bottom:14px">
+            <label class="form-label">Stock Available</label>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <input type="checkbox" id="ep_stock" style="width:18px;height:18px;cursor:pointer">
+              <label for="ep_stock" style="font-size:14px;cursor:pointer">In Stock</label>
+            </div>
+            <label class="form-label">Description / Composition</label>
+            <textarea class="form-input" id="ep_desc" rows="3" placeholder="Product description or composition..." style="resize:vertical"></textarea>
+          </div>
+          <div>
+            <label class="form-label">Product Image</label>
+            <div class="upload-zone" style="margin-bottom:14px;min-height:140px;" onclick="document.getElementById('ep_image').click()">
+              <input type="file" id="ep_image" accept="image/*" style="display:none" onchange="previewEpImage(this)">
+              <div id="epImgPreviewWrap" style="width:100%;height:140px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                <i class="fa-solid fa-image" style="font-size:40px;color:var(--neutral-300)"></i>
+                <span style="font-size:13px;color:var(--neutral-400)">Click to change image</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn btn-secondary" onclick="closeEditProductModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditedProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Reply Modal -->
+  <div class="admin-modal-overlay" id="messageModal">
+    <div class="admin-modal" style="max-width:700px;">
+      <div class="admin-modal-header">
+        <h3 style="font-family:var(--font-heading)" id="modalMsgSubject">Message Subject</h3>
+        <button class="close-modal" onclick="closeMessageModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div style="background:var(--neutral-50); padding:20px; border-radius:8px; margin-bottom:20px; border:1px solid var(--neutral-200);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+            <div><strong id="modalMsgSender">Sender Name</strong> &lt;<span id="modalMsgEmail">email@example.com</span>&gt;</div>
+            <div id="modalMsgDate" style="color:var(--neutral-500); font-size:13px;">Date</div>
+          </div>
+          <p id="modalMsgBody" style="line-height:1.6; color:var(--neutral-800); white-space:pre-wrap;"></p>
+        </div>
+
+        <label class="form-label">Your Reply</label>
+        <textarea id="replyTextarea" class="form-input" rows="6" placeholder="Type your response here. It will be sent to the customer's email..." style="resize:vertical; margin-bottom:8px;"></textarea>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn btn-secondary" onclick="closeMessageModal()">Close</button>
+        <button class="btn btn-primary" id="btnSendReply" onclick="sendMessageReply()">Send Reply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/config.js?v=9"></script>
+  <script src="js/products.js?v=9"></script>
+  <script src="js/app.js?v=9"></script>
+  <script src="js/admin.js?v=9"></script>
+  <script>
+  function toggleMobileSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('adminSidebarOverlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible');
+  }
+  function closeMobileSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('adminSidebarOverlay');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+  }
+  // Close sidebar when a nav link is clicked on mobile
+  document.querySelectorAll('.admin-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeMobileSidebar();
+    });
+  });
+  </script>
+</body>
+</html>
